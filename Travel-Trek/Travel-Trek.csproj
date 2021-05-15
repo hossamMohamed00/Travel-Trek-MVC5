@@ -127,11 +127,46 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AgencyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PostController.cs" />
     <Compile Include="DB_Context\ApplicationDbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105150109406_addUsersTable.cs" />
+    <Compile Include="Migrations\202105150109406_addUsersTable.designer.cs">
+      <DependentUpon>202105150109406_addUsersTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105150118149_addPostsTable.cs" />
+    <Compile Include="Migrations\202105150118149_addPostsTable.designer.cs">
+      <DependentUpon>202105150118149_addPostsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105150119424_addPostsTable1.cs" />
+    <Compile Include="Migrations\202105150119424_addPostsTable1.designer.cs">
+      <DependentUpon>202105150119424_addPostsTable1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105150121374_editPostTableColumnName.cs" />
+    <Compile Include="Migrations\202105150121374_editPostTableColumnName.designer.cs">
+      <DependentUpon>202105150121374_editPostTableColumnName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105150123380_populateUserRoles.cs" />
+    <Compile Include="Migrations\202105150123380_populateUserRoles.designer.cs">
+      <DependentUpon>202105150123380_populateUserRoles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105150133082_addPostStatus.cs" />
+    <Compile Include="Migrations\202105150133082_addPostStatus.designer.cs">
+      <DependentUpon>202105150133082_addPostStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105150140579_populatePeopleTable.cs" />
+    <Compile Include="Migrations\202105150140579_populatePeopleTable.designer.cs">
+      <DependentUpon>202105150140579_populatePeopleTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\Post.cs" />
+    <Compile Include="Models\UserRoles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -176,7 +211,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
+    <Folder Include="Views\Admin\" />
+    <Folder Include="Views\Agency\" />
+    <Folder Include="Views\Post\" />
     <Folder Include="View_Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +228,29 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202105150109406_addUsersTable.resx">
+      <DependentUpon>202105150109406_addUsersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105150118149_addPostsTable.resx">
+      <DependentUpon>202105150118149_addPostsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105150119424_addPostsTable1.resx">
+      <DependentUpon>202105150119424_addPostsTable1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105150121374_editPostTableColumnName.resx">
+      <DependentUpon>202105150121374_editPostTableColumnName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105150123380_populateUserRoles.resx">
+      <DependentUpon>202105150123380_populateUserRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105150133082_addPostStatus.resx">
+      <DependentUpon>202105150133082_addPostStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105150140579_populatePeopleTable.resx">
+      <DependentUpon>202105150140579_populatePeopleTable.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
