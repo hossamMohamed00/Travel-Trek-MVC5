@@ -139,10 +139,6 @@
     <Compile Include="Migrations\202105150109406_addUsersTable.designer.cs">
       <DependentUpon>202105150109406_addUsersTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105150118149_addPostsTable.cs" />
-    <Compile Include="Migrations\202105150118149_addPostsTable.designer.cs">
-      <DependentUpon>202105150118149_addPostsTable.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202105150119424_addPostsTable1.cs" />
     <Compile Include="Migrations\202105150119424_addPostsTable1.designer.cs">
       <DependentUpon>202105150119424_addPostsTable1.cs</DependentUpon>
@@ -232,9 +228,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202105150109406_addUsersTable.resx">
       <DependentUpon>202105150109406_addUsersTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105150118149_addPostsTable.resx">
-      <DependentUpon>202105150118149_addPostsTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105150119424_addPostsTable1.resx">
       <DependentUpon>202105150119424_addPostsTable1.cs</DependentUpon>
