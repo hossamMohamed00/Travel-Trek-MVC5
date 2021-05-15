@@ -135,29 +135,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105150109406_addUsersTable.cs" />
-    <Compile Include="Migrations\202105150109406_addUsersTable.designer.cs">
-      <DependentUpon>202105150109406_addUsersTable.cs</DependentUpon>
+    <Compile Include="Migrations\202105152205288_InitialMigration.cs" />
+    <Compile Include="Migrations\202105152205288_InitialMigration.designer.cs">
+      <DependentUpon>202105152205288_InitialMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105150119424_addPostsTable1.cs" />
-    <Compile Include="Migrations\202105150119424_addPostsTable1.designer.cs">
-      <DependentUpon>202105150119424_addPostsTable1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105150121374_editPostTableColumnName.cs" />
-    <Compile Include="Migrations\202105150121374_editPostTableColumnName.designer.cs">
-      <DependentUpon>202105150121374_editPostTableColumnName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105150123380_populateUserRoles.cs" />
-    <Compile Include="Migrations\202105150123380_populateUserRoles.designer.cs">
-      <DependentUpon>202105150123380_populateUserRoles.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105150133082_addPostStatus.cs" />
-    <Compile Include="Migrations\202105150133082_addPostStatus.designer.cs">
-      <DependentUpon>202105150133082_addPostStatus.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105150140579_populatePeopleTable.cs" />
-    <Compile Include="Migrations\202105150140579_populatePeopleTable.designer.cs">
-      <DependentUpon>202105150140579_populatePeopleTable.cs</DependentUpon>
+    <Compile Include="Migrations\202105152207191_populateTables.cs" />
+    <Compile Include="Migrations\202105152207191_populateTables.designer.cs">
+      <DependentUpon>202105152207191_populateTables.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Person.cs" />
@@ -226,23 +210,11 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202105150109406_addUsersTable.resx">
-      <DependentUpon>202105150109406_addUsersTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202105152205288_InitialMigration.resx">
+      <DependentUpon>202105152205288_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105150119424_addPostsTable1.resx">
-      <DependentUpon>202105150119424_addPostsTable1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105150121374_editPostTableColumnName.resx">
-      <DependentUpon>202105150121374_editPostTableColumnName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105150123380_populateUserRoles.resx">
-      <DependentUpon>202105150123380_populateUserRoles.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105150133082_addPostStatus.resx">
-      <DependentUpon>202105150133082_addPostStatus.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105150140579_populatePeopleTable.resx">
-      <DependentUpon>202105150140579_populatePeopleTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202105152207191_populateTables.resx">
+      <DependentUpon>202105152207191_populateTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
