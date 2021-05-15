@@ -4,5 +4,5 @@ A Trip web application that allow you to find your best vacation trips to go tha
 # Installation
 - After clone the project
 - open the `NuGet Package manager`
-- Write `enable-migration`
+- Write `enable-migrations`
 - Then, `update-database`
