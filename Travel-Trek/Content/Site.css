@@ -22,3 +22,24 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+/*-----------------------------*/
+section {
+    min-height: 500px;
+}
+
+.navbar form {
+    display: inline-block !important;
+    padding: 10px;
+}
+
+.navbar form label {
+    margin-right: 5px;
+    color: #9d9d9d;
+}
+
+.navbar form input:focus {
+    border: none;
+    box-shadow: none;
+}

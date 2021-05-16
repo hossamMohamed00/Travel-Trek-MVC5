@@ -2,36 +2,49 @@
 using System.ComponentModel.DataAnnotations;
 namespace Travel_Trek.Models
 {
-      public class Post
-      {
-            [Required]
-            public int Id { get; set; }
+    public class Post
+    {
+        [Key]
+        public int Id { get; set; }
 
-            [Required]
-            [MaxLength(255)]
-            public Person Agency { get; set; }
+        [Required]
+        [MaxLength(255)]
+        public Person Agency { get; set; }
 
-            [MaxLength(255)]
-            public string Status { get; set; } = "Pending";
+        [MaxLength(255)]
+        [Required]
+        public string Status { get; set; }
 
-            [Required]
-            [MaxLength(255)]
-            public string TripTitle { get; set; }
+        [Required]
+        [MaxLength(255)]
+        public string TripTitle { get; set; }
 
-            [Required]
-            [MaxLength(255)]
-            public string TripDetails { get; set; }
+        [Required]
+        [MaxLength(255)]
+        public string TripDetails { get; set; }
 
-            public DateTime PostDate { get; set; } = DateTime.Now;
+        [DataType(DataType.Date)]
+        public DateTime PostDate { get; set; }
 
-            [Required]
-            public DateTime TripDate { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime TripDate { get; set; }
 
-            [Required]
-            [MaxLength(255)]
-            public string TripDestination { get; set; }
+        [Required]
+        [MaxLength(255)]
+        public string TripDestination { get; set; }
 
-            [Required]
-            public string TripImage { get; set; }
-      }
+        [Required]
+        public string TripImage { get; set; }
+
+        // Constructor
+        public Post()
+        {
+            PostDate = DateTime.Now;
+            Status = PENDING;
+        }
+
+        public static string PENDING = "Pending";
+        public static string APPROVED = "Approved";
+    }
 }

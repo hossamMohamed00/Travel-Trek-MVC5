@@ -1,12 +1,12 @@
 ﻿using System.Data.Entity;
 using Travel_Trek.Models;
 
-namespace Travel_Trek.DB_Context
+namespace Travel_Trek.Db_Context
 {
-      public class ApplicationDbContext : DbContext
-      {
-            public DbSet<Person> Users { get; set; }
+    public class ApplicationDbContext : DbContext
+    {
+        public DbSet<Person> Users { get; set; }
 
-            public DbSet<Post> Posts { get; set; }
-      }
+        public DbSet<Post> Posts { get; set; }
+    }
 }
