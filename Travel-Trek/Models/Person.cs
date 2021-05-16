@@ -8,13 +8,14 @@ namespace Travel_Trek.Models
 
         [Required]
         [MaxLength(255)]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [MaxLength(255)]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; } = "";
 
         [MaxLength(255)]
-        [Required]
         public string Email { get; set; }
 
         [Required]
@@ -22,11 +23,11 @@ namespace Travel_Trek.Models
         public string Password { get; set; }
 
         [MaxLength(255)]
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
         public string Photo { get; set; }
 
-        [Required]
         public UserRole UserRole { get; set; }
     }
 }

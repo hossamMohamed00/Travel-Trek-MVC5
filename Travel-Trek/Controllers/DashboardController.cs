@@ -49,7 +49,6 @@ namespace Travel_Trek.Controllers
         }
 
         // Get: Dashboard/Posts
-
         [Route("Dashboard/Posts")]
         public ActionResult AllPosts()
         {
@@ -58,12 +57,37 @@ namespace Travel_Trek.Controllers
             return View(allPosts);
         }
 
-        [Route("Dashboard/admin/profile")]
+        // Get: Dashboard/Profile
+        [Route("Dashboard/Admin/Profile")]
         public ActionResult Profile()
         {
             var admin = Db.Users.SingleOrDefault(u => u.Id == 1); // Need Edit later
             return View(admin);
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Save(Person person)
+        {
+            if (!ModelState.IsValid)
+            {
+                var admin = Db.Users.SingleOrDefault(u => u.Id == 1); // Need Edit later
+                return View("Profile", admin);
+            }
+
+            var adminInDb = Db.Users.Single(m => m.Id == person.Id);
+            adminInDb.FirstName = person.FirstName;
+            adminInDb.LastName = person.LastName;
+            adminInDb.Password = person.Password; // Need hash later
+            adminInDb.PhoneNumber = person.PhoneNumber;
+            //adminInDb.Photo = person.Photo; // Need change later
+
+            Db.SaveChanges();
+            return RedirectToAction("Index", "Dashboard");
+
+        }
+
 
         /* Helper Methods */
 

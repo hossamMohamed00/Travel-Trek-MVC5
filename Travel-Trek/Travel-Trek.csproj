@@ -150,6 +150,14 @@
     <Compile Include="Migrations\202105161715226_UpdatePostDateType.Designer.cs">
       <DependentUpon>202105161715226_UpdatePostDateType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105162110504_updatePersonModel.cs" />
+    <Compile Include="Migrations\202105162110504_updatePersonModel.Designer.cs">
+      <DependentUpon>202105162110504_updatePersonModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105162117223_updatePersonModel1.cs" />
+    <Compile Include="Migrations\202105162117223_updatePersonModel1.Designer.cs">
+      <DependentUpon>202105162117223_updatePersonModel1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Post.cs" />
@@ -228,6 +236,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105161715226_UpdatePostDateType.resx">
       <DependentUpon>202105161715226_UpdatePostDateType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105162110504_updatePersonModel.resx">
+      <DependentUpon>202105162110504_updatePersonModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105162117223_updatePersonModel1.resx">
+      <DependentUpon>202105162117223_updatePersonModel1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

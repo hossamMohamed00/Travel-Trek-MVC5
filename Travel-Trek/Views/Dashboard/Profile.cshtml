@@ -5,23 +5,20 @@
     Layout = "~/Views/Shared/DashboardLayout.cshtml";
 }
 
-<h2>Profile</h2>
+<h2>Admin Information</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Save", "Dashboard"))
 {
-    @Html.AntiForgeryToken()
-    
     <div class="form-horizontal">
-        <h4>Admin Information</h4>
+        <h4>You can edit your data, then click update.</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+        @Html.ValidationSummary()
 
         <div class="form-group">
             @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.FirstName, null, new { @class = "text-danger" })
             </div>
         </div>
 
@@ -36,7 +33,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", id = "emailText" } })
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -65,14 +62,25 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-10">
+            <button type="submit" class="btn btn-primary ">Update</button>
         </div>
+    </div>
+        
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
+<script type="text/javascript">
+    document.getElementById("emailText").disabled = true;
+    console.log(document.getElementById("emailText"));
+</script>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    
+}
