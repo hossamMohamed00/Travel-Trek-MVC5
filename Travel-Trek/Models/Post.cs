@@ -7,7 +7,6 @@ namespace Travel_Trek.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
         [MaxLength(255)]
         public Person Agency { get; set; }
 
@@ -46,5 +45,6 @@ namespace Travel_Trek.Models
 
         public static string PENDING = "Pending";
         public static string APPROVED = "Approved";
+        public static string Refused = "Refused";
     }
 }

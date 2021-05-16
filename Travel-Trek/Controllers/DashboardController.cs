@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web.Mvc;
 using Travel_Trek.Db_Context;
@@ -88,6 +90,45 @@ namespace Travel_Trek.Controllers
 
         }
 
+
+        public ActionResult DeletePost(int Id)
+        {
+            //* Delete Post
+            var post = Db.Posts.Single(p => p.Id == Id);
+            Db.Posts.Attach(post);
+            Db.Posts.Remove(post);
+            Db.SaveChanges();
+
+            return RedirectToAction("AllPosts");
+
+        }
+
+        public ActionResult ApprovePost(int Id)
+        {
+            var post = Db.Posts.Single(p => p.Id == Id);
+            post.Status = Post.APPROVED;
+            try
+            {
+                Db.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            return RedirectToAction("PendingPosts");
+
+        }
+
+        public ActionResult RefusePost(int Id)
+        {
+            var post = Db.Posts.Single(p => p.Id == Id);
+            post.Status = Post.Refused;
+            Db.SaveChanges();
+
+            return RedirectToAction("PendingPosts");
+
+        }
 
         /* Helper Methods */
 
