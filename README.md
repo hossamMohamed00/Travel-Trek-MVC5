@@ -3,6 +3,6 @@ A Trip web application that allow you to find your best vacation trips to go tha
 
 # Installation
 - After clone the project
+- Build project
 - open the `NuGet Package manager`
-- Write `enable-migrations`
 - Then, `update-database`
