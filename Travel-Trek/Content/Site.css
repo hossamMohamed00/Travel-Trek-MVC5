@@ -27,19 +27,55 @@ textarea {
 /*-----------------------------*/
 section {
     min-height: 500px;
+    margin-top: 30px;
 }
 
-.navbar form {
-    display: inline-block !important;
-    padding: 10px;
-}
-
-.navbar form label {
+.navbar form label{
+    color :#fff;
     margin-right: 5px;
-    color: #9d9d9d;
 }
 
 .navbar form input:focus {
     border: none;
     box-shadow: none;
 }
+
+.admin p {
+    margin: 10px;
+}
+thead {
+    background-color : #ddd;
+}
+
+table tr td,
+table thead tr th{
+    text-align: center;
+}
+h2 {
+    margin: 15px 0;
+}
+
+.row{
+    margin-bottom : 10px;
+}
+.no-trips h3{
+    text-align: center;
+    color: #808080;
+}
+
+
+#likeBtn:focus {
+    box-shadow: none;
+    border: none;
+}
+
+.likedBtn {
+    color: darkblue;
+}
+
+@media (max-width: 767){
+    nav{
+        width: 100%;
+    }
+}
+
