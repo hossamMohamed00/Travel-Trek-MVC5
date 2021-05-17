@@ -144,10 +144,6 @@
     <Compile Include="Migrations\202105170051022_populateTables.Designer.cs">
       <DependentUpon>202105170051022_populateTables.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105171743165_updatePeopleFields.cs" />
-    <Compile Include="Migrations\202105171743165_updatePeopleFields.designer.cs">
-      <DependentUpon>202105171743165_updatePeopleFields.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Post.cs" />
@@ -322,9 +318,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105170051022_populateTables.resx">
       <DependentUpon>202105170051022_populateTables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105171743165_updatePeopleFields.resx">
-      <DependentUpon>202105171743165_updatePeopleFields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
