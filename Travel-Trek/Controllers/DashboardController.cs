@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Travel_Trek.Db_Context;
 using Travel_Trek.Models;
+using Travel_Trek.ViewModels;
 
 namespace Travel_Trek.Controllers
 {
@@ -40,15 +41,61 @@ namespace Travel_Trek.Controllers
 
             return View(users);
         }
+
+        // Get: User/Profile
+        [Route("Dashboard/Admin/Profile")]
+        public ActionResult Profile()
+        {
+            var admin = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 1); // Need Edit later
+
+            if (admin == null)
+                return HttpNotFound();
+
+            var viewModel = new UserFormViewModel
+            {
+                User = admin
+            };
+
+            return View("UserProfile", viewModel);
+        }
+
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            var user = Db.Users.Single(c =>c.Id==id);
+            var user = Db.Users.Single(c => c.Id == id);
             Db.Users.Remove(user);
             Db.SaveChanges();
             return RedirectToAction("AllUsers");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Dashboard/admin/profile/Save")]
+        public ActionResult Save(UserFormViewModel ViewModel)
+        {
+            var person = ViewModel.User;
+
+            if (!ModelState.IsValid)
+            {
+                var admin = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 1); // Need Edit later
+                var viewModel = new UserFormViewModel
+                {
+                    User = admin
+                };
+                return View("UserProfile", viewModel);
+            }
+
+            var adminInDb = Db.Users.SingleOrDefault(m => m.Id == person.Id);
+            adminInDb.FirstName = person.FirstName;
+            adminInDb.LastName = person.LastName;
+            adminInDb.Password = person.Password; // Need hash later
+            adminInDb.PhoneNumber = person.PhoneNumber;
+            //adminInDb.Photo = person.Photo; // Need change later
+
+            Db.SaveChanges();
+            return RedirectToAction("Index", "Dashboard");
+
+        }
 
         // Get: Dashboard/Posts/Pending
         [Route("Dashboard/Posts/Pending")]
@@ -67,38 +114,6 @@ namespace Travel_Trek.Controllers
 
             return View(allPosts);
         }
-
-        // Get: Dashboard/Profile
-        [Route("Dashboard/Admin/Profile")]
-        public ActionResult Profile()
-        {
-            var admin = Db.Users.SingleOrDefault(u => u.Id == 1); // Need Edit later
-            return View(admin);
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Save(Person person)
-        {
-            if (!ModelState.IsValid)
-            {
-                var admin = Db.Users.SingleOrDefault(u => u.Id == 1); // Need Edit later
-                return View("Profile", admin);
-            }
-
-            var adminInDb = Db.Users.Single(m => m.Id == person.Id);
-            adminInDb.FirstName = person.FirstName;
-            adminInDb.LastName = person.LastName;
-            adminInDb.Password = person.Password; // Need hash later
-            adminInDb.PhoneNumber = person.PhoneNumber;
-            //adminInDb.Photo = person.Photo; // Need change later
-
-            Db.SaveChanges();
-            return RedirectToAction("Index", "Dashboard");
-
-        }
-
 
         public ActionResult DeletePost(int id)
         {

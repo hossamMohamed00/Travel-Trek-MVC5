@@ -1,0 +1,92 @@
+﻿@model Travel_Trek.ViewModels.UserFormViewModel
+
+@{
+    ViewBag.Title = "Profile";
+    var layout = Model.Layout;
+    Layout = "~/Views/Shared/"+ layout;
+
+}
+
+<h2>@Model.Title Information</h2>
+<hr />
+@using (Html.BeginForm("Save", @Model.Controller))
+{
+    <div class="form-horizontal">
+
+        <div class="Header_subtitle">
+            <p>You can edit your data, then click update.</p>
+        </div>
+
+        @Html.ValidationSummary()
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.User.FirstName, htmlAttributes: new { @class = "col-form-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.User.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.User.FirstName, null, new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.User.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.User.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.User.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.User.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.User.Email, new { htmlAttributes = new { @class = "form-control", id = "emailText" } })
+                @Html.ValidationMessageFor(model => model.User.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.User.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.User.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.User.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.User.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.User.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.User.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.User.Photo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.User.Photo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.User.Photo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.User.Id)
+        
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-10">
+                <button type="submit" class="btn btn-primary ">Update</button>
+            </div>
+        </div>
+
+    </div>
+}
+
+
+<script type="text/javascript">
+    document.getElementById("emailText").disabled = true;
+    console.log(document.getElementById("emailText"));
+</script>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

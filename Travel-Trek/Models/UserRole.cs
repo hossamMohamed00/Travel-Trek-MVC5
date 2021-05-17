@@ -8,5 +8,9 @@ namespace Travel_Trek.Models
 
         [Required]
         public string Name { get; set; }
+
+        public static int AdminId = 1;
+        public static int AgencyId = 2;
+        public static int TravellerId = 3;
     }
 }
