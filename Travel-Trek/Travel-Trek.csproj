@@ -300,6 +300,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Agency\Index.cshtml" />
+    <Content Include="Views\Shared\UserProfileEdit.cshtml" />
     <Content Include="Views\Shared\UserProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>

@@ -59,6 +59,22 @@ namespace Travel_Trek.Controllers
             return View("UserProfile", viewModel);
         }
 
+        [Route("Dashboard/Admin/Profile/Edit")]
+        public ActionResult Edit ()
+        {
+            var admin = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 1); // Need Edit later
+
+            if (admin == null)
+                return HttpNotFound();
+
+            var viewModel = new UserFormViewModel
+            {
+                User = admin
+            };
+
+            return View("UserProfileEdit", viewModel);
+        }
+
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -82,7 +98,7 @@ namespace Travel_Trek.Controllers
                 {
                     User = admin
                 };
-                return View("UserProfile", viewModel);
+                return View("UserProfileEdit", viewModel);
             }
 
             var adminInDb = Db.Users.SingleOrDefault(m => m.Id == person.Id);
@@ -93,7 +109,7 @@ namespace Travel_Trek.Controllers
             //adminInDb.Photo = person.Photo; // Need change later
 
             Db.SaveChanges();
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("Profile", "Dashboard");
 
         }
 
