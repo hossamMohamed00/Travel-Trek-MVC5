@@ -40,6 +40,15 @@ namespace Travel_Trek.Controllers
 
             return View(users);
         }
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            var user = Db.Users.Single(c =>c.Id==id);
+            Db.Users.Remove(user);
+            Db.SaveChanges();
+            return RedirectToAction("AllUsers");
+        }
+
 
         // Get: Dashboard/Posts/Pending
         [Route("Dashboard/Posts/Pending")]
