@@ -1,0 +1,18 @@
+﻿@model Travel_Trek.ViewModels.UserFormViewModel
+@{
+    ViewBag.Title = "Profile";
+    var layout = Model.Layout;
+    Layout = "~/Views/Shared/" + layout;
+}
+<section class=" profile-content">
+    <figure class="figure">
+        <img src="~/Content/images/profile.png" style="margin-left:45px" class="figure-img img-fluid rounded-circle " alt="A generic square placeholder image with rounded corners in a figure.">
+        <figcaption class="figure-caption">
+            <h4><span class="profile-content-span">Name: </span> @Model.User.FirstName @Model.User.LastName</h4>
+            <h4><span class="profile-content-span">Email: </span>@Model.User.Email</h4>
+            <h4><span class="profile-content-span">Phone Number: </span>@Model.User.PhoneNumber</h4>
+        </figcaption>
+    </figure>
+
+    @Html.ActionLink("Edit Information", "Edit", null, new { @class = "btn btn-secondary", style = "margin-right:35px" })
+</section>

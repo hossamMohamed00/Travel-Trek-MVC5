@@ -1,7 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using Travel_Trek.Db_Context;
-using Travel_Trek.Models;
+using Travel_Trek.ViewModels;
 
 namespace Travel_Trek.Controllers
 {
@@ -26,20 +27,50 @@ namespace Travel_Trek.Controllers
         {
             return View();
         }
-        // Get: Dashboard/Profile
+
+        // Get: Agency/Profile
+        [Route("Agency/Profile")]
         public ActionResult Profile()
         {
-            var Agency = Db.Users.SingleOrDefault(u => u.Id == 2); 
-            return View(Agency);
+            var agency = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 2);
+
+            var viewModel = new UserFormViewModel
+            {
+                User = agency
+            };
+
+            return View("UserProfile", viewModel);
         }
+
+        [Route("Agency/Profile/Edit")]
+        public ActionResult Edit()
+        {
+            var agency = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 2);
+
+            var viewModel = new UserFormViewModel
+            {
+                User = agency
+            };
+
+            return View("UserProfileEdit", viewModel);
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Save(Person person)
+        public ActionResult Save(UserFormViewModel viewModel)
         {
+            var person = viewModel.User;
+
             if (!ModelState.IsValid)
             {
-                var agency = Db.Users.SingleOrDefault(u => u.Id == 2); 
-                return View("Profile", agency);
+                var agency = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 2);
+                var userFormViewModelviewModel = new UserFormViewModel
+                {
+                    User = agency
+                };
+
+                return View("UserProfileEdit", userFormViewModelviewModel);
             }
 
             var agencyInDb = Db.Users.Single(m => m.Id == person.Id);
@@ -49,7 +80,17 @@ namespace Travel_Trek.Controllers
             agencyInDb.PhoneNumber = person.PhoneNumber;
             //adminInDb.Photo = person.Photo; // Need change later
 
-            Db.SaveChanges();
+            try
+            {
+                Db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+
             return RedirectToAction("Profile", "Agency");
 
         }

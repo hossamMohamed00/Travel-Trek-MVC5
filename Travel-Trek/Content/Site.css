@@ -40,7 +40,7 @@ section {
     box-shadow: none;
 }
 
-.Admin_subtitle p {
+.Header_subtitle p {
     margin: 10px;
 }
 thead {
@@ -73,9 +73,38 @@ h2 {
     color: darkblue;
 }
 
-@media (max-width: 767){
+@media (max-width: 767px){
     nav{
         width: 100%;
     }
 }
 
+.input-validation-error {
+    border-bottom: 2px solid red;
+}
+
+figure img {
+    width: 200px;
+    height: 200px;
+}
+
+.profile-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: column;
+}
+
+@media(max-width: 767px) {
+    .card {
+        margin: 0 auto;
+    }
+
+    .trip-tilte {
+        text-align: center;
+    }
+}
+
+.profile-content-span {
+    color: purple;
+}
