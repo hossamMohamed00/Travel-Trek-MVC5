@@ -144,6 +144,10 @@
     <Compile Include="Migrations\202105170051022_populateTables.Designer.cs">
       <DependentUpon>202105170051022_populateTables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105171956583_EditPersonTable.cs" />
+    <Compile Include="Migrations\202105171956583_EditPersonTable.designer.cs">
+      <DependentUpon>202105171956583_EditPersonTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Post.cs" />
@@ -158,9 +162,48 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="lib\font-awesome\css\all.css" />
+    <Content Include="lib\font-awesome\css\all.min.css" />
+    <Content Include="lib\font-awesome\css\brands.css" />
+    <Content Include="lib\font-awesome\css\brands.min.css" />
+    <Content Include="lib\font-awesome\css\fontawesome.css" />
+    <Content Include="lib\font-awesome\css\fontawesome.min.css" />
+    <Content Include="lib\font-awesome\css\regular.css" />
+    <Content Include="lib\font-awesome\css\regular.min.css" />
+    <Content Include="lib\font-awesome\css\solid.css" />
+    <Content Include="lib\font-awesome\css\solid.min.css" />
+    <Content Include="lib\font-awesome\css\svg-with-js.css" />
+    <Content Include="lib\font-awesome\css\svg-with-js.min.css" />
+    <Content Include="lib\font-awesome\css\v4-shims.css" />
+    <Content Include="lib\font-awesome\css\v4-shims.min.css" />
+    <Content Include="lib\font-awesome\js\all.js" />
+    <Content Include="lib\font-awesome\js\all.min.js" />
+    <Content Include="lib\font-awesome\js\brands.js" />
+    <Content Include="lib\font-awesome\js\brands.min.js" />
+    <Content Include="lib\font-awesome\js\conflict-detection.js" />
+    <Content Include="lib\font-awesome\js\conflict-detection.min.js" />
+    <Content Include="lib\font-awesome\js\fontawesome.js" />
+    <Content Include="lib\font-awesome\js\fontawesome.min.js" />
+    <Content Include="lib\font-awesome\js\regular.js" />
+    <Content Include="lib\font-awesome\js\regular.min.js" />
+    <Content Include="lib\font-awesome\js\solid.js" />
+    <Content Include="lib\font-awesome\js\solid.min.js" />
+    <Content Include="lib\font-awesome\js\v4-shims.js" />
+    <Content Include="lib\font-awesome\js\v4-shims.min.js" />
+    <Content Include="lib\font-awesome\sprites\brands.svg" />
+    <Content Include="lib\font-awesome\sprites\regular.svg" />
+    <Content Include="lib\font-awesome\sprites\solid.svg" />
+    <Content Include="lib\font-awesome\webfonts\fa-brands-400.svg" />
+    <Content Include="lib\font-awesome\webfonts\fa-regular-400.svg" />
+    <Content Include="lib\font-awesome\webfonts\fa-solid-900.svg" />
+    <Content Include="Scripts\bootbox.js" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -184,6 +227,24 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="libman.json" />
+    <Content Include="lib\font-awesome\webfonts\fa-brands-400.eot" />
+    <Content Include="lib\font-awesome\webfonts\fa-brands-400.ttf" />
+    <Content Include="lib\font-awesome\webfonts\fa-brands-400.woff" />
+    <Content Include="lib\font-awesome\webfonts\fa-brands-400.woff2" />
+    <Content Include="lib\font-awesome\webfonts\fa-regular-400.eot" />
+    <Content Include="lib\font-awesome\webfonts\fa-regular-400.ttf" />
+    <Content Include="lib\font-awesome\webfonts\fa-regular-400.woff" />
+    <Content Include="lib\font-awesome\webfonts\fa-regular-400.woff2" />
+    <Content Include="lib\font-awesome\webfonts\fa-solid-900.eot" />
+    <Content Include="lib\font-awesome\webfonts\fa-solid-900.ttf" />
+    <Content Include="lib\font-awesome\webfonts\fa-solid-900.woff" />
+    <Content Include="lib\font-awesome\webfonts\fa-solid-900.woff2" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -319,6 +380,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105170051022_populateTables.resx">
       <DependentUpon>202105170051022_populateTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105171956583_EditPersonTable.resx">
+      <DependentUpon>202105171956583_EditPersonTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

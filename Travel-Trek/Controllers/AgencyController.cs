@@ -32,12 +32,8 @@ namespace Travel_Trek.Controllers
         [Route("Agency/Profile")]
         public ActionResult Profile()
         {
-            var agency = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 2);
+            var viewModel = GetUserFormViewModel();
 
-            var viewModel = new UserFormViewModel
-            {
-                User = agency
-            };
 
             return View("UserProfile", viewModel);
         }
@@ -45,12 +41,8 @@ namespace Travel_Trek.Controllers
         [Route("Agency/Profile/Edit")]
         public ActionResult Edit()
         {
-            var agency = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 2);
+            var viewModel = GetUserFormViewModel();
 
-            var viewModel = new UserFormViewModel
-            {
-                User = agency
-            };
 
             return View("UserProfileEdit", viewModel);
         }
@@ -92,9 +84,19 @@ namespace Travel_Trek.Controllers
 
 
             return RedirectToAction("Profile", "Agency");
-
         }
 
+        /* Helper Methods */
+        public UserFormViewModel GetUserFormViewModel()
+        {
+            var agency = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 2); // Need Edit later
 
+            var viewModel = new UserFormViewModel
+            {
+                User = agency
+            };
+
+            return viewModel;
+        }
     }
 }

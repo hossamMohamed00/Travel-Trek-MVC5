@@ -46,42 +46,28 @@ namespace Travel_Trek.Controllers
         [Route("Dashboard/Admin/Profile")]
         public ActionResult Profile()
         {
-            var admin = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 1); // Need Edit later
-
-            if (admin == null)
-                return HttpNotFound();
-
-            var viewModel = new UserFormViewModel
-            {
-                User = admin
-            };
+            var viewModel = GetUserFormViewModel();
 
             return View("UserProfile", viewModel);
         }
 
         [Route("Dashboard/Admin/Profile/Edit")]
-        public ActionResult Edit ()
+        public ActionResult Edit()
         {
-            var admin = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 1); // Need Edit later
-
-            if (admin == null)
-                return HttpNotFound();
-
-            var viewModel = new UserFormViewModel
-            {
-                User = admin
-            };
+            var viewModel = GetUserFormViewModel();
 
             return View("UserProfileEdit", viewModel);
         }
 
-        [HttpGet]
+
+        [HttpPost]
+        [Route("Dashboard/Delete")]
         public ActionResult Delete(int id)
         {
             var user = Db.Users.Single(c => c.Id == id);
             Db.Users.Remove(user);
             Db.SaveChanges();
-            return RedirectToAction("AllUsers");
+            return Json(new { success = true, message = "User deleted successfully" }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -184,6 +170,18 @@ namespace Travel_Trek.Controllers
         {
             var posts = Db.Posts.ToList();
             return posts;
+        }
+
+        public UserFormViewModel GetUserFormViewModel()
+        {
+            var admin = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 1); // Need Edit later
+
+            var viewModel = new UserFormViewModel
+            {
+                User = admin
+            };
+
+            return viewModel;
         }
     }
 }
