@@ -10,9 +10,9 @@ namespace Travel_Trek.Models
         [MaxLength(255)]
         public Person Agency { get; set; }
 
-        [MaxLength(255)]
         [Required]
-        public string Status { get; set; }
+        public byte AgencyId { get; set; }
+
 
         [Required]
         [MaxLength(255)]
@@ -36,6 +36,13 @@ namespace Travel_Trek.Models
         [Required]
         public string TripImage { get; set; }
 
+        [MaxLength(255)]
+        [Required]
+        public string Status { get; set; }
+
+        [Range(0, Int32.MaxValue)]
+        public int Likes { get; set; }
+
         // Constructor
         public Post()
         {
@@ -45,6 +52,6 @@ namespace Travel_Trek.Models
 
         public static string PENDING = "Pending";
         public static string APPROVED = "Approved";
-        public static string Refused = "Refused";
+        public static string REFUSED = "REFUSED";
     }
 }

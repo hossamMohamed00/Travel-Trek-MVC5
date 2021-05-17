@@ -130,43 +130,18 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AgencyController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\WallController.cs" />
     <Compile Include="Db_Context\ApplicationDbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105161605119_Initial.cs" />
-    <Compile Include="Migrations\202105161605119_Initial.designer.cs">
-      <DependentUpon>202105161605119_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\202105170048500_Initial.cs" />
+    <Compile Include="Migrations\202105170048500_Initial.Designer.cs">
+      <DependentUpon>202105170048500_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105161607386_PopulateTables.cs" />
-    <Compile Include="Migrations\202105161607386_PopulateTables.designer.cs">
-      <DependentUpon>202105161607386_PopulateTables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105161655320_EditPostStatus.cs" />
-    <Compile Include="Migrations\202105161655320_EditPostStatus.Designer.cs">
-      <DependentUpon>202105161655320_EditPostStatus.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105161715226_UpdatePostDateType.cs" />
-    <Compile Include="Migrations\202105161715226_UpdatePostDateType.Designer.cs">
-      <DependentUpon>202105161715226_UpdatePostDateType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105162110504_updatePersonModel.cs" />
-    <Compile Include="Migrations\202105162110504_updatePersonModel.Designer.cs">
-      <DependentUpon>202105162110504_updatePersonModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105162117223_updatePersonModel1.cs" />
-    <Compile Include="Migrations\202105162117223_updatePersonModel1.Designer.cs">
-      <DependentUpon>202105162117223_updatePersonModel1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105162142079_updatePostModel.cs" />
-    <Compile Include="Migrations\202105162142079_updatePostModel.Designer.cs">
-      <DependentUpon>202105162142079_updatePostModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105162143029_updatePostModel1.cs" />
-    <Compile Include="Migrations\202105162143029_updatePostModel1.Designer.cs">
-      <DependentUpon>202105162143029_updatePostModel1.cs</DependentUpon>
+    <Compile Include="Migrations\202105170051022_populateTables.cs" />
+    <Compile Include="Migrations\202105170051022_populateTables.Designer.cs">
+      <DependentUpon>202105170051022_populateTables.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Person.cs" />
@@ -298,8 +273,6 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\DashboardLayout.cshtml" />
     <Content Include="Views\Shared\WallLayout.cshtml" />
     <Content Include="Views\Shared\FactoryLayout.cshtml" />
@@ -330,36 +303,18 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202105161605119_Initial.resx">
-      <DependentUpon>202105161605119_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105161607386_PopulateTables.resx">
-      <DependentUpon>202105161607386_PopulateTables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105161655320_EditPostStatus.resx">
-      <DependentUpon>202105161655320_EditPostStatus.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105161715226_UpdatePostDateType.resx">
-      <DependentUpon>202105161715226_UpdatePostDateType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105162110504_updatePersonModel.resx">
-      <DependentUpon>202105162110504_updatePersonModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105162117223_updatePersonModel1.resx">
-      <DependentUpon>202105162117223_updatePersonModel1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105162142079_updatePostModel.resx">
-      <DependentUpon>202105162142079_updatePostModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105162143029_updatePostModel1.resx">
-      <DependentUpon>202105162143029_updatePostModel1.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202105170048500_Initial.resx">
+      <DependentUpon>202105170048500_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105170051022_populateTables.resx">
+      <DependentUpon>202105170051022_populateTables.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

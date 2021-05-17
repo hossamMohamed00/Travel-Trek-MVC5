@@ -27,7 +27,10 @@ namespace Travel_Trek.Models
         public string PhoneNumber { get; set; }
 
         public string Photo { get; set; }
-
+        [Display(Name = "Role")]
         public UserRole UserRole { get; set; }
+
+        [Required]
+        public byte UserRoleId { get; set; }
     }
 }

@@ -7,13 +7,13 @@ namespace Travel_Trek.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class EditPostStatus : IMigrationMetadata
+    public sealed partial class populateTables : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(EditPostStatus));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(populateTables));
         
         string IMigrationMetadata.Id
         {
-            get { return "202105161655320_EditPostStatus"; }
+            get { return "202105170051022_populateTables"; }
         }
         
         string IMigrationMetadata.Source

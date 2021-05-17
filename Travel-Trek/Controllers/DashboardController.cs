@@ -91,10 +91,10 @@ namespace Travel_Trek.Controllers
         }
 
 
-        public ActionResult DeletePost(int Id)
+        public ActionResult DeletePost(int id)
         {
             //* Delete Post
-            var post = Db.Posts.Single(p => p.Id == Id);
+            var post = Db.Posts.Single(p => p.Id == id);
             Db.Posts.Attach(post);
             Db.Posts.Remove(post);
             Db.SaveChanges();
@@ -103,9 +103,9 @@ namespace Travel_Trek.Controllers
 
         }
 
-        public ActionResult ApprovePost(int Id)
+        public ActionResult ApprovePost(int id)
         {
-            var post = Db.Posts.Single(p => p.Id == Id);
+            var post = Db.Posts.Single(p => p.Id == id);
             post.Status = Post.APPROVED;
             try
             {
@@ -120,10 +120,10 @@ namespace Travel_Trek.Controllers
 
         }
 
-        public ActionResult RefusePost(int Id)
+        public ActionResult RefusePost(int id)
         {
-            var post = Db.Posts.Single(p => p.Id == Id);
-            post.Status = Post.Refused;
+            var post = Db.Posts.Single(p => p.Id == id);
+            post.Status = Post.REFUSED;
             Db.SaveChanges();
 
             return RedirectToAction("PendingPosts");
@@ -135,8 +135,8 @@ namespace Travel_Trek.Controllers
         // Return all users (agencies and travelers)
         public IEnumerable<Person> GetAllUsers()
         {
-            var User = Db.Users.ToList();
-            return User;
+            var users = Db.Users.Include("UserRole").ToList();
+            return users;
         }
 
         // Return all users (agencies and travelers)

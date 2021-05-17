@@ -40,7 +40,7 @@ section {
     box-shadow: none;
 }
 
-.admin p {
+.Admin_subtitle p {
     margin: 10px;
 }
 thead {
@@ -58,7 +58,7 @@ h2 {
 .row{
     margin-bottom : 10px;
 }
-.no-trips h3{
+.is-empty {
     text-align: center;
     color: #808080;
 }
