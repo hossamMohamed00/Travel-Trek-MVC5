@@ -363,6 +363,8 @@
     <Content Include="Views\Agency\Index.cshtml" />
     <Content Include="Views\Shared\UserProfileEdit.cshtml" />
     <Content Include="Views\Shared\UserProfile.cshtml" />
+    <Content Include="Views\Shared\_dashboardNavBar.cshtml" />
+    <Content Include="Views\Shared\_wallNavBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
