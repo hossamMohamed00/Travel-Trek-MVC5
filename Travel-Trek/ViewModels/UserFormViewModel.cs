@@ -16,7 +16,7 @@ namespace Travel_Trek.ViewModels
                 }
                 else if (User.UserRoleId == UserRole.AgencyId)
                 {
-                    return "WallLayout.cshtml";
+                    return "FactoryLayout.cshtml";
                 }
                 else
                 {

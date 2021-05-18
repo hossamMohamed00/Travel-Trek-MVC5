@@ -170,7 +170,7 @@ namespace Travel_Trek.Controllers
         // Return all users (agencies and travelers)
         public IEnumerable<Post> GetAllPosts()
         {
-            var posts = Db.Posts.ToList();
+            var posts = Db.Posts.Include("Agency").ToList();
             return posts;
         }
 

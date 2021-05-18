@@ -14,7 +14,7 @@
     <div class="form-horizontal">
 
         <div class="Header_subtitle">
-            <p>You can edit your data, then click update.</p>
+            <p>You can edit your data, then click update. 🤷‍♂️✌</p>
         </div>
 
         @Html.ValidationSummary(true, "Please fix the the following errors!", new { @class = "text-danger"})
@@ -67,16 +67,18 @@
                 <div class="custom-file " style="width:auto;">
                     <input type="file" class="custom-file-input" id="customFile">
                     <label class="custom-file-label" for="customFile">Choose file</label>
+                    @Html.ValidationMessageFor(model => model.User.Photo, "", new { @class = "text-danger" })
+
                 </div>
             </div>
         </div>
 
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.User.Id)
-        <div class="row" style="display: flex;justify-content:center;margin:0;">
-            <div class="form-group">
-                <div class="col">
-                    <button type="submit" class="btn btn-primary ">Update</button>
+        <div class="row" >
+            <div class="form-group col">
+                <div>
+                    <button type="submit" class="btn btn-primary ">Update Info</button>
                 </div>
             </div>
         </div>
