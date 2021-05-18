@@ -1,18 +1,57 @@
-﻿
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-
+﻿<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Agency</title>
     <link rel="icon" href="~/Content/images/icon.jpg" />
+    <title>@ViewBag.Title - Agency</title>
+
+    <link rel="icon" href="~/Content/images/icon.jpg" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="~/Content/sidebar.css" rel="stylesheet" />
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
-    <div>
+<body style="padding: 0">
+    <div class="d-flex" id="wrapper">
+        @Html.Partial("Partials/_FactorySideBar")
+
+        <div id="page-content-wrapper">
+            @Html.Partial("Partials/_FactoryNavBar")
+            <div class="container-fluid">
+
+                @RenderBody()
+            </div>
+        </div>
     </div>
+
+
+
+<div class="fixed-bottom">
+    <hr/>
+    <footer >
+        <p>&copy; @DateTime.Now.Year - Travel Trek</p>
+    </footer>
+</div>
+
+
+    @Scripts.Render("~/bundles/lib")
+    <!-- Bootstrap core JS-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    @RenderSection("scripts", required: false)
 </body>
 </html>
+
+<script>
+    $(document).ready(function() {
+        // Toggle side bar
+        $("#menu-toggle").on('click', function (e) {
+            console.log("Clicked");
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    })
+</script>

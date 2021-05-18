@@ -13,11 +13,12 @@
 </head>
 <body>
     <!--Include the navbar-->
-    @Html.Partial("_dashboardNavBar")
+    @Html.Partial("Partials/_dashboardNavBar")
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
+        
+        <footer class="fixed-bottom">
+            <hr />
             <p>&copy; @DateTime.Now.Year - Travel Trek</p>
         </footer>
     </div>

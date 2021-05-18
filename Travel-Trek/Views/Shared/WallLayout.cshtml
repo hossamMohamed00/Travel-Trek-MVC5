@@ -11,16 +11,25 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    @Html.Partial("_wallNavBar")
-    <div class="container body-content">
+    @Html.Partial("Partials/_wallNavBar")
+   <!-- Html.Partial("_accountsModal")-->
+    
+    <div class="container body-content fixed-bottom">
         @RenderBody()
         <hr />
-        <footer>
+        <footer >
             <p>&copy; @DateTime.Now.Year - Travel Trek</p>
         </footer>
     </div>
 
     @Scripts.Render("~/bundles/lib")
+    <script src="~/Scripts/Login-Register/modals.js"></script>
+    <!-- MDB -->
+    <script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"
+    ></script>
     @RenderSection("scripts", required: false)
+
 </body>
 </html>
