@@ -8,6 +8,7 @@ namespace Travel_Trek.Models
 
         [MaxLength(255)]
         [Display(Name = "First Name")]
+        [Required]
         public string FirstName { get; set; }
 
         [MaxLength(255)]
@@ -18,6 +19,7 @@ namespace Travel_Trek.Models
         public string Email { get; set; }
 
         [MaxLength(255)]
+        [Required]
         public string Password { get; set; }
 
         [MaxLength(255)]

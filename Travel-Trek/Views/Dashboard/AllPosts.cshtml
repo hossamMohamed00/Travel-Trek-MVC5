@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Travel_Trek.Models.Post>
+﻿@using Travel_Trek.Models
+@model IEnumerable<Travel_Trek.Models.Post>
 
 @{
     ViewBag.Title = "Posts";
@@ -7,83 +8,176 @@
 
 
 <section>
-    <h2>All Posts</h2>
+    <h2>Posts 📜</h2>
     <hr />
 
     @if (Model.Any())
     {
-    <p class="Header_subtitle">
-        The following table contains all posts information.
-    </p>
+        <p class="Header_subtitle">
+            The following table contains all posts information.🤗
+        </p>
 
         <div style="margin-bottom: 10px">
             @Html.ActionLink("Create New Post", "Create", null, new { @class = "btn btn-primary" })
         </div>
 
-        <table class="table table-striped table-hover table-bordered">
+        <table id="posts" class="table table-striped table-hover table-bordered">
             <thead class="thead-dark">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.TripTitle)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TripDestination)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TripDetails)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PostDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TripDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Status)
-                </th>
-                <th>
-                    Actions
-                </th>
-            </tr>
-            </thead>
-        @foreach (var item in Model)
-        {
-            <tbody>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TripTitle)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TripDestination)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TripDetails)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PostDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TripDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new
-                        {
-                            @class = "btn btn-outline-danger",
-                            id = item.Id
-                        })
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TripTitle)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TripDestination)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TripDetails)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PostDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TripDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        Actions
+                    </th>
                 </tr>
-            </tbody>
-        }
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TripTitle)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TripDestination)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TripDetails)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PostDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TripDate)
+                        </td>
+                        <td>
+                            @if (item.Status.Equals(Post.REFUSED))
+                            {
+                                <a class="js-refused" data-post-refuse-message="@item.RefuseMessage" href="#"><span class="text-danger">@Html.DisplayFor(modelItem => item.Status)</span></a>
+                            }
+                            else
+                            {
+                                <span class = "text-success">@Html.DisplayFor(modelItem => item.Status)</span>
+                            }
+
+                        </td>
+                        <td>
+                            <button data-post-id="@item.Id" class="btn btn-outline-danger js-delete">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            }
         </table>
     }
     else
     {
-    <div class="is-empty">
-        <h3>No Users Available..!</h3>
-    </div>
+        <div class="is-empty">
+            <h3>No Posts Available..! 😪😪</h3>
+            @Html.ActionLink("Create New Post", "CreatePost", null, new { @class = "btn btn-primary" })
+
+        </div>
     }
 </section>
+<!-- JQuery to handle delete post-->
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            //* Handle delete post
+            $("#posts").on("click", ".js-delete",
+                function() {
+                    // Get reference for the button
+                    var button = $(this);
+
+                    bootbox.confirm({
+                        message: "Are you sure you want to delete this post ? 🙄",
+                        buttons: {
+                            cancel: {
+                                label: 'Cancel',
+                                className: 'btn-danger'
+                            },
+                            confirm: {
+                                label: 'Confirm',
+                                className: 'btn-success'
+                            }
+                        },
+                        callback: function(result) {
+
+                            if (result) {
+                                console.log("Deleting Post...✌");
+                                // Send the ajax request
+                                $.ajax({
+                                    url: '@Url.Action("DeletePost", "Dashboard")',
+                                    dataType: "json",
+                                    type: "POST",
+                                    data: {
+                                        id: button.attr("data-post-id")
+                                    }, // here you can pass arguments to your request if you need
+                                    success: function(data) {
+                                        if (data.success) {
+
+                                            var dialog = bootbox.dialog({
+                                                title: 'Deleting Post 🐱‍🏍',
+                                                message: '<p><i class="fa fa-spin fa-spinner"></i> Processing 👀...</p>'
+                                            });
+            
+                                            dialog.init(function(){
+                                                setTimeout(function () {
+                                                    button.parents("tr").remove();
+                                                    dialog.find('.bootbox-body').html(data.message + " 🦾");
+                                                    dialog.closeButton = true;
+                                                    dialog.backdrop = true;
+                                                }, 1000);
+                                            });
+                                        } else {
+                                            bootbox.alert('Cannot delete this post right now 😭😭!');
+                                        }
+                                    },
+                                    error: function(xhr) {
+                                        console.log(xhr);
+                                        bootbox.alert('Cannot delete this post right now 😭😭!');
+                                    }
+                                });
+                            }
+                        }
+                    });
+                });
+
+            $("#posts").on('click', '.js-refused', function() {
+                // Get reference for the button
+                var link = $(this);
+                var message = link.attr("data-post-refuse-message");
+
+                console.log(message);
+
+                bootbox.alert({
+                    title: "Rejection Message for the Trip Post 🙂",
+                    backdrop: true,
+                    message: "This trip post refused because it is considered as " + message + " 😐",
+                    buttons: {
+                        ok: {
+                            label: 'Ok',
+                            className: 'btn-success'
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}
