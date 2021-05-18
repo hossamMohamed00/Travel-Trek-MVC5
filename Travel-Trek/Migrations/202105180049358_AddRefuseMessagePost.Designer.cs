@@ -7,13 +7,13 @@ namespace Travel_Trek.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class updatePeopleFields : IMigrationMetadata
+    public sealed partial class AddRefuseMessagePost : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(updatePeopleFields));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddRefuseMessagePost));
         
         string IMigrationMetadata.Id
         {
-            get { return "202105171743165_updatePeopleFields"; }
+            get { return "202105180049358_AddRefuseMessagePost"; }
         }
         
         string IMigrationMetadata.Source
