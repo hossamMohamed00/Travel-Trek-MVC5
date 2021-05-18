@@ -148,6 +148,10 @@
     <Compile Include="Migrations\202105171956583_EditPersonTable.designer.cs">
       <DependentUpon>202105171956583_EditPersonTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105180049358_AddRefuseMessagePost.cs" />
+    <Compile Include="Migrations\202105180049358_AddRefuseMessagePost.designer.cs">
+      <DependentUpon>202105180049358_AddRefuseMessagePost.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Post.cs" />
@@ -383,6 +387,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105171956583_EditPersonTable.resx">
       <DependentUpon>202105171956583_EditPersonTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105180049358_AddRefuseMessagePost.resx">
+      <DependentUpon>202105180049358_AddRefuseMessagePost.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

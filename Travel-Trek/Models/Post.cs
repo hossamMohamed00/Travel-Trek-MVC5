@@ -43,6 +43,10 @@ namespace Travel_Trek.Models
         [Range(0, Int32.MaxValue)]
         public int Likes { get; set; }
 
+
+        [DataType(DataType.Text)]
+        public string RefuseMessage { get; set; }
+
         // Constructor
         public Post()
         {

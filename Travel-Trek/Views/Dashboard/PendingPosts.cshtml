@@ -1,4 +1,4 @@
-@model IEnumerable<Travel_Trek.Models.Post>
+﻿@model IEnumerable<Travel_Trek.Models.Post>
 
 @{
     ViewBag.Title = "Pending Trip Posts";
@@ -13,9 +13,9 @@
     @if (Model.Any())
     {
         <p class="Header_subtitle">
-            Please Manage these Requests...
+            Some posts need an action from you.. 🧐🤓
         </p>
-        <table class="table table-striped table-hover table-bordered">
+        <table id="posts" class="table table-striped table-hover table-bordered">
             <thead class="thead-dark">
                 <tr>
                     <th>
@@ -62,17 +62,10 @@
                         </td>
 
                         <td>
-                            @Html.ActionLink("Approve", "ApprovePost", new { id = item.Id }, new
-                       {
-                           @class = "btn btn-outline-success",
-                                id = item.Id
-                       })
+                            <button data-post-id="@item.Id" class="btn btn-outline-success js-approve">Approve</button>
 
-                            @Html.ActionLink("Refuse", "RefusePost", new { id = item.Id }, new
-                            {
-                                @class = "btn btn-outline-danger",
-                                id = item.Id
-                            })
+
+                            <button data-post-id="@item.Id" class="btn btn-outline-danger js-refuse">Refuse</button>
                         </td>
                     </tr>
 
@@ -80,12 +73,168 @@
             }
 
         </table>
-    } else {
+    }
+    else
+    {
         <div class="is-empty">
-            <h3 >No Pending Posts..!</h3>
+            <h3>No Pending Posts..! 🤗👀</h3>
             @Html.ActionLink("Go To Trip Posts", "AllPosts", null, new { @class = "btn btn-primary" })
 
         </div>
-        
+
     }
 </section>
+
+<!-- JQuery to handle delete user-->
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            //* Handle approve button
+            $("#posts").on("click", ".js-approve",
+                function() {
+                    // Get reference for the button
+                    var button = $(this);
+
+                    bootbox.confirm({
+                        message: "Are you sure you want to approve this post ? No undo for this. 🙄",
+                        buttons: {
+                            cancel: {
+                                label: 'Cancel',
+                                className: 'btn-danger'
+                            },
+                            confirm: {
+                                label: 'Confirm',
+                                className: 'btn-success'
+                            }
+                        },
+                        callback: function(result) {
+
+                            if (result) {
+                                // Send the ajax request
+                                $.ajax({
+                                    url: '@Url.Action("ApprovePost", "Dashboard")',
+                                    dataType: "json",
+                                    type: "POST",
+                                    data: {
+                                        id: button.attr("data-post-id")
+                                    },
+                                    success: function(data) {
+                                        if (data.success) {
+
+                                            var dialog = bootbox.dialog({
+                                                title: 'Approving Trip Post 🐱‍🏍',
+                                                message: '<p><i class="fa fa-spin fa-spinner"></i> Processing 👀...</p>'
+                                            });
+
+                                            dialog.init(function () {
+                                                setTimeout(function () {
+                                                    button.parents("tr").remove();
+                                                    dialog.find('.bootbox-body').html(data.message + " 🦾");
+                                                    dialog.closeButton = true;
+                                                    dialog.backdrop = true;
+                                                }, 1000);
+                                            });
+
+                                        } else {
+                                            bootbox.alert('Cannot approve this post right now 😭😭!');
+                                        }
+                                    },
+                                    error: function(xhr) {
+                                        console.log(xhr);
+                                        bootbox.alert('Cannot approve this post right now 😭😭!');
+                                    }
+                                });
+                            }
+                        }
+                    });
+                });
+
+            //* Handle refuse button
+            $("#posts").on("click", ".js-refuse",
+                function() {
+                    // Get reference for the button
+                    var button = $(this);
+
+                    bootbox.prompt({
+                        title: "Please select the reason for refusing this trip post. 🙄",
+                        centerVertical: true,
+                        buttons: {
+                            cancel: {
+                                label: 'Cancel',
+                                className: 'btn-danger'
+                            },
+                            confirm: {
+                                label: 'Confirm',
+                                className: 'btn-success'
+                            }
+                        },
+                        inputType: 'select',
+                        inputOptions: [
+                            {
+                                text: 'Violate our rules.',
+                                value: 'Violate our rules.',
+                            },
+                            {
+                                text: 'False Information',
+                                value: 'False Information',
+                            },
+                            {
+                                text: 'Hate Speech',
+                                value: 'Hate Speech',
+                            },
+                            {
+                                text: 'Spam',
+                                value: 'Spam Post'
+                            },
+                            {
+                                text: 'Others',
+                                value: 'No reason specified',
+                            }
+                        ],
+                        callback: function(result) {
+
+                            if (result != null) {
+                                var refuseMessage = result;
+                                // Send the ajax request
+                                $.ajax({
+                                    url: '@Url.Action("RefusePost", "Dashboard")',
+                                    dataType: "json",
+                                    type: "POST",
+                                    data: {
+                                        id: button.attr("data-post-id"),
+                                        refuseMessage: refuseMessage
+                                    },
+                                    success: function(data) {
+                                        if (data.success) {
+
+                                            var dialog = bootbox.dialog({
+                                                title: 'Refusing Trip Post 🐱‍🏍',
+                                                message: '<p><i class="fa fa-spin fa-spinner"></i> Processing 👀...</p>'
+                                            });
+
+                                            dialog.init(function () {
+                                                setTimeout(function () {
+                                                    button.parents("tr").remove();
+                                                    dialog.find('.bootbox-body').html(data.message + " 🦾");
+                                                    dialog.closeButton = true;
+                                                    dialog.backdrop = true;
+                                                }, 1000);
+                                            });
+
+                                        } else {
+                                            bootbox.alert('Cannot refuse this post right now 😭😭!');
+                                        }
+                                    },
+                                    error: function(xhr) {
+                                        console.log(xhr);
+                                        bootbox.alert('Cannot refuse this post right now 😭😭!');
+                                    }
+                                });
+                            }
+                        }
+                    });
+                });
+        });
+    </script>
+}

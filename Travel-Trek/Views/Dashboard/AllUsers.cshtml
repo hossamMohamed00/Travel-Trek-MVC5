@@ -7,13 +7,13 @@
 
 
 <section>
-    <h2>All Users</h2>
+    <h2>Users</h2>
     <hr />
 
     @if (Model.Any())
     {
         <p class="Header_subtitle">
-            The Following list contains all users (Agencies and Traveller) on the system.
+            The Following list contains all users (Agencies and Traveller) on the system. 😉🧐 
         </p>
 
         <div style="margin-bottom: 10px">
@@ -68,13 +68,6 @@
                     <td>
                             
                         <button data-user-id="@item.Id" class="btn btn-outline-danger js-delete">Delete</button>
-
-                        <!--@Html.ActionLink("Delete", "Delete", new {id = item.Id}, new
-                            {
-                                @class = "",
-                                id = item.Id
-                            })--> 
-                    </td>
                 </tr>
                 </tbody>
             }
@@ -83,9 +76,10 @@
     else
     {
         <div class="is-empty">
-            <h3>No Users Available..!</h3>
-        </div>
+            <h3>No Users Available..! 😪😪</h3>
+            @Html.ActionLink("Create New User", "CreateUser", null, new { @class = "btn btn-primary" })
 
+        </div>
     }
 </section>
     
@@ -95,10 +89,6 @@
 {
     <script>
         $(document).ready(function () {
-            //* Usage of jquery data tables
-            $("#users").DataTable();
-
-
             $("#users").on("click", ".js-delete",
                 function() {
                     // Get reference for the button
@@ -131,10 +121,22 @@
                                     success: function(data) {
                                         if (data.success) {
 
-                                            button.parents("tr").remove();
+                                            var dialog = bootbox.dialog({
+                                                title: 'Deleting User 🐱‍🏍',
+                                                message: '<p><i class="fa fa-spin fa-spinner"></i> Processing 👀...</p>'
+                                            });
+
+                                            dialog.init(function () {
+                                                setTimeout(function () {
+                                                    button.parents("tr").remove();
+                                                    dialog.find('.bootbox-body').html(data.message + " 🦾");
+                                                    dialog.closeButton = true;
+                                                    dialog.backdrop = true;
+                                                }, 1000);
+                                            });
 
                                         } else {
-                                            alert('Cannot Delete this user right now 😭😭!');
+                                            bootbox.alert('Cannot delete this user right now 😭😭!');
                                         }
                                     },
                                     error: function(xhr) {
@@ -142,9 +144,6 @@
                                         bootbox.alert('Cannot delete this user right now 😭😭!');
                                     }
                                 });
-                            } else {
-                                // User click cancel
-                                console.log("You decided not to delete the user 👍😃");
                             }
                         }
                     });

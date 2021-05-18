@@ -62,7 +62,7 @@ namespace Travel_Trek.Controllers
 
         [HttpPost]
         [Route("Dashboard/Delete")]
-        public ActionResult Delete(int id)
+        public JsonResult Delete(int id)
         {
             var user = Db.Users.Single(c => c.Id == id);
             Db.Users.Remove(user);
@@ -117,7 +117,7 @@ namespace Travel_Trek.Controllers
             return View(allPosts);
         }
 
-        public ActionResult DeletePost(int id)
+        public JsonResult DeletePost(int id)
         {
             //* Delete Post
             var post = Db.Posts.Single(p => p.Id == id);
@@ -125,11 +125,11 @@ namespace Travel_Trek.Controllers
             Db.Posts.Remove(post);
             Db.SaveChanges();
 
-            return RedirectToAction("AllPosts");
-
+            return Json(new { success = true, message = "Post deleted successfully!" }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ApprovePost(int id)
+        [HttpPost]
+        public JsonResult ApprovePost(int id)
         {
             var post = Db.Posts.Single(p => p.Id == id);
             post.Status = Post.APPROVED;
@@ -142,19 +142,21 @@ namespace Travel_Trek.Controllers
                 Console.WriteLine(e);
                 throw;
             }
-            return RedirectToAction("PendingPosts");
 
+            return Json(new { success = true, message = "The Trip Post Now On the Wall!" }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult RefusePost(int id)
+        [HttpPost]
+        public JsonResult RefusePost(int id, string refuseMessage)
         {
             var post = Db.Posts.Single(p => p.Id == id);
             post.Status = Post.REFUSED;
+            post.RefuseMessage = refuseMessage;
             Db.SaveChanges();
 
-            return RedirectToAction("PendingPosts");
-
+            return Json(new { success = true, message = "Refuse the trip post done successfully!" }, JsonRequestBehavior.AllowGet);
         }
+
 
         /* Helper Methods */
 
