@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Profile";
     var layout = Model.Layout;
-    Layout = "~/Views/Shared/"+ layout;
+    Layout = "~/Views/Shared/" + layout;
 
 }
 
@@ -17,64 +17,70 @@
             <p>You can edit your data, then click update.</p>
         </div>
 
-        @Html.ValidationSummary()
+        @Html.ValidationSummary(true, "Please fix the the following errors!", new { @class = "text-danger"})
+        <div class="row">
+            <div class="form-group col">
+                @Html.LabelFor(model => model.User.FirstName)
+                <div>
+                    @Html.EditorFor(model => model.User.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.User.FirstName, null, new { @class = "text-danger" })
+                </div>
+            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.User.FirstName, htmlAttributes: new { @class = "col-form-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.User.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.User.FirstName, null, new { @class = "text-danger" })
+            <div class="form-group col">
+                @Html.LabelFor(model => model.User.LastName)
+                <div>
+                    @Html.EditorFor(model => model.User.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.User.LastName, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.User.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.User.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.User.LastName, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="form-group col">
+                @Html.LabelFor(model => model.User.Email)
+                <div>
+                    @Html.EditorFor(model => model.User.Email, new { htmlAttributes = new { @class = "form-control", id = "emailText" } })
+                    @Html.ValidationMessageFor(model => model.User.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col">
+                @Html.LabelFor(model => model.User.Password)
+                <div>
+                    @Html.EditorFor(model => model.User.Password, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.User.Password, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.User.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.User.Email, new { htmlAttributes = new { @class = "form-control", id = "emailText" } })
-                @Html.ValidationMessageFor(model => model.User.Email, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="form-group col">
+                @Html.LabelFor(model => model.User.PhoneNumber)
+                <div>
+                    @Html.EditorFor(model => model.User.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.User.PhoneNumber, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.User.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.User.Password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.User.Password, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.User.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.User.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.User.PhoneNumber, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.User.Photo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.User.Photo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.User.Photo, "", new { @class = "text-danger" })
+            <div class="form-group col">
+                @Html.LabelFor(model => model.User.Photo)
+                <br />
+                <div class="custom-file " style="width:auto;">
+                    <input type="file" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
             </div>
         </div>
 
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.User.Id)
-        
-        <div class="form-group">
-            <div class="col-md-offset-3 col-md-10">
-                <button type="submit" class="btn btn-primary ">Update</button>
+        <div class="row" style="display: flex;justify-content:center;margin:0;">
+            <div class="form-group">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary ">Update</button>
+                </div>
             </div>
         </div>
+
 
     </div>
 }
@@ -83,6 +89,13 @@
 <script type="text/javascript">
     document.getElementById("emailText").disabled = true;
     console.log(document.getElementById("emailText"));
+
+    // Add the following code if you want the name of the file appear on select
+    $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+
 </script>
 
 @section scripts
