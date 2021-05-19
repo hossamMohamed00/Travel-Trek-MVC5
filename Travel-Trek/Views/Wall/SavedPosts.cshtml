@@ -1,17 +1,17 @@
-﻿@model IEnumerable<Travel_Trek.Models.Post>
+﻿@model Travel_Trek.ViewModels.WallViewModel
+
 @{
-    ViewBag.Title = "SavedPosts";
+    ViewBag.Title = "Saved Posts";
     Layout = "~/Views/Shared/WallLayout.cshtml";
 }
-
 
 <section>
     <h2>Saved Posts</h2>
 
-    @if (Model.Any())
+    @if (Model.Posts.Any())
     {
         <div class="row">
-            @foreach (var post in Model)
+            @foreach (var post in Model.Posts)
             {
                 <div class="col">
                     <h4>@post.TripTitle</h4>

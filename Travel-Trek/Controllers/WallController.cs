@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Travel_Trek.Db_Context;
 using Travel_Trek.Models;
+using Travel_Trek.ViewModels;
 
 namespace Travel_Trek.Controllers
 {
@@ -26,10 +27,14 @@ namespace Travel_Trek.Controllers
         [Authorize(Roles = "Traveler")]
         public ActionResult Index()
         {
-            var posts = GetAllPosts();
+            var posts = Db.Posts.Include("Agency").Where(p => p.Status.Equals(Post.APPROVED)).ToList();
 
-            return View(posts);
+            var viewModel = new WallViewModel
+            {
+                Posts =  posts
+            };
 
+            return View(viewModel);
         }
 
         // Get: Wall/posts/saved
@@ -37,21 +42,14 @@ namespace Travel_Trek.Controllers
         [Authorize(Roles = "Traveler")]
         public ActionResult SavedPosts()
         {
-            var posts = GetAllPosts();
+           var posts = Db.Posts.Include("Agency").Where(p => p.Status.Equals(Post.APPROVED)).ToList();
 
-            return View(posts);
+            var viewModel = new WallViewModel
+            {
+                Posts = posts
+            };
+
+            return View(viewModel);
         }
-
-        /* Helper methods */
-
-        // Return all users (agencies and travelers)
-        public IEnumerable<Post> GetAllPosts()
-        {
-            //* Filter the posts to get the approved only
-            var posts = Db.Posts.Include("Agency").Where(p => p.Status.Equals(Post.APPROVED));
-            return posts;
-        }
-
-
     }
 }
