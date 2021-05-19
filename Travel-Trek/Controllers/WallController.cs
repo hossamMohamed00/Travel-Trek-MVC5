@@ -23,6 +23,7 @@ namespace Travel_Trek.Controllers
         }
 
         // GET: Wall
+        [Authorize(Roles = "Traveler")]
         public ActionResult Index()
         {
             var posts = GetAllPosts();
@@ -33,13 +34,13 @@ namespace Travel_Trek.Controllers
 
         // Get: Wall/posts/saved
         [Route("Wall/posts/saved")]
+        [Authorize(Roles = "Traveler")]
         public ActionResult SavedPosts()
         {
             var posts = GetAllPosts();
 
             return View(posts);
         }
-
 
         /* Helper methods */
 
@@ -51,6 +52,6 @@ namespace Travel_Trek.Controllers
             return posts;
         }
 
-       
+
     }
 }

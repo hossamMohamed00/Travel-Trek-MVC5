@@ -4,7 +4,7 @@ namespace Travel_Trek.Models
     public class Person
     {
         [Key]
-        public byte Id { get; set; }
+        public int Id { get; set; }
 
         [MaxLength(255)]
         [Display(Name = "First Name")]
@@ -33,5 +33,11 @@ namespace Travel_Trek.Models
         [Display(Name = "User Role")]
         [Required]
         public byte UserRoleId { get; set; }
+
+        // Constructor
+        public Person()
+        {
+            UserRoleId = (byte)UserRole.TravelerId;
+        }
     }
 }

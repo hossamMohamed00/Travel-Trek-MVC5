@@ -23,6 +23,7 @@ namespace Travel_Trek.Controllers
         }
 
         // GET: Agency
+        [Authorize(Roles = "Agency")]
         public ActionResult Index()
         {
             return View();
@@ -30,6 +31,7 @@ namespace Travel_Trek.Controllers
 
         // Get: Agency/Profile
         [Route("Agency/Profile")]
+        [Authorize(Roles = "Agency")]
         public ActionResult Profile()
         {
             var viewModel = GetUserFormViewModel();
@@ -39,6 +41,7 @@ namespace Travel_Trek.Controllers
         }
 
         [Route("Agency/Profile/Edit")]
+        [Authorize(Roles = "Agency")]
         public ActionResult Edit()
         {
             var viewModel = GetUserFormViewModel();
@@ -50,6 +53,7 @@ namespace Travel_Trek.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Agency")]
         public ActionResult Save(UserFormViewModel viewModel)
         {
             var person = viewModel.User;
@@ -88,6 +92,7 @@ namespace Travel_Trek.Controllers
 
 
         [Route("Agency/Posts/Create")]
+        [Authorize(Roles = "Agency")]
         public ActionResult CreatePost()
         {
             return View();

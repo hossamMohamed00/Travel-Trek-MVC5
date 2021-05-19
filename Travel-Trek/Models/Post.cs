@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Travel_Trek.Models
 {
     public class Post
@@ -8,6 +10,8 @@ namespace Travel_Trek.Models
         public int Id { get; set; }
 
         [MaxLength(255)]
+
+        [ForeignKey("Id")]
         public Person Agency { get; set; }
 
         [Required]
