@@ -1,9 +1,9 @@
-﻿<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+﻿<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top Hh">
     @Html.ActionLink("Travel Trek", "Index", "Wall", new { area = "" }, new { @class = "navbar-brand" })
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-       
+
 
     <div class="collapse navbar-collapse" id="navbarNav">
         <form class="form-inline my-2 my-lg-0">
@@ -12,15 +12,14 @@
         </form>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                @Html.ActionLink("SavedPost","SavedPosts","Wall",null,new {@class="nav-link"})
+                @Html.ActionLink("SavedPost", "SavedPosts", "Wall", null, new { @class = "nav-link" })
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link" id="js-register">Register</a>
+                <a href="#" class="nav-link" id="js-register" role="button" onclick="showRegister()">Register</a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link" id="js-login">Login</a>
+                <a class=" nav-link " href="#" role="button" onclick="showLogin()">Login</a>
             </li>
         </ul>
-
     </div>
 </nav>
