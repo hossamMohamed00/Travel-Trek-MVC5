@@ -116,8 +116,8 @@ namespace Travel_Trek.Controllers
 
                 post.TripImage = path;
                 post.Status = "Pending";
-                db.Posts.Add(post);
-                db.SaveChanges();
+                Db.Posts.Add(post);
+                Db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(post);
