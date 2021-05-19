@@ -41,7 +41,17 @@ namespace Travel_Trek.Controllers
 
             return View(users);
         }
+        [Route("Dashboard/users/Create")]
+        public ActionResult CreateUser()
+        {
+            var userRoles = Db.UserRoles.ToList();
+            var viewModel = new AddUserViewModel
+            {
+                UserRoles = userRoles
+            };
+            return View(viewModel);
 
+        }
         // Get: User/Profile
         [Route("Dashboard/Admin/Profile")]
         public ActionResult Profile()
