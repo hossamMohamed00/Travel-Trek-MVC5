@@ -30,6 +30,7 @@ namespace Travel_Trek.Models
         [Display(Name = "Role")]
         public UserRole UserRole { get; set; }
 
+        [Display(Name = "User Role")]
         [Required]
         public byte UserRoleId { get; set; }
     }

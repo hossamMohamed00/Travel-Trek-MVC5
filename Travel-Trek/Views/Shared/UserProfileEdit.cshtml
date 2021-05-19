@@ -19,7 +19,7 @@
 
         @Html.ValidationSummary(true, "Please fix the the following errors!", new { @class = "text-danger"})
         <div class="row">
-            <div class="form-group col">
+            <div class="form-group col-lg-6 col-md-6  col-sm-12">
                 @Html.LabelFor(model => model.User.FirstName)
                 <div>
                     @Html.EditorFor(model => model.User.FirstName, new { htmlAttributes = new { @class = "form-control" } })
@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            <div class="form-group col">
+            <div class="form-group col-lg-6 col-md-6  col-sm-12">
                 @Html.LabelFor(model => model.User.LastName)
                 <div>
                     @Html.EditorFor(model => model.User.LastName, new { htmlAttributes = new { @class = "form-control" } })
@@ -37,14 +37,14 @@
         </div>
 
         <div class="row">
-            <div class="form-group col">
+            <div class="form-group col-lg-6 col-md-6  col-sm-12">
                 @Html.LabelFor(model => model.User.Email)
                 <div>
                     @Html.EditorFor(model => model.User.Email, new { htmlAttributes = new { @class = "form-control", id = "emailText" } })
                     @Html.ValidationMessageFor(model => model.User.Email, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="form-group col">
+            <div class="form-group col-lg-6 col-md-6  col-sm-12">
                 @Html.LabelFor(model => model.User.Password)
                 <div>
                     @Html.EditorFor(model => model.User.Password, new { htmlAttributes = new { @class = "form-control" } })
@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group col">
+            <div class="form-group col-lg-6 col-md-6  col-sm-12">
                 @Html.LabelFor(model => model.User.PhoneNumber)
                 <div>
                     @Html.EditorFor(model => model.User.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
@@ -61,7 +61,7 @@
                 </div>
             </div>
 
-            <div class="form-group col">
+            <div class="form-group col-lg-6 col-md-6  col-sm-12">
                 @Html.LabelFor(model => model.User.Photo)
                 <br />
                 <div class="custom-file " style="width:auto;">
@@ -76,7 +76,7 @@
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.User.Id)
         <div class="row" >
-            <div class="form-group col">
+            <div class="form-group col-lg-6 col-md-6 col-sm-12">
                 <div>
                     <button type="submit" class="btn btn-primary ">Update Info</button>
                 </div>
