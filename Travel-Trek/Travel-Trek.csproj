@@ -373,6 +373,7 @@
     <Content Include="Views\Shared\Partials\_FactorySideBar.cshtml" />
     <Content Include="Views\Shared\Partials\_FactoryNavBar.cshtml" />
     <Content Include="Views\Dashboard\CreateUser.cshtml" />
+    <Content Include="Views\Agency\CreatePost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

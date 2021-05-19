@@ -86,6 +86,13 @@ namespace Travel_Trek.Controllers
             return RedirectToAction("Profile", "Agency");
         }
 
+
+        [Route("Agency/Posts/Create")]
+        public ActionResult CreatePost()
+        {
+            return View();
+        }
+
         /* Helper Methods */
         public UserFormViewModel GetUserFormViewModel()
         {
