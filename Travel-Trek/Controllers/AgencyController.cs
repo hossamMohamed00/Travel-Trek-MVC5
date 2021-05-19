@@ -3,6 +3,10 @@ using System.Linq;
 using System.Web.Mvc;
 using Travel_Trek.Db_Context;
 using Travel_Trek.ViewModels;
+using Travel_Trek.Models;
+using System.Net;
+using System.Web;
+using System.IO;
 
 namespace Travel_Trek.Controllers
 {
@@ -91,6 +95,27 @@ namespace Travel_Trek.Controllers
         public ActionResult CreatePost()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreatePost(Post post, HttpPostedFileBase TripImage)
+        {
+            if (ModelState.IsValid)
+            {
+                string path = "";
+                if (TripImage.FileName.Length > 0)
+                {
+                    path = "~/images/" + Path.GetFileName(TripImage.FileName);
+                    TripImage.SaveAs(Server.MapPath(path));
+                }
+
+                post.TripImage = path;
+                post.Status = "Pending";
+                db.Posts.Add(post);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(post);
         }
 
         /* Helper Methods */
