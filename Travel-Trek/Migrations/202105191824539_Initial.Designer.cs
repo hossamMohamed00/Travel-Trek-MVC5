@@ -13,7 +13,7 @@ namespace Travel_Trek.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202105170048500_Initial"; }
+            get { return "202105191824539_Initial"; }
         }
         
         string IMigrationMetadata.Source

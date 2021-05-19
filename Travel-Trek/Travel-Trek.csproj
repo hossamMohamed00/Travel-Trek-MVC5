@@ -128,6 +128,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AgencyController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\WallController.cs" />
@@ -135,31 +136,21 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105170048500_Initial.cs" />
-    <Compile Include="Migrations\202105170048500_Initial.Designer.cs">
-      <DependentUpon>202105170048500_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\202105191824539_Initial.cs" />
+    <Compile Include="Migrations\202105191824539_Initial.Designer.cs">
+      <DependentUpon>202105191824539_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105170051022_populateTables.cs" />
-    <Compile Include="Migrations\202105170051022_populateTables.Designer.cs">
-      <DependentUpon>202105170051022_populateTables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105171956583_EditPersonTable.cs" />
-    <Compile Include="Migrations\202105171956583_EditPersonTable.designer.cs">
-      <DependentUpon>202105171956583_EditPersonTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105180049358_AddRefuseMessagePost.cs" />
-    <Compile Include="Migrations\202105180049358_AddRefuseMessagePost.designer.cs">
-      <DependentUpon>202105180049358_AddRefuseMessagePost.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105182311203_addUserRoleTable.cs" />
-    <Compile Include="Migrations\202105182311203_addUserRoleTable.Designer.cs">
-      <DependentUpon>202105182311203_addUserRoleTable.cs</DependentUpon>
+    <Compile Include="Migrations\202105191831110_populateTables.cs" />
+    <Compile Include="Migrations\202105191831110_populateTables.Designer.cs">
+      <DependentUpon>202105191831110_populateTables.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Models\UserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Role.cs" />
     <Compile Include="ViewModels\AddUserViewModel.cs" />
     <Compile Include="ViewModels\UserFormViewModel.cs" />
     <Compile Include="ViewModels\WallViewModel.cs" />
@@ -376,12 +367,10 @@
     <Content Include="Views\Dashboard\CreateUser.cshtml" />
     <Content Include="Views\Agency\CreatePost.cshtml" />
     <Content Include="Views\Wall\SavedPosts.cshtml" />
-    <Content Include="Views\Shared\Partials\_LoginPartial.cshtml" />
-    <Content Include="Views\Shared\Partials\_RegisterPartial.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -395,20 +384,11 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202105170048500_Initial.resx">
-      <DependentUpon>202105170048500_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202105191824539_Initial.resx">
+      <DependentUpon>202105191824539_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105170051022_populateTables.resx">
-      <DependentUpon>202105170051022_populateTables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105171956583_EditPersonTable.resx">
-      <DependentUpon>202105171956583_EditPersonTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105180049358_AddRefuseMessagePost.resx">
-      <DependentUpon>202105180049358_AddRefuseMessagePost.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105182311203_addUserRoleTable.resx">
-      <DependentUpon>202105182311203_addUserRoleTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202105191831110_populateTables.resx">
+      <DependentUpon>202105191831110_populateTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

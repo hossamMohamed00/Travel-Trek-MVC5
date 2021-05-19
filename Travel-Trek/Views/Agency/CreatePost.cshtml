@@ -7,7 +7,7 @@
 
 <h2>CreatePost</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("CreatePost", "Agency", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -62,7 +62,7 @@
                 @Html.LabelFor(model => model.TripImage)
                 <br/>
                 <div class="custom-file " style="width:auto;">
-                    <input type="file" class="custom-file-input" id="customFile">
+                    <input type="file" class="custom-file-input" id="customFile" name="TripImage">
                     <label class="custom-file-label" for="customFile">Choose file</label>
                     @Html.ValidationMessageFor(model => model.TripImage, "", new { @class = "text-danger" })
 

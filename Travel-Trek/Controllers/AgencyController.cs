@@ -3,6 +3,10 @@ using System.Linq;
 using System.Web.Mvc;
 using Travel_Trek.Db_Context;
 using Travel_Trek.ViewModels;
+using Travel_Trek.Models;
+using System.Net;
+using System.Web;
+using System.IO;
 
 namespace Travel_Trek.Controllers
 {
@@ -23,6 +27,7 @@ namespace Travel_Trek.Controllers
         }
 
         // GET: Agency
+        [Authorize(Roles = "Agency")]
         public ActionResult Index()
         {
             return View();
@@ -30,6 +35,7 @@ namespace Travel_Trek.Controllers
 
         // Get: Agency/Profile
         [Route("Agency/Profile")]
+        [Authorize(Roles = "Agency")]
         public ActionResult Profile()
         {
             var viewModel = GetUserFormViewModel();
@@ -39,6 +45,7 @@ namespace Travel_Trek.Controllers
         }
 
         [Route("Agency/Profile/Edit")]
+        [Authorize(Roles = "Agency")]
         public ActionResult Edit()
         {
             var viewModel = GetUserFormViewModel();
@@ -50,6 +57,7 @@ namespace Travel_Trek.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Agency")]
         public ActionResult Save(UserFormViewModel viewModel)
         {
             var person = viewModel.User;
@@ -88,9 +96,31 @@ namespace Travel_Trek.Controllers
 
 
         [Route("Agency/Posts/Create")]
+        [Authorize(Roles = "Agency")]
         public ActionResult CreatePost()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreatePost(Post post, HttpPostedFileBase TripImage)
+        {
+            if (ModelState.IsValid)
+            {
+                string path = "";
+                if (TripImage.FileName.Length > 0)
+                {
+                    path = "~/images/" + Path.GetFileName(TripImage.FileName);
+                    TripImage.SaveAs(Server.MapPath(path));
+                }
+
+                post.TripImage = path;
+                post.Status = "Pending";
+                Db.Posts.Add(post);
+                Db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(post);
         }
 
         /* Helper Methods */

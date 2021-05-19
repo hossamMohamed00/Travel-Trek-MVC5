@@ -1,4 +1,4 @@
-﻿<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top Hh">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top Hh">
     @Html.ActionLink("Travel Trek", "Index", "Wall", new { area = "" }, new { @class = "navbar-brand" })
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -6,20 +6,43 @@
 
 
     <div class="collapse navbar-collapse" id="navbarNav">
-        <form class="form-inline my-2 my-lg-0">
-            <label for=" filter">Filter</label>
-            <input class="form-control mr-sm-2" type="search" name="filter" placeholder="Search" aria-label="Search" id="filter">
-        </form>
+        @if (User.Identity.IsAuthenticated && !User.IsInRole(UserRole.Admin) && !User.IsInRole(UserRole.Agency))
+        {
+            <form class="form-inline my-2 my-lg-0">
+                <label for="filter">Filter</label>
+                <input class="form-control mr-sm-2" type="search" name="filter" placeholder="Search" aria-label="Search" id="filter">
+            </form>
+        }
+        
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                @Html.ActionLink("SavedPost", "SavedPosts", "Wall", null, new { @class = "nav-link" })
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link" id="js-register" role="button" onclick="showRegister()">Register</a>
-            </li>
-            <li class="nav-item">
-                <a class=" nav-link " href="#" role="button" onclick="showLogin()">Login</a>
-            </li>
+            <li class="nav-link"> Welcome @User.Identity.Name</li>
+
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <li class="nav-item">
+                    <a href="@Url.Action("Register", "Account")" onclick="showRegister()" class="nav-link" id="js-register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("Login", "Account")" onclick="showLogin()" class="nav-link" id="js-login">Login</a>
+                </li>
+            }
+            else
+            {
+                if (User.IsInRole(UserRole.Admin) || User.IsInRole(UserRole.Agency))
+                {
+                    // Display none
+                }
+                else
+                {
+                    <li class="nav-item">
+                        @Html.ActionLink("SavedPost", "SavedPosts", "Wall", null, new {@class = "nav-link"})
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Logout", "Account")" class="nav-link" id="js-logout">Logout</a>
+                    </li>
+                }
+
+            }
         </ul>
     </div>
 </nav>
