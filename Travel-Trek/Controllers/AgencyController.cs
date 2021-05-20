@@ -1,12 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using Travel_Trek.Db_Context;
-using Travel_Trek.ViewModels;
 using Travel_Trek.Models;
-using System.Net;
-using System.Web;
-using System.IO;
+using Travel_Trek.ViewModels;
 
 namespace Travel_Trek.Controllers
 {
@@ -38,7 +37,7 @@ namespace Travel_Trek.Controllers
         [Authorize(Roles = "Agency")]
         public ActionResult Profile()
         {
-            var viewModel = GetUserFormViewModel();
+            var viewModel = GetWallViewModel();
 
 
             return View("UserProfile", viewModel);
@@ -48,7 +47,7 @@ namespace Travel_Trek.Controllers
         [Authorize(Roles = "Agency")]
         public ActionResult Edit()
         {
-            var viewModel = GetUserFormViewModel();
+            var viewModel = GetWallViewModel();
 
 
             return View("UserProfileEdit", viewModel);
@@ -58,14 +57,18 @@ namespace Travel_Trek.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Agency")]
-        public ActionResult Save(UserFormViewModel viewModel)
+        public ActionResult Save(WallViewModel viewModel)
         {
+            // Get user email
+            var email = Db.Users.FirstOrDefault(u => u.Id == viewModel.User.Id)?.Email;
+            viewModel.User.Email = email;
+
             var person = viewModel.User;
 
             if (!ModelState.IsValid)
             {
                 var agency = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 2);
-                var userFormViewModelviewModel = new UserFormViewModel
+                var userFormViewModelviewModel = new WallViewModel
                 {
                     User = agency
                 };
@@ -103,32 +106,35 @@ namespace Travel_Trek.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreatePost(Post post, HttpPostedFileBase TripImage)
+        public ActionResult PublishPost(Post post, HttpPostedFileBase TripImage)
         {
             if (ModelState.IsValid)
             {
                 string path = "";
                 if (TripImage.FileName.Length > 0)
                 {
-                    path = "~/images/" + Path.GetFileName(TripImage.FileName);
+                    path = "~/Content/images/posts" + Path.GetFileName(TripImage.FileName);
+                    path = path + post.PostDate;// Add unique value to the 
                     TripImage.SaveAs(Server.MapPath(path));
                 }
 
                 post.TripImage = path;
-                post.Status = "Pending";
+                post.AgencyId = 2; // Need update later
+
                 Db.Posts.Add(post);
                 Db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
-            return View(post);
+            return RedirectToAction("Index", "Agency");
         }
 
         /* Helper Methods */
-        public UserFormViewModel GetUserFormViewModel()
+        public WallViewModel GetWallViewModel()
         {
             var agency = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 2); // Need Edit later
 
-            var viewModel = new UserFormViewModel
+            var viewModel = new WallViewModel
             {
                 User = agency
             };

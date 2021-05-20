@@ -88,7 +88,7 @@ namespace Travel_Trek.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Profile()
         {
-            var viewModel = GetUserFormViewModel();
+            var viewModel = GetWallViewModel();
 
             return View("UserProfile", viewModel);
         }
@@ -97,7 +97,7 @@ namespace Travel_Trek.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Edit()
         {
-            var viewModel = GetUserFormViewModel();
+            var viewModel = GetWallViewModel();
 
             return View("UserProfileEdit", viewModel);
         }
@@ -106,7 +106,7 @@ namespace Travel_Trek.Controllers
         [ValidateAntiForgeryToken]
         [Route("Dashboard/admin/profile/save")]
         [Authorize(Roles = "Admin")]
-        public ActionResult Save(UserFormViewModel ViewModel)
+        public ActionResult Save(WallViewModel ViewModel)
         {
             if (ViewModel == null)
             {
@@ -117,7 +117,7 @@ namespace Travel_Trek.Controllers
             if (!ModelState.IsValid)
             {
                 var admin = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 1); // Need Edit later
-                var viewModel = new UserFormViewModel
+                var viewModel = new WallViewModel
                 {
                     User = admin
                 };
@@ -225,11 +225,11 @@ namespace Travel_Trek.Controllers
             return posts;
         }
 
-        public UserFormViewModel GetUserFormViewModel()
+        public WallViewModel GetWallViewModel()
         {
             var admin = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 1); // Need Edit later
 
-            var viewModel = new UserFormViewModel
+            var viewModel = new WallViewModel
             {
                 User = admin
             };

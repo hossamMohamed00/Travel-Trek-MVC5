@@ -5,45 +5,38 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Travel_Trek.Db_Context;
 using Travel_Trek.Models;
+using Travel_Trek.ViewModels;
 
 namespace Travel_Trek.Controllers
 {
     public class AccountController : Controller
     {
-        // GET: Account/register
-        [Route("Account/register")]
-        public ActionResult Register()
-        {
-            return View();
-        }
-
         // Post: Account/register
         [HttpPost]
         [Route("Account/register")]
         public ActionResult Register(Person user)
         {
-            using (ApplicationDbContext Db = new ApplicationDbContext())
+            if (ModelState.IsValid)
             {
-                Db.Users.Add(user);
-                Db.SaveChanges();
-                ModelState.Clear();
+                using (ApplicationDbContext Db = new ApplicationDbContext())
+                {
+                    Db.Users.Add(user);
+                    Db.SaveChanges();
+                    ModelState.Clear();
+                }
+                return View("UserProfile");
             }
-            return View();
-        }
 
-        // GET: Account/login
-        [Route("Account/login")]
-        public ActionResult Login()
-        {
-
-            return View();
+            return RedirectToAction("Index", "Wall");
         }
 
         // Post: Account/login
         [HttpPost]
         [Route("Account/login")]
-        public ActionResult Login(Login loginData)
+        public ActionResult Login(WallViewModel viewModel)
         {
+            var loginData = viewModel.Login;
+
             using (ApplicationDbContext Db = new ApplicationDbContext())
             {
                 //* Search for this user
@@ -81,7 +74,7 @@ namespace Travel_Trek.Controllers
                 }
 
             }
-            return View();
+            return View("UserProfile");
         }
 
 
@@ -90,7 +83,7 @@ namespace Travel_Trek.Controllers
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Login");
+            return RedirectToAction("Index", "Wall");
 
         }
 

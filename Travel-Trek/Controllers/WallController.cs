@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using Travel_Trek.Db_Context;
 using Travel_Trek.Models;
@@ -24,14 +23,15 @@ namespace Travel_Trek.Controllers
         }
 
         // GET: Wall
-        [Authorize(Roles = "Traveler")]
+        // [Authorize(Roles = "Traveler")]
         public ActionResult Index()
         {
             var posts = Db.Posts.Include("Agency").Where(p => p.Status.Equals(Post.APPROVED)).ToList();
 
             var viewModel = new WallViewModel
             {
-                Posts =  posts
+                Posts = posts,
+                Login = new Login()
             };
 
             return View(viewModel);
@@ -42,7 +42,7 @@ namespace Travel_Trek.Controllers
         [Authorize(Roles = "Traveler")]
         public ActionResult SavedPosts()
         {
-           var posts = Db.Posts.Include("Agency").Where(p => p.Status.Equals(Post.APPROVED)).ToList();
+            var posts = Db.Posts.Include("Agency").Where(p => p.Status.Equals(Post.APPROVED)).ToList();
 
             var viewModel = new WallViewModel
             {
@@ -50,6 +50,39 @@ namespace Travel_Trek.Controllers
             };
 
             return View(viewModel);
+        }
+
+
+        [Route("Wall/user/profile")]
+        [Authorize(Roles = "Traveler")]
+        public ActionResult Profile()
+        {
+            var viewModel = GetWallViewModel();
+
+
+            return View("UserProfile", viewModel);
+        }
+
+        [Route("Wall/user/profile/edit")]
+        [Authorize(Roles = "Traveler")]
+        public ActionResult Edit()
+        {
+            var viewModel = GetWallViewModel();
+
+            return View("UserProfileEdit", viewModel);
+        }
+
+        /* Helper Methods */
+        public WallViewModel GetWallViewModel()
+        {
+            var travler = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 3); // Need Edit later
+
+            var viewModel = new WallViewModel
+            {
+                User = travler
+            };
+
+            return viewModel;
         }
     }
 }

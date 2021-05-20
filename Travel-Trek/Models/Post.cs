@@ -20,10 +20,11 @@ namespace Travel_Trek.Models
 
         [Required]
         [MaxLength(255)]
+        [Display(Name = "Title")]
         public string TripTitle { get; set; }
 
-        [Required]
         [MaxLength(255)]
+        [Display(Name = "Details")]
         public string TripDetails { get; set; }
 
         [DataType(DataType.Date)]
@@ -31,13 +32,16 @@ namespace Travel_Trek.Models
 
         [Required]
         [DataType(DataType.Date)]
+        [Display(Name = "Date")]
         public DateTime TripDate { get; set; }
 
         [Required]
         [MaxLength(255)]
+        [Display(Name = "Destination")]
         public string TripDestination { get; set; }
 
         [Required]
+        [Display(Name = "Image")]
         public string TripImage { get; set; }
 
         [MaxLength(255)]
