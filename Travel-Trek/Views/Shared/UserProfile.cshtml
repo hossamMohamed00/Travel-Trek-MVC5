@@ -1,4 +1,4 @@
-﻿@model Travel_Trek.ViewModels.UserFormViewModel
+﻿@model Travel_Trek.ViewModels.WallViewModel
 
 @{
     ViewBag.Title = "Profile";
@@ -7,7 +7,7 @@
 }
 <section class=" profile-content">
     <figure class="figure">
-        <img src="~/Content/images/profile.png" style="margin-left:45px" class="figure-img img-fluid rounded-circle " alt="A generic square placeholder image with rounded corners in a figure.">
+        <img src="@Model.User.Photo" style="margin-left:45px" class="figure-img img-fluid rounded-circle " alt="Image">
         <figcaption class="figure-caption">
             <h4><span class="profile-content-span">Name: </span> @Model.User.FirstName @Model.User.LastName</h4>
             <h4><span class="profile-content-span">Email: </span>@Model.User.Email</h4>
@@ -15,7 +15,6 @@
         </figcaption>
     </figure>
 
-    @Html.ActionLink("Edit Information", "Edit", "Dashboard",null,  new { @class = "btn btn-secondary", style = "margin-right:35px" })
+    @Html.ActionLink("Edit Information", "Edit", @Model.Controller, null,  new { @class = "btn btn-primary", style = "margin-right:35px" })
 </section>
 
-@User.Identity.Name

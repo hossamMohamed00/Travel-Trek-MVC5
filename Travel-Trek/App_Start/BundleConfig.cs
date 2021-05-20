@@ -14,7 +14,6 @@ namespace Travel_Trek
                 "~/Scripts/respond.js"
             ));
 
-
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 

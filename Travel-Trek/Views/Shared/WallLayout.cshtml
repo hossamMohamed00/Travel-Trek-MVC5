@@ -1,5 +1,6 @@
 ﻿@model Travel_Trek.ViewModels.WallViewModel
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,7 +12,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body >
+<body>
     @Html.Partial("Partials/_wallNavBar")
     @Html.Partial("Partials/_LoginPartial")
     @Html.Partial("Partials/_RegisterPartial")
@@ -31,27 +32,32 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
     @RenderSection("scripts", required: false)
 
-<script>
-    var loginIsRun = false;
-    var registerIsRun = false;
+    <script>
+        var loginIsRun = false;
+        var registerIsRun = false;
 
-    function showLogin() {
-        if (registerIsRun) {
+        function showLogin() {
+            if (registerIsRun) {
+                registerIsRun = document.getElementById('register').classList.toggle('block');
+            }
+
+            loginIsRun = document.getElementById('login').classList.toggle('block');
+        }
+        function showRegister() {
+            if (loginIsRun) {
+                loginIsRun = document.getElementById('login').classList.toggle('block');
+            }
+
             registerIsRun = document.getElementById('register').classList.toggle('block');
         }
 
-        loginIsRun = document.getElementById('login').classList.toggle('block');
-    }
-    function showRegister() {
-        if (loginIsRun) {
-            loginIsRun=  document.getElementById('login').classList.toggle('block');
-        }
-
-        registerIsRun = document.getElementById('register').classList.toggle('block');
-    }
-
-</script>
+    </script>
 
 </body>
 </html>
 
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
