@@ -129,6 +129,18 @@ namespace Travel_Trek.Controllers
             return RedirectToAction("Index", "Agency");
         }
 
+        [Route("Agency/Posts")]
+        public ActionResult MyPosts()
+        {
+            // Get Logged in agency
+            var agency = AccountController.GetUserFromEmail(User.Identity.Name);
+
+            // Get posts for this agency
+            var posts = Db.Posts.Include("Agency").Where(p => p.AgencyId == agency.Id).ToList();
+
+            return View(posts);
+        }
+
         /* Helper Methods */
         public WallViewModel GetWallViewModel()
         {
