@@ -26,18 +26,20 @@ namespace Travel_Trek.Models
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
+        [MaxLength(255)]
         public string Photo { get; set; }
+
         [Display(Name = "Role")]
         public UserRole UserRole { get; set; }
 
         [Display(Name = "User Role")]
         [Required]
-        public byte UserRoleId { get; set; }
+        public int UserRoleId { get; set; }
 
         // Constructor
         public Person()
         {
-            UserRoleId = (byte)UserRole.TravelerId;
+            UserRoleId = UserRole.TravelerId;
         }
     }
 }

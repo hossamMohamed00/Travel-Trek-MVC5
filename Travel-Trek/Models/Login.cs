@@ -11,5 +11,16 @@ namespace Travel_Trek.Models
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        public Login()
+        {
+
+        }
+
+        public Login(string email, string password)
+        {
+            Email = email;
+            Password = password;
+        }
     }
 }

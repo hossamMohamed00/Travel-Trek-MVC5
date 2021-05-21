@@ -4,11 +4,13 @@
     Layout = "~/Views/Shared/DashboardLayout.cshtml";
 }
 
-<h2>Choose action from the following: 🤔</h2>
+<section>
+    <h2>Choose action from the following: 🤔</h2>
 
-<div class="list-group list-group-item-warning">
-    @Html.ActionLink("Profile 👨🏻", "Profile", "Dashboard", null, new { @class = "list-group-item list-group-item-action font-weight-bold" })
-    @Html.ActionLink("All Users Data 📑", "AllUsers", "Dashboard", null, new { @class = "list-group-item list-group-item-action font-weight-bold" })
-    @Html.ActionLink("All Posts Data 📜", "AllPosts", "Dashboard", null, new { @class = "list-group-item list-group-item-action font-weight-bold" })
-    @Html.ActionLink("All Posts Requests 👀", "PendingPosts", "Dashboard", null, new { @class = "list-group-item list-group-item-action font-weight-bold" })
-</div>
+    <div class="list-group list-group-item-warning">
+        @Html.ActionLink("Profile 👨🏻", "Profile", "Dashboard", null, new { @class = "list-group-item list-group-item-action font-weight-bold" })
+        @Html.ActionLink("All Users Data 📑", "AllUsers", "Dashboard", null, new { @class = "list-group-item list-group-item-action font-weight-bold" })
+        @Html.ActionLink("All Posts Data 📜", "AllPosts", "Dashboard", null, new { @class = "list-group-item list-group-item-action font-weight-bold" })
+        @Html.ActionLink("All Posts Requests 👀", "PendingPosts", "Dashboard", null, new { @class = "list-group-item list-group-item-action font-weight-bold" })
+    </div>
+</section>

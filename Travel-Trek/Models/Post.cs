@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Travel_Trek.Models
 {
@@ -10,13 +9,10 @@ namespace Travel_Trek.Models
         public int Id { get; set; }
 
         [MaxLength(255)]
-
-        [ForeignKey("Id")]
         public Person Agency { get; set; }
 
         [Required]
-        public byte AgencyId { get; set; }
-
+        public int AgencyId { get; set; }
 
         [Required]
         [MaxLength(255)]
@@ -32,7 +28,7 @@ namespace Travel_Trek.Models
 
         [Required]
         [DataType(DataType.Date)]
-        [Display(Name = "Date")]
+        [Display(Name = "Trip Date")]
         public DateTime TripDate { get; set; }
 
         [Required]
@@ -48,7 +44,7 @@ namespace Travel_Trek.Models
         [Required]
         public string Status { get; set; }
 
-        [Range(0, Int32.MaxValue)]
+        [Range(0, int.MaxValue)]
         public int Likes { get; set; }
 
 

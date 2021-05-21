@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Travel_Trek.Db_Context;
+using Travel_Trek.Helpers;
 using Travel_Trek.Models;
 using Travel_Trek.ViewModels;
 
@@ -11,22 +12,48 @@ namespace Travel_Trek.Controllers
 {
     public class AccountController : Controller
     {
+        ApplicationDbContext Db;
+
+        /* Constructor */
+        public AccountController()
+        {
+            Db = new ApplicationDbContext();
+        }
+
+        /* Override Dispose method */
+        protected override void Dispose(bool disposing)
+        {
+            Db.Dispose();
+        }
+
+        /*---------------------------*/
+
         // Post: Account/register
         [HttpPost]
         [Route("Account/register")]
-        public ActionResult Register(Person user)
+        public ActionResult Register(Person user, HttpPostedFileBase userPhoto)
         {
             if (ModelState.IsValid)
             {
+                var ImagePath = Utilities.GetPersonImagePath(userPhoto);
+
+                // Save the image on the device 
+                userPhoto.SaveAs(Server.MapPath(ImagePath));
+
+                user.Photo = ImagePath;
+
                 using (ApplicationDbContext Db = new ApplicationDbContext())
                 {
                     Db.Users.Add(user);
                     Db.SaveChanges();
                     ModelState.Clear();
                 }
-                return View("UserProfile");
-            }
 
+                //* Prepare the login data
+                var viewModel = new WallViewModel { Login = new Login(user.Email, user.Password) };
+
+                return RedirectToAction("Login", viewModel);
+            }
             return RedirectToAction("Index", "Wall");
         }
 
@@ -72,9 +99,15 @@ namespace Travel_Trek.Controllers
                         return RedirectToAction("Index", "Wall");
                     }
                 }
+                else
+                {
+                    //* Add Code Here
+                    ViewBag.LoginStatus = "Invalid email or password";
+                    return RedirectToAction("Index", "Wall");
+                }
 
             }
-            return View("UserProfile");
+            return RedirectToAction("Index", "Wall");
         }
 
 
@@ -87,5 +120,19 @@ namespace Travel_Trek.Controllers
 
         }
 
+
+        /* Helper Methods */
+        public static Person GetUserFromEmail(string email)
+        {
+            Person user;
+            using (ApplicationDbContext dbContext = new ApplicationDbContext())
+            {
+                user = dbContext.Users.Include("UserRole").FirstOrDefault(u => u.Email == email);
+
+            }
+
+            return user;
+        }
     }
+
 }
