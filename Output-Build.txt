@@ -1,0 +1,4 @@
+﻿Build started...
+1>------ Build started: Project: Travel-Trek, Configuration: Debug Any CPU ------
+1>  Travel-Trek -> D:\1.Faculty\Level Three\2\IA\Project 20\Project Code\Code\Travel-Trek-MVC5\Travel-Trek\bin\Travel-Trek.dll
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========

@@ -1,10 +1,13 @@
-﻿using Travel_Trek.Models;
+﻿using System.Collections.Generic;
+using Travel_Trek.Models;
 
 namespace Travel_Trek.ViewModels
 {
-    public class UserFormViewModel
+    public class WallViewModel
     {
+        public List<Post> Posts { get; set; }
         public Person User { get; set; }
+        public Login Login { get; set; }
 
         public string Layout
         {
@@ -16,7 +19,7 @@ namespace Travel_Trek.ViewModels
                 }
                 else if (User.UserRoleId == UserRole.AgencyId)
                 {
-                    return "WallLayout.cshtml";
+                    return "FactoryLayout.cshtml";
                 }
                 else
                 {
@@ -58,7 +61,7 @@ namespace Travel_Trek.ViewModels
                 }
                 else
                 {
-                    return "Travller";
+                    return "Wall";
                 }
             }
         }

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using Travel_Trek.Db_Context;
+using Travel_Trek.Helpers;
+using Travel_Trek.Models;
 using Travel_Trek.ViewModels;
 
 namespace Travel_Trek.Controllers
@@ -23,6 +26,7 @@ namespace Travel_Trek.Controllers
         }
 
         // GET: Agency
+        [Authorize(Roles = "Agency")]
         public ActionResult Index()
         {
             return View();
@@ -30,18 +34,19 @@ namespace Travel_Trek.Controllers
 
         // Get: Agency/Profile
         [Route("Agency/Profile")]
+        [Authorize(Roles = "Agency")]
         public ActionResult Profile()
         {
-            var viewModel = GetUserFormViewModel();
-
+            var viewModel = GetWallViewModel();
 
             return View("UserProfile", viewModel);
         }
 
         [Route("Agency/Profile/Edit")]
+        [Authorize(Roles = "Agency")]
         public ActionResult Edit()
         {
-            var viewModel = GetUserFormViewModel();
+            var viewModel = GetWallViewModel();
 
 
             return View("UserProfileEdit", viewModel);
@@ -50,14 +55,19 @@ namespace Travel_Trek.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Save(UserFormViewModel viewModel)
+        [Authorize(Roles = "Agency")]
+        public ActionResult Save(WallViewModel viewModel)
         {
+            // Get user email
+            var email = Db.Users.FirstOrDefault(u => u.Id == viewModel.User.Id)?.Email;
+            viewModel.User.Email = email;
+
             var person = viewModel.User;
 
             if (!ModelState.IsValid)
             {
                 var agency = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 2);
-                var userFormViewModelviewModel = new UserFormViewModel
+                var userFormViewModelviewModel = new WallViewModel
                 {
                     User = agency
                 };
@@ -86,12 +96,58 @@ namespace Travel_Trek.Controllers
             return RedirectToAction("Profile", "Agency");
         }
 
-        /* Helper Methods */
-        public UserFormViewModel GetUserFormViewModel()
-        {
-            var agency = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 2); // Need Edit later
 
-            var viewModel = new UserFormViewModel
+        [Route("Agency/Posts/Create")]
+        [Authorize(Roles = "Agency")]
+        public ActionResult CreatePost()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult PublishPost(Post post, HttpPostedFileBase TripImage)
+        {
+            if (ModelState.IsValid)
+            {
+                // Get the agency which wants to add this post
+                var agency = AccountController.GetUserFromEmail(User.Identity.Name);
+
+                var ImagePath = Utilities.GetPostImagePath(TripImage, post.PostDate);
+
+                // Save the image on the device 
+                TripImage.SaveAs(Server.MapPath(ImagePath));
+
+                //* Save image data
+                post.TripImage = ImagePath;
+                post.AgencyId = agency.Id; // Need update later
+
+                Db.Posts.Add(post);
+                Db.SaveChanges();
+
+                return RedirectToAction("Index", "Agency");
+            }
+            return RedirectToAction("Index", "Agency");
+        }
+
+        [Route("Agency/Posts")]
+        public ActionResult MyPosts()
+        {
+            // Get Logged in agency
+            var agency = AccountController.GetUserFromEmail(User.Identity.Name);
+
+            // Get posts for this agency
+            var posts = Db.Posts.Include("Agency").Where(p => p.AgencyId == agency.Id).ToList();
+
+            return View(posts);
+        }
+
+        /* Helper Methods */
+        public WallViewModel GetWallViewModel()
+        {
+            // Get Logged in agency
+            var agency = AccountController.GetUserFromEmail(User.Identity.Name);
+
+            var viewModel = new WallViewModel
             {
                 User = agency
             };

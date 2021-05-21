@@ -1,5 +1,7 @@
-﻿<!DOCTYPE html>
-<html>
+﻿@model Travel_Trek.ViewModels.WallViewModel
+﻿
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +13,11 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    @Html.Partial("_wallNavBar")
-    <div class="container body-content">
+    @Html.Partial("Partials/_wallNavBar")
+    @Html.Partial("Partials/_LoginPartial")
+    @Html.Partial("Partials/_RegisterPartial")
+
+    <div class="container body-content ">
         @RenderBody()
         <hr />
         <footer>
@@ -21,6 +26,17 @@
     </div>
 
     @Scripts.Render("~/bundles/lib")
+    <script src="~/Scripts/Login-Register/modals.js"></script>
+    <!-- MDB -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript" src="~/Scripts/Custom/mian.js">
+        
+    </script>
+    @Scripts.Render("~/bundles/lib")
+    @Scripts.Render("~/bundles/jqueryval")
     @RenderSection("scripts", required: false)
 </body>
 </html>

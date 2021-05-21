@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Travel_Trek.Models.Post>
+
+@{
+    ViewBag.Title = "MyPosts";
+    Layout = "~/Views/Shared/FactoryLayout.cshtml";
+}
+
+<h2>Posts</h2>
+
+<table class="table">
+    <tr style="text-align: center">
+        <th>
+            @Html.DisplayNameFor(model => model.Agency.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TripTitle)
+        </th>
+
+        <th>Manage</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Agency.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TripTitle)
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "DeletePost", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

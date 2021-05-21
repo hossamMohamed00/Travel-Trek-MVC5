@@ -10,10 +10,9 @@ namespace Travel_Trek
             bundles.Add(new ScriptBundle("~/bundles/lib").Include(
                 "~/Scripts/jquery-{version}.js",
                 "~/Scripts/bootstrap.js",
-                "~/scripts/bootbox.js",
+                "~/Scripts/bootbox.js",
                 "~/Scripts/respond.js"
             ));
-
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));

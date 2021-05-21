@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,11 +13,12 @@
 </head>
 <body>
     <!--Include the navbar-->
-    @Html.Partial("_dashboardNavBar")
+    @Html.Partial("Partials/_dashboardNavBar")
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
+        
+        <footer class="">
+            <hr />
             <p>&copy; @DateTime.Now.Year - Travel Trek</p>
         </footer>
     </div>
