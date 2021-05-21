@@ -7,13 +7,13 @@ namespace Travel_Trek.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class updateTables1 : IMigrationMetadata
+    public sealed partial class populdatePerson : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(updateTables1));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(populdatePerson));
         
         string IMigrationMetadata.Id
         {
-            get { return "202105200102011_updateTables1"; }
+            get { return "202105210020225_populdatePerson"; }
         }
         
         string IMigrationMetadata.Source

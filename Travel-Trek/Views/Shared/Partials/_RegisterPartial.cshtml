@@ -57,10 +57,8 @@
                     @Html.LabelFor(model => model.User.Photo)
                     <br />
                     <div class="custom-file " style="width: auto;">
-                        <input type="file" class="custom-file-input" id="customFile">
-                        <label class="custom-file-label" for="customFile">Choose file</label>
+                        @Html.TextBoxFor(model => model.User.Photo, new { type = "file" })
                         @Html.ValidationMessageFor(model => model.User.Photo, "", new { @class = "text-danger" })
-
                     </div>
                 </div>
             </div>
@@ -68,15 +66,9 @@
             @Html.AntiForgeryToken()
             <div class="row" style="text-align: center">
                 <div class="form-group col-12">
-                    <input id="submit" type="submit" name="submit" value="Submit" class="btn btn-primary">
+                    <input id="submit" type="submit" name="submit" value="Sign Up" class="btn btn-primary">
                 </div>
             </div>
         }
     </div>
 </div>
-
-@section scripts
-{
-    @Scripts.Render("~/bundles/jqueryval")
-
-}

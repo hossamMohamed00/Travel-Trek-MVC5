@@ -137,25 +137,18 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105191824539_Initial.cs" />
-    <Compile Include="Migrations\202105191824539_Initial.Designer.cs">
-      <DependentUpon>202105191824539_Initial.cs</DependentUpon>
+    <Compile Include="Helpers\Utilities.cs" />
+    <Compile Include="Migrations\202105210008538_InitialMigration.cs" />
+    <Compile Include="Migrations\202105210008538_InitialMigration.Designer.cs">
+      <DependentUpon>202105210008538_InitialMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105191831110_populateTables.cs" />
-    <Compile Include="Migrations\202105191831110_populateTables.Designer.cs">
-      <DependentUpon>202105191831110_populateTables.cs</DependentUpon>
+    <Compile Include="Migrations\202105210020225_populdatePerson.cs" />
+    <Compile Include="Migrations\202105210020225_populdatePerson.Designer.cs">
+      <DependentUpon>202105210020225_populdatePerson.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105192323318_updateTables.cs" />
-    <Compile Include="Migrations\202105192323318_updateTables.Designer.cs">
-      <DependentUpon>202105192323318_updateTables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105200102011_updateTables1.cs" />
-    <Compile Include="Migrations\202105200102011_updateTables1.Designer.cs">
-      <DependentUpon>202105200102011_updateTables1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105200315598_updateTables2.cs" />
-    <Compile Include="Migrations\202105200315598_updateTables2.Designer.cs">
-      <DependentUpon>202105200315598_updateTables2.cs</DependentUpon>
+    <Compile Include="Migrations\202105210023192_populatePostsTable.cs" />
+    <Compile Include="Migrations\202105210023192_populatePostsTable.Designer.cs">
+      <DependentUpon>202105210023192_populatePostsTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Login.cs" />
@@ -222,6 +215,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Custom\mian.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -381,6 +375,7 @@
     <Content Include="Views\Dashboard\CreateUser.cshtml" />
     <Content Include="Views\Agency\CreatePost.cshtml" />
     <Content Include="Views\Wall\SavedPosts.cshtml" />
+    <Content Include="Views\Agency\MyPosts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -397,20 +392,14 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202105191824539_Initial.resx">
-      <DependentUpon>202105191824539_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202105210008538_InitialMigration.resx">
+      <DependentUpon>202105210008538_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105191831110_populateTables.resx">
-      <DependentUpon>202105191831110_populateTables.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202105210020225_populdatePerson.resx">
+      <DependentUpon>202105210020225_populdatePerson.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105192323318_updateTables.resx">
-      <DependentUpon>202105192323318_updateTables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105200102011_updateTables1.resx">
-      <DependentUpon>202105200102011_updateTables1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105200315598_updateTables2.resx">
-      <DependentUpon>202105200315598_updateTables2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202105210023192_populatePostsTable.resx">
+      <DependentUpon>202105210023192_populatePostsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

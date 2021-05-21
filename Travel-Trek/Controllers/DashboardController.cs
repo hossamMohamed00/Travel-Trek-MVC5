@@ -112,31 +112,35 @@ namespace Travel_Trek.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             var person = ViewModel.User;
+
+            // Get logged in admin
+            var loggedInAdmin = AccountController.GetUserFromEmail(User.Identity.Name);
+
+            if (loggedInAdmin == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
             if (!ModelState.IsValid)
             {
-                var admin = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 1); // Need Edit later
                 var viewModel = new WallViewModel
                 {
-                    User = admin
+                    User = loggedInAdmin
                 };
                 return View("UserProfileEdit", viewModel);
             }
 
-            var adminInDb = Db.Users.SingleOrDefault(m => m.Id == person.Id);
-
-            if (adminInDb == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            adminInDb.FirstName = person.FirstName;
-            adminInDb.LastName = person.LastName;
-            adminInDb.Password = person.Password; // Need hash later
-            adminInDb.PhoneNumber = person.PhoneNumber;
-            //adminInDb.Photo = person.Photo; // Need change later
+            //* Edit admin data and save it
+            loggedInAdmin.FirstName = person.FirstName;
+            loggedInAdmin.LastName = person.LastName;
+            loggedInAdmin.Password = person.Password; // Need hash later
+            loggedInAdmin.PhoneNumber = person.PhoneNumber;
+            //LoggedInAdmin.Photo = person.Photo; // Need change later
 
             Db.SaveChanges();
+
             return RedirectToAction("Profile", "Dashboard");
         }
 
@@ -227,11 +231,12 @@ namespace Travel_Trek.Controllers
 
         public WallViewModel GetWallViewModel()
         {
-            var admin = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 1); // Need Edit later
+            // Get logged in admin ID
+            var loggedInAdmin = AccountController.GetUserFromEmail(User.Identity.Name);
 
             var viewModel = new WallViewModel
             {
-                User = admin
+                User = loggedInAdmin
             };
 
             return viewModel;

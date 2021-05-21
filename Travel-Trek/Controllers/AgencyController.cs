@@ -1,9 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Travel_Trek.Db_Context;
+using Travel_Trek.Helpers;
 using Travel_Trek.Models;
 using Travel_Trek.ViewModels;
 
@@ -38,7 +38,6 @@ namespace Travel_Trek.Controllers
         public ActionResult Profile()
         {
             var viewModel = GetWallViewModel();
-
 
             return View("UserProfile", viewModel);
         }
@@ -110,29 +109,43 @@ namespace Travel_Trek.Controllers
         {
             if (ModelState.IsValid)
             {
-                string path = "";
-                if (TripImage.FileName.Length > 0)
-                {
-                    path = "~/Content/images/posts" + Path.GetFileName(TripImage.FileName);
-                    path = path + post.PostDate;// Add unique value to the 
-                    TripImage.SaveAs(Server.MapPath(path));
-                }
+                // Get the agency which wants to add this post
+                var agency = AccountController.GetUserFromEmail(User.Identity.Name);
 
-                post.TripImage = path;
-                post.AgencyId = 2; // Need update later
+                var ImagePath = Utilities.GetPostImagePath(TripImage, post.PostDate);
+
+                // Save the image on the device 
+                TripImage.SaveAs(Server.MapPath(ImagePath));
+
+                //* Save image data
+                post.TripImage = ImagePath;
+                post.AgencyId = agency.Id; // Need update later
 
                 Db.Posts.Add(post);
                 Db.SaveChanges();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Agency");
             }
             return RedirectToAction("Index", "Agency");
+        }
+
+        [Route("Agency/Posts")]
+        public ActionResult MyPosts()
+        {
+            // Get Logged in agency
+            var agency = AccountController.GetUserFromEmail(User.Identity.Name);
+
+            // Get posts for this agency
+            var posts = Db.Posts.Include("Agency").Where(p => p.AgencyId == agency.Id).ToList();
+
+            return View(posts);
         }
 
         /* Helper Methods */
         public WallViewModel GetWallViewModel()
         {
-            var agency = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 2); // Need Edit later
+            // Get Logged in agency
+            var agency = AccountController.GetUserFromEmail(User.Identity.Name);
 
             var viewModel = new WallViewModel
             {
