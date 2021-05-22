@@ -50,7 +50,18 @@
 <script type="text/javascript">
     /* toggle like button class */
     function likePost(post) {
-        post.classList.toggle("likedBtn");
+        @{
+            bool IsAuthenticated = (User.Identity.IsAuthenticated);
+            //* This will be False or True
+        }
+
+        if ('@IsAuthenticated' == 'True') {
+            post.classList.toggle("likedBtn");
+        } else {
+            // Suggest to login first
+            bootbox.alert("Please login first to be able to like trip posts 😉😄");
+        }
+
 
     }
 </script>

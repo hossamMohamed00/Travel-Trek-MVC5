@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Web;
 
 namespace Travel_Trek.Helpers
@@ -54,5 +55,20 @@ namespace Travel_Trek.Helpers
         }
 
 
+        /*
+         * Delete image from the server
+         */
+        public static void DeleteImageFromServer(string imagePath)
+        {
+            // imagePath In format like this -> /Content/images/{posts/users}}/{postImage}
+            string fullPath = HttpContext.Current.Request.MapPath("~" + imagePath);
+
+            //* If the file exists, then delete it
+            if (File.Exists(fullPath))
+            {
+                File.Delete(fullPath);
+
+            }
+        }
     }
 }

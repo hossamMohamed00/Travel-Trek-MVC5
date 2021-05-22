@@ -146,10 +146,6 @@
     <Compile Include="Migrations\202105210020225_populdatePerson.Designer.cs">
       <DependentUpon>202105210020225_populdatePerson.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105210023192_populatePostsTable.cs" />
-    <Compile Include="Migrations\202105210023192_populatePostsTable.Designer.cs">
-      <DependentUpon>202105210023192_populatePostsTable.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Person.cs" />
@@ -375,6 +371,7 @@
     <Content Include="Views\Agency\CreatePost.cshtml" />
     <Content Include="Views\Wall\SavedPosts.cshtml" />
     <Content Include="Views\Agency\MyPosts.cshtml" />
+    <Content Include="Views\Agency\FAQ.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -396,9 +393,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105210020225_populdatePerson.resx">
       <DependentUpon>202105210020225_populdatePerson.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105210023192_populatePostsTable.resx">
-      <DependentUpon>202105210023192_populatePostsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
