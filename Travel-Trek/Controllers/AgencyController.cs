@@ -139,7 +139,6 @@ namespace Travel_Trek.Controllers
             return View(posts);
         }
 
-
         [Authorize(Roles = "Agency")]
         [Route("Agency/Posts/delete")]
         public ActionResult DeletePost(int? id)

@@ -4,54 +4,69 @@
     ViewBag.Title = "MyPosts";
     Layout = "~/Views/Shared/FactoryLayout.cshtml";
 }
-
-
-
 <section>
 
-    @if (false)
+    @if (Model.Any())
     {
-
         <div class="row">
+        @for (int i = 0; i < 20; i++)
+        {
+            var post = Model.First();
 
-            <div class="col">
-                <div class="card" style="width: 18rem; margin-bottom: 12px">
-                    <img class="card-img-top" src="..\Content\images\posts\trip2.jpg" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Agency Name </h5>
-                        <h5 class="card-statue">Post Statue:  </h5>
-                        <p class="card-text">  Trip Description  </p>
+                <div class="col-4">
+                    <div class="card" style="width: 18rem; margin-bottom: 12px">
+                        <img class="card-img-top" src="@post.TripImage" alt="@post.TripTitle">
+                        <div class="card-body">
+                            <h5 class="card-title">@post.Agency.FirstName @post.Agency.LastName </h5>
+                            <p class="card-text"> @post.TripDetails</p>
+                            <p class="card-text"> @post.TripDestination</p>
+                            <p class="card-text"> @post.TripDate</p>
 
-                        <!-- Delete , Update-->
-                        <a href="#" class="btn btn-secondary float-lg-left">Update</a>
-                        <a href="#" class="btn btn-secondary float-lg-right">Delete</a>
+                            <!-- Delete , Update-->
+                            <a href="#" class="btn btn-primary float-lg-left">Update</a>
+                            <a href="@Url.Action("DeletePost")" class="btn btn-danger float-lg-right">Delete</a>
 
-
-                        <!-- likes -->
-                        <div class="badge bg-success " style="width: 6rem; color: white; margin-left: 1px">
-                            likes
+                            <!-- likes -->
+                            <div class="badge bg-success " style="width: 6rem; color: white; margin-left: 1px">
+                               @post.Likes likes.
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- time update trip -->
-                    <div class="card-footer">
-                        <small class="text-muted">Last updated 5 mins ago</small>
-                    </div>
+                        <!-- time update trip -->
+                        <div class="card-footer">
+                            <small class="text-muted">@post.PostDate.ToLongDateString()</small>
+                            <div class="text-muted">
+                                @{
+                                    if (@post.Status.Equals("Approved"))
+                                    {
+                                        <small class="text-success">Now In Wall ❤😊</small>
+                                    }
+                                    else if (@post.Status.Equals("Refused"))
+                                    {
+                                        <small class="text-danger">Refused as @post.RefuseMessage</small>
 
+                                    }
+                                    else
+                                    {
+                                        <small class="text-info">Now in review.</small>
+                                    }
+                                }
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
+         }
         </div>
     }
     else
     {
-<div class="is-empty" style="float: right; margin-right:400px;">
-    <h3>No factory history..! 🤗👀</h3>
-    <p> Can Make History By Publishing Posts  </p>
-    @Html.ActionLink("Go To create New post", "CreatePost", null, new { @class = "btn btn-primary" })
+        <div class="is-empty" style="float: right; margin-right:400px;">
+            <h3>No factory history..! 🤗👀</h3>
+            <p> Can Make History By Publishing Posts  </p>
+            @Html.ActionLink("Go To create New post", "CreatePost", null, new { @class = "btn btn-primary" })
 
-</div>
-
-        
+        </div>
 
             }
 
