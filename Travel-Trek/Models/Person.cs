@@ -36,6 +36,8 @@ namespace Travel_Trek.Models
         [Required]
         public int UserRoleId { get; set; }
 
+         
+
         // Constructor
         public Person()
         {

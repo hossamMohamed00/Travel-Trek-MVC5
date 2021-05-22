@@ -99,6 +99,8 @@ namespace Travel_Trek.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Agency")]
+
         public ActionResult PublishPost(Post post, HttpPostedFileBase TripImage)
         {
             if (ModelState.IsValid)
@@ -123,6 +125,7 @@ namespace Travel_Trek.Controllers
             return RedirectToAction("Index", "Agency");
         }
 
+        [Authorize(Roles = "Agency")]
         [Route("Agency/Posts")]
         [Authorize(Roles = "Agency")]
         public ActionResult MyPosts()
@@ -136,8 +139,37 @@ namespace Travel_Trek.Controllers
             return View(posts);
         }
 
-        [Route("Agency/FAQ")]
+
         [Authorize(Roles = "Agency")]
+        [Route("Agency/Posts/delete")]
+        public ActionResult DeletePost(int? id)
+        {
+            //* Check if the id not provided
+            if (id == null)
+                return Json(new { success = false, message = "Cannot delete this post right now! 😭" }, JsonRequestBehavior.AllowGet);
+
+            //* Get the user from the db
+            var post = Db.Posts.Single(p => p.Id == id);
+
+            //* Remove post image from the device
+            if (!string.IsNullOrEmpty(post.TripImage))
+            {
+                Utilities.DeleteImageFromServer(post.TripImage);
+            }
+
+            //* Remove the post from the db
+            Db.Posts.Remove(post);
+
+            //* Save the changes to the database 
+            Db.SaveChanges();
+
+            return Content("Post Deleted successfully!");
+            //return Json(new {success = true, message = "Post deleted successfully 🤗"}, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [Authorize(Roles = "Agency")]
+        [Route("Agency/FAQ")]
         public ActionResult FAQ()
         {
             return View();

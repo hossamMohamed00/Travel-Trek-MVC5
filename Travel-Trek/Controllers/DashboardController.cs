@@ -93,15 +93,26 @@ namespace Travel_Trek.Controllers
         [HttpPost]
         [Route("Dashboard/users/delete")]
         [Authorize(Roles = "Admin")]
-        public ActionResult Delete(int? id)
+        public ActionResult DeleteUser(int? id)
         {
             if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return Json(new { success = true, message = "Cannot delete this user right now! 😭" }, JsonRequestBehavior.AllowGet);
 
-            //* Get the user and remove him
+            //* Get the user from the db
             var user = Db.Users.Single(c => c.Id == id);
+
+            //* Remove user image from the device
+            if (!String.IsNullOrEmpty(user.Photo))
+            {
+                Utilities.DeleteImageFromServer(user.Photo);
+            }
+
+            //* Remove the user from the db
             Db.Users.Remove(user);
+
+            //* Save the changes to the db
             Db.SaveChanges();
+
             return Json(new { success = true, message = "User deleted successfully" }, JsonRequestBehavior.AllowGet);
         }
 
