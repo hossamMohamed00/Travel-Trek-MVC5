@@ -57,8 +57,9 @@
                     @Html.LabelFor(model => model.User.Photo)
                     <br />
                     <div class="custom-file " style="width: auto;">
-                        @Html.TextBoxFor(model => model.User.Photo, new { type = "file" })
-                        @Html.ValidationMessageFor(model => model.User.Photo, "", new { @class = "text-danger" })
+                        <input type="file" name="userPhoto" class="custom-file-input" id="customFile">
+                        <label class="custom-file-label" for="customFile">Choose user image</label>
+                        @Html.ValidationMessageFor(model => model.User.Photo, "", new {@class = "text-danger"})
                     </div>
                 </div>
             </div>

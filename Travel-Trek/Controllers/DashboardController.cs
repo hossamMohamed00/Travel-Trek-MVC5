@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using Travel_Trek.Db_Context;
+using Travel_Trek.Helpers;
 using Travel_Trek.Models;
 using Travel_Trek.ViewModels;
 
@@ -45,28 +47,48 @@ namespace Travel_Trek.Controllers
             return View(users);
         }
 
-        [Route("Dashboard/users/create")]
+        [Route("Dashboard/users/new")]
         [Authorize(Roles = "Admin")]
         public ActionResult CreateUser()
         {
-            var userRoles = Db.UserRoles.ToList();
-
-            //* Get the admin role to exclude it
-            var adminRole = userRoles.Find(r => r.Name == UserRole.Admin);
-
-            // Exclude the admin role
-            userRoles.Remove(adminRole);
-
-            // Initialize the viewModel
-            var viewModel = new AddUserViewModel
-            {
-                UserRoles = userRoles
-            };
+            var viewModel = GetAddUserViewModel();
 
             return View(viewModel);
         }
 
         //* Create User Logic Will be here
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        [Route("Dashboard/users/new/save")]
+        [Authorize(Roles = "Admin")]
+        public ActionResult CreateNewUser(AddUserViewModel viewModel, HttpPostedFileBase userPhoto)
+        {
+            //* Check if the model state is valid
+            if (!ModelState.IsValid)
+            {
+                var addUserViewModel = GetAddUserViewModel();
+
+                return View("CreateUser", addUserViewModel);
+            }
+
+            //* Get the User data from the ViewModel
+            var user = viewModel.Person;
+
+            //* Check if the admin provide a photo
+            if (userPhoto != null)
+            {
+                var ImagePath = Utilities.GetPersonImagePath(userPhoto);
+                // Save the image on the device 
+                userPhoto.SaveAs(Server.MapPath(ImagePath));
+                user.Photo = ImagePath;
+            }
+
+            //Save the user
+            Db.Users.Add(user);
+            Db.SaveChanges();
+
+            return RedirectToAction("AllUsers", "Dashboard");
+        }
 
         [HttpPost]
         [Route("Dashboard/users/delete")]
@@ -106,42 +128,40 @@ namespace Travel_Trek.Controllers
         [ValidateAntiForgeryToken]
         [Route("Dashboard/admin/profile/save")]
         [Authorize(Roles = "Admin")]
-        public ActionResult Save(WallViewModel ViewModel)
+        public ActionResult Save(WallViewModel ViewModel, HttpPostedFileBase userPhoto)
         {
-            if (ViewModel == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            var person = ViewModel.User;
-
-            // Get logged in admin
-            var loggedInAdmin = AccountController.GetUserFromEmail(User.Identity.Name);
-
-            if (loggedInAdmin == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
+            // Check if the model in valid state or not
             if (!ModelState.IsValid)
             {
-                var viewModel = new WallViewModel
-                {
-                    User = loggedInAdmin
-                };
+                var viewModel = GetWallViewModel();
                 return View("UserProfileEdit", viewModel);
             }
 
-            //* Edit admin data and save it
-            loggedInAdmin.FirstName = person.FirstName;
-            loggedInAdmin.LastName = person.LastName;
-            loggedInAdmin.Password = person.Password; // Need hash later
-            loggedInAdmin.PhoneNumber = person.PhoneNumber;
-            //LoggedInAdmin.Photo = person.Photo; // Need change later
+            //* Get the User data from the ViewModel
+            var person = ViewModel.User;
 
+            //* Get admin from the database
+            var adminInDb = Db.Users.Include("UserRole").Single(u => u.Id == person.Id);
+
+            //* Edit admin data and save it
+            adminInDb.FirstName = person.FirstName;
+            adminInDb.LastName = person.LastName;
+            adminInDb.Password = person.Password; // Need hash later
+            adminInDb.PhoneNumber = person.PhoneNumber;
+
+            //* Check if the admin provide a photo
+            if (userPhoto != null)
+            {
+                var ImagePath = Utilities.GetPersonImagePath(userPhoto);
+                // Save the image on the device 
+                userPhoto.SaveAs(Server.MapPath(ImagePath));
+                adminInDb.Photo = ImagePath;
+            }
+
+            //* Save the changes in the database
             Db.SaveChanges();
 
-            return RedirectToAction("Profile", "Dashboard");
+            return RedirectToAction("Profile");
         }
 
         // Get: Dashboard/Posts/Pending
@@ -231,7 +251,7 @@ namespace Travel_Trek.Controllers
 
         public WallViewModel GetWallViewModel()
         {
-            // Get logged in admin ID
+            // Get logged in admin
             var loggedInAdmin = AccountController.GetUserFromEmail(User.Identity.Name);
 
             var viewModel = new WallViewModel
@@ -241,5 +261,25 @@ namespace Travel_Trek.Controllers
 
             return viewModel;
         }
+
+        public AddUserViewModel GetAddUserViewModel()
+        {
+            var userRoles = Db.UserRoles.ToList();
+
+            //* Get the admin role to exclude it
+            var adminRole = userRoles.Find(r => r.Name == UserRole.Admin);
+
+            // Exclude the admin role
+            userRoles.Remove(adminRole);
+
+            // Initialize the viewModel
+            var viewModel = new AddUserViewModel
+            {
+                UserRoles = userRoles
+            };
+
+            return viewModel;
+        }
+
     }
 }

@@ -3,10 +3,10 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0 ">
-            <li class="nav-link" style="color: #808080"> Welcome @User.Identity.Name</li>
+            <li class="nav-link" style="color: bisque"> Hi, @User.Identity.Name.Split('@')[0]</li>
 
             <li class="nav-item">
-                <a class="nav-link" style="color: white" href="@Url.Action("Logout", "Account")">Logout</a>
+                <a class="nav-link" style="color: cornflowerblue" href="@Url.Action("Logout", "Account")">Logout</a>
             </li>
         </ul>
     </div>

@@ -5,6 +5,9 @@ namespace Travel_Trek.Helpers
 {
     public class Utilities
     {
+        /*
+         * Return post image path
+         */
         public static string GetPostImagePath(HttpPostedFileBase TripImage, DateTime PostDate)
         {
             string path = "";
@@ -26,6 +29,9 @@ namespace Travel_Trek.Helpers
             return "No Image Provided!";
         }
 
+        /*
+         * Return person image path
+         */
         public static string GetPersonImagePath(HttpPostedFileBase userPhoto)
         {
             string path;
@@ -46,5 +52,7 @@ namespace Travel_Trek.Helpers
 
             return "/Content/images/users/default.png"; // return Default
         }
+
+
     }
 }
