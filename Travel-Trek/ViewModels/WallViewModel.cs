@@ -65,5 +65,7 @@ namespace Travel_Trek.ViewModels
                 }
             }
         }
+
+        public string CurrentView { get; set; }
     }
 }

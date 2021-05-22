@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Travel_Trek.Db_Context;
@@ -48,54 +47,49 @@ namespace Travel_Trek.Controllers
         {
             var viewModel = GetWallViewModel();
 
-
             return View("UserProfileEdit", viewModel);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Agency")]
-        public ActionResult Save(WallViewModel viewModel)
+        public ActionResult Save(WallViewModel viewModel, HttpPostedFileBase userPhoto)
         {
-            // Get user email
-            var email = Db.Users.FirstOrDefault(u => u.Id == viewModel.User.Id)?.Email;
-            viewModel.User.Email = email;
-
-            var person = viewModel.User;
-
+            // Check if the model in valid state or not
             if (!ModelState.IsValid)
             {
-                var agency = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == 2);
-                var userFormViewModelviewModel = new WallViewModel
-                {
-                    User = agency
-                };
+                var wallViewModel = GetWallViewModel();
 
-                return View("UserProfileEdit", userFormViewModelviewModel);
+                return View("UserProfileEdit", wallViewModel);
             }
 
-            var agencyInDb = Db.Users.Single(m => m.Id == person.Id);
+            //* Get the user data from the ViewModel
+            var person = viewModel.User;
+
+            //* Get agency from the database
+            var agencyInDb = Db.Users.Include("UserRole").Single(m => m.Id == person.Id);
+
+            //* Edit agency data and save it
             agencyInDb.FirstName = person.FirstName;
             agencyInDb.LastName = person.LastName;
             agencyInDb.Password = person.Password; // Need hash later
             agencyInDb.PhoneNumber = person.PhoneNumber;
-            //adminInDb.Photo = person.Photo; // Need change later
 
-            try
+            //* Check if the agency provide a photo
+            if (userPhoto != null)
             {
-                Db.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
+                var ImagePath = Utilities.GetPersonImagePath(userPhoto);
+
+                // Save the image on the device 
+                userPhoto.SaveAs(Server.MapPath(ImagePath));
+                agencyInDb.Photo = ImagePath;
             }
 
+            //* Save the changes in the database
+            Db.SaveChanges();
 
             return RedirectToAction("Profile", "Agency");
         }
-
 
         [Route("Agency/Posts/Create")]
         [Authorize(Roles = "Agency")]
