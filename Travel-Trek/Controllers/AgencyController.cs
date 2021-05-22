@@ -127,6 +127,7 @@ namespace Travel_Trek.Controllers
 
         [Authorize(Roles = "Agency")]
         [Route("Agency/Posts")]
+        [Authorize(Roles = "Agency")]
         public ActionResult MyPosts()
         {
             // Get Logged in agency
@@ -137,6 +138,7 @@ namespace Travel_Trek.Controllers
 
             return View(posts);
         }
+
 
         [Authorize(Roles = "Agency")]
         [Route("Agency/Posts/delete")]
@@ -164,6 +166,7 @@ namespace Travel_Trek.Controllers
             return Content("Post Deleted successfully!");
             //return Json(new {success = true, message = "Post deleted successfully 🤗"}, JsonRequestBehavior.AllowGet);
         }
+
 
         [Authorize(Roles = "Agency")]
         [Route("Agency/FAQ")]

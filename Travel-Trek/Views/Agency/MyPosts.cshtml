@@ -5,32 +5,64 @@
     Layout = "~/Views/Shared/FactoryLayout.cshtml";
 }
 
-<h2>Posts</h2>
 
-<table class="table">
-    <tr style="text-align: center">
-        <th>
-            @Html.DisplayNameFor(model => model.Agency.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TripTitle)
-        </th>
 
-        <th>Manage</th>
-    </tr>
+<section>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Agency.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TripTitle)
-        </td>
-        <td>
-            @Html.ActionLink("Delete", "DeletePost", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @if (false)
+    {
 
-</table>
+        <div class="row">
+
+            <div class="col">
+                <div class="card" style="width: 18rem; margin-bottom: 12px">
+                    <img class="card-img-top" src="..\Content\images\posts\trip2.jpg" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Agency Name </h5>
+                        <h5 class="card-statue">Post Statue:  </h5>
+                        <p class="card-text">  Trip Description  </p>
+
+                        <!-- Delete , Update-->
+                        <a href="#" class="btn btn-secondary float-lg-left">Update</a>
+                        <a href="#" class="btn btn-secondary float-lg-right">Delete</a>
+
+
+                        <!-- likes -->
+                        <div class="badge bg-success " style="width: 6rem; color: white; margin-left: 1px">
+                            likes
+                        </div>
+                    </div>
+
+                    <!-- time update trip -->
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 5 mins ago</small>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+<div class="is-empty" style="float: right; margin-right:400px;">
+    <h3>No factory history..! 🤗👀</h3>
+    <p> Can Make History By Publishing Posts  </p>
+    @Html.ActionLink("Go To create New post", "CreatePost", null, new { @class = "btn btn-primary" })
+
+</div>
+
+        
+
+            }
+
+    </section>
+
+<!-- end factory history page -->
+
+
+<script type="text/javascript">
+    function likePost(post) {
+        post.classList.toggle("likedBtn");
+
+    }
+</script>
