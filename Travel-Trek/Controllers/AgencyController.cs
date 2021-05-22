@@ -124,6 +124,7 @@ namespace Travel_Trek.Controllers
         }
 
         [Route("Agency/Posts")]
+        [Authorize(Roles = "Agency")]
         public ActionResult MyPosts()
         {
             // Get Logged in agency
@@ -133,6 +134,13 @@ namespace Travel_Trek.Controllers
             var posts = Db.Posts.Include("Agency").Where(p => p.AgencyId == agency.Id).ToList();
 
             return View(posts);
+        }
+
+        [Route("Agency/FAQ")]
+        [Authorize(Roles = "Agency")]
+        public ActionResult FAQ()
+        {
+            return View();
         }
 
         /* Helper Methods */
