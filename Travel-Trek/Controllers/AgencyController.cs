@@ -147,23 +147,15 @@ namespace Travel_Trek.Controllers
             if (id == null)
                 return Json(new { success = false, message = "Cannot delete this post right now! 😭" }, JsonRequestBehavior.AllowGet);
 
-            //* Get the user from the db
-            var post = Db.Posts.Single(p => p.Id == id);
+            //* Delete the post
+            var isDeleted = Utilities.DeletePostFromDb(id, Db);
 
-            //* Remove post image from the device
-            if (!string.IsNullOrEmpty(post.TripImage))
-            {
-                Utilities.DeleteImageFromServer(post.TripImage);
-            }
-
-            //* Remove the post from the db
-            Db.Posts.Remove(post);
-
-            //* Save the changes to the database 
-            Db.SaveChanges();
-
-            return Content("Post Deleted successfully!");
-            //return Json(new {success = true, message = "Post deleted successfully 🤗"}, JsonRequestBehavior.AllowGet);
+            //* Inform the user 
+            return (isDeleted)
+                ? Json(new { success = true, message = "Post deleted successfully! 🦾✌" },
+                    JsonRequestBehavior.AllowGet)
+                : Json(new { success = false, message = "Cannot delete this post right now! 😭" },
+                    JsonRequestBehavior.AllowGet);
         }
 
 

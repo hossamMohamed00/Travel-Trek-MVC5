@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Travel_Trek.Db_Context;
@@ -163,9 +162,19 @@ namespace Travel_Trek.Controllers
             //* Check if the admin provide a photo
             if (userPhoto != null)
             {
+                //* Delete the previous image of the admin if he already has one
+                if (!String.IsNullOrEmpty(adminInDb.Photo))
+                {
+                    Utilities.DeleteImageFromServer(adminInDb.Photo);
+                }
+
+                //* Get the path of the new photo
                 var ImagePath = Utilities.GetPersonImagePath(userPhoto);
+
                 // Save the image on the device 
                 userPhoto.SaveAs(Server.MapPath(ImagePath));
+
+                //* Set the path to the admin's photo field
                 adminInDb.Photo = ImagePath;
             }
 
@@ -199,17 +208,19 @@ namespace Travel_Trek.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult DeletePost(int? id)
         {
+            //* Check if the id not provided
             if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            //* Delete Post
-            var post = Db.Posts.Single(p => p.Id == id);
-            Db.Posts.Attach(post);
-            Db.Posts.Remove(post);
-            Db.SaveChanges();
+                return Json(new { success = false, message = "Cannot delete this post right now! 😭" }, JsonRequestBehavior.AllowGet);
 
-            return Json(new { success = true, message = "Post deleted successfully!" }, JsonRequestBehavior.AllowGet);
+            //* Delete the post
+            var isDeleted = Utilities.DeletePostFromDb(id, Db);
+
+            //* Inform the user 
+            return (isDeleted)
+                ? Json(new { success = true, message = "Post deleted successfully! 🦾✌" },
+                    JsonRequestBehavior.AllowGet)
+                : Json(new { success = false, message = "Cannot delete this post right now! 😭" },
+                    JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

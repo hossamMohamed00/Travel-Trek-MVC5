@@ -9,9 +9,8 @@
     @if (Model.Any())
     {
         <div class="row">
-        @for (int i = 0; i < 20; i++)
+        @foreach(var post in Model)
         {
-            var post = Model.First();
 
                 <div class="col-4">
                     <div class="card" style="width: 18rem; margin-bottom: 12px">
@@ -24,7 +23,7 @@
 
                             <!-- Delete , Update-->
                             <a href="#" class="btn btn-primary float-lg-left">Update</a>
-                            <a href="@Url.Action("DeletePost")" class="btn btn-danger float-lg-right">Delete</a>
+                            <a href="@Url.Action("DeletePost", new {id = @post.Id})" class="btn btn-danger float-lg-right">Delete</a>
 
                             <!-- likes -->
                             <div class="badge bg-success " style="width: 6rem; color: white; margin-left: 1px">
@@ -61,14 +60,12 @@
     }
     else
     {
-        <div class="is-empty" style="float: right; margin-right:400px;">
-            <h3>No factory history..! 🤗👀</h3>
-            <p> Can Make History By Publishing Posts  </p>
-            @Html.ActionLink("Go To create New post", "CreatePost", null, new { @class = "btn btn-primary" })
-
+        <div class="is-empty">
+            <h3>No Posts history..! 🤗👀</h3>
+            <p>But You Can Publish your first Trip Post right now ❤🐱‍🏍😃 </p>
+            @Html.ActionLink("Let's Publish a Trip Post", "CreatePost", null, new { @class = "btn btn-primary" })
         </div>
-
-            }
+    }
 
     </section>
 

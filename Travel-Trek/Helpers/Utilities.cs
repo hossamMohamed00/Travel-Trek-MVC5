@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Web;
+using Travel_Trek.Db_Context;
 
 namespace Travel_Trek.Helpers
 {
@@ -69,6 +71,32 @@ namespace Travel_Trek.Helpers
                 File.Delete(fullPath);
 
             }
+        }
+
+        /**
+         * Delete post
+         */
+        public static bool DeletePostFromDb(int? id, ApplicationDbContext db)
+        {
+            //* Delete Post
+            var post = db.Posts.Single(p => p.Id == id);
+
+            if (post == null)
+                return false;
+
+            //* Remove post image from the device
+            if (!string.IsNullOrEmpty(post.TripImage))
+            {
+                DeleteImageFromServer(post.TripImage);
+            }
+
+            //* Remove the post from the db
+            db.Posts.Remove(post);
+
+            // Save the changes to the db
+            db.SaveChanges();
+
+            return true;
         }
     }
 }
