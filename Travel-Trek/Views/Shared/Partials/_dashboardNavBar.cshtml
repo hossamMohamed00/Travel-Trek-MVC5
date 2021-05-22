@@ -10,10 +10,12 @@
             <li class="nav-item">@Html.ActionLink("Posts", "AllPosts", "Dashboard", null, new { @class = "nav-link" })</li>
             <li class="nav-item">@Html.ActionLink("Posts Requests", "PendingPosts", "Dashboard", null, new { @class = "nav-link" })</li>
         </ul>
-        <ul class="nav navbar-nav ml-auto ">
-            <li class="nav-link"> Welcome @User.Identity.Name</li>
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-link" style="color: bisque"> Hi, @User.Identity.Name.Split('@')[0]</li>
+            <li class="nav-item">
+                <a class="nav-link" style="color: cornflowerblue" href="@Url.Action("Logout", "Account")">Logout</a>
+            </li>
 
-            <li>@Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "nav-link" })</li>
         </ul>
     </div>
 </nav>

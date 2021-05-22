@@ -100,7 +100,7 @@ figure img {
         margin: 0 auto;
     }
 
-    .trip-tilte {
+    .trip-title {
         text-align: center;
     }
 }
@@ -195,8 +195,26 @@ footer {
     -o-border-radius: 20px;
 }
 
-@media (max-width: 767px) {
+@media (min-width: 767px) {
     .form_overlay {
         height: 130vh;
+    }
+}
+
+.card img {
+    height: 350px;
+}
+
+@media(max-width: 1077px) {
+    .form-register input,
+    .form-register label {
+        margin-left: 75px;
+    }
+}
+
+@media (max-width: 767px) {
+    .form-register input,
+    .form-register label {
+        margin: 0;
     }
 }

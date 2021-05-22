@@ -35,24 +35,24 @@ namespace Travel_Trek.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ImagePath = Utilities.GetPersonImagePath(userPhoto);
-
-                // Save the image on the device 
-                userPhoto.SaveAs(Server.MapPath(ImagePath));
-
-                user.Photo = ImagePath;
-
                 using (ApplicationDbContext Db = new ApplicationDbContext())
                 {
+                    if (userPhoto != null)
+                    {
+                        var ImagePath = Utilities.GetPersonImagePath(userPhoto);
+
+                        // Save the image on the device 
+                        userPhoto.SaveAs(Server.MapPath(ImagePath));
+
+                        user.Photo = ImagePath;
+                    }
+
                     Db.Users.Add(user);
                     Db.SaveChanges();
                     ModelState.Clear();
                 }
 
-                //* Prepare the login data
-                var viewModel = new WallViewModel { Login = new Login(user.Email, user.Password) };
-
-                return RedirectToAction("Login", viewModel);
+                return RedirectToAction("Index", "Wall");
             }
             return RedirectToAction("Index", "Wall");
         }
@@ -64,49 +64,46 @@ namespace Travel_Trek.Controllers
         {
             var loginData = viewModel.Login;
 
-            using (ApplicationDbContext Db = new ApplicationDbContext())
+            //* Search for this user
+            var user = Db.Users.FirstOrDefault(u => u.Email.Equals(loginData.Email) && u.Password.Equals(loginData.Password));
+
+            //* Check if the user exists
+            if (user != null)
             {
-                //* Search for this user
-                var user = Db.Users.FirstOrDefault(u => u.Email.Equals(loginData.Email) && u.Password.Equals(loginData.Password));
+                var Ticket = new FormsAuthenticationTicket(loginData.Email, true, 3000);
+                string Encrypt = FormsAuthentication.Encrypt(Ticket);
 
-                //* Check if the user exists
-                if (user != null)
+                //* Create new cookie
+                var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, Encrypt);
+                cookie.Expires = DateTime.Now.AddHours(3000);
+                cookie.HttpOnly = true;
+
+                //* Add the cookie
+                Response.Cookies.Add(cookie);
+
+                if (user.UserRoleId == UserRole.AdminId)
                 {
-                    var Ticket = new FormsAuthenticationTicket(loginData.Email, true, 3000);
-                    string Encrypt = FormsAuthentication.Encrypt(Ticket);
-
-                    //* Create new cookie
-                    var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, Encrypt);
-                    cookie.Expires = DateTime.Now.AddHours(3000);
-                    cookie.HttpOnly = true;
-
-                    //* Add the cookie
-                    Response.Cookies.Add(cookie);
-
-                    if (user.UserRoleId == UserRole.AdminId)
-                    {
-                        return RedirectToAction("Index", "Dashboard");
-                    }
-
-                    if (user.UserRoleId == UserRole.AgencyId)
-                    {
-                        return RedirectToAction("Index", "Agency");
-                    }
-
-                    if (user.UserRoleId == UserRole.TravelerId)
-                    {
-
-                        return RedirectToAction("Index", "Wall");
-                    }
+                    return RedirectToAction("Index", "Dashboard");
                 }
-                else
+
+                if (user.UserRoleId == UserRole.AgencyId)
                 {
-                    //* Add Code Here
-                    ViewBag.LoginStatus = "Invalid email or password";
+                    return RedirectToAction("MyPosts", "Agency");
+                }
+
+                if (user.UserRoleId == UserRole.TravelerId)
+                {
+
                     return RedirectToAction("Index", "Wall");
                 }
-
             }
+            else
+            {
+                ViewBag.ErrorMessage = "Invalid email or password!";
+                return RedirectToAction("Index", "Wall");
+            }
+
+
             return RedirectToAction("Index", "Wall");
         }
 

@@ -11,7 +11,8 @@
 
     <h2>@Model.Title Information 👨🏻</h2>
     <hr />
-    @using (Html.BeginForm("Save", @Model.Controller))
+
+    @using (Html.BeginForm("Save", @Model.Controller, FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div class="form-horizontal">
 
@@ -67,8 +68,10 @@
                     @Html.LabelFor(model => model.User.Photo)
                     <br />
                     <div class="custom-file " style="width:auto;">
-                        <input type="file" class="custom-file-input" id="customFile">
-                        <label class="custom-file-label" for="customFile">Choose file</label>
+                        <div class="custom-file">
+                            <input type="file" name="userPhoto" class="custom-file-input" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose user image</label>
+                        </div>
                         @Html.ValidationMessageFor(model => model.User.Photo, "", new { @class = "text-danger" })
 
                     </div>
@@ -80,7 +83,7 @@
             <div class="row">
                 <div class="form-group col-lg-6 col-md-6 col-sm-12">
                     <div>
-                        <button type="submit" class="btn btn-primary ">Update Info</button>
+                        <input type="submit" class="btn btn-primary " value="Update Info"/>
                     </div>
                 </div>
             </div>

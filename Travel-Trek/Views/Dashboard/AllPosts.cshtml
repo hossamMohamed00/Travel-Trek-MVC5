@@ -23,82 +23,82 @@
 
         <table id="posts" class="table table-striped table-hover table-bordered">
             <thead class="thead-dark">
-                <tr>
-                    <th>
-                        Agency Name
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TripTitle)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TripDestination)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TripDetails)
-                    </th>
-                    <th>
+            <tr>
+                <th>
+                    Agency Name
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TripTitle)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TripDestination)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TripDetails)
+                </th>
+                <th>
 
-                        @Html.DisplayNameFor(model => model.PostDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TripDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Likes)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Status)
-                    </th>
-                    <th>
-                        Actions
-                    </th>
-                </tr>
+                    @Html.DisplayNameFor(model => model.PostDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TripDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Likes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
             </thead>
             @foreach (var item in Model)
             {
                 <tbody>
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Agency.FirstName) @Html.DisplayFor(modelItem => item.Agency.LastName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TripTitle)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TripDestination)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TripDetails)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PostDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TripDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Likes)
-                        </td>
-                        <td>
-                            @if (item.Status.Equals(Post.REFUSED))
-                            {
-                                <a class="js-refused" data-post-refuse-message="@item.RefuseMessage" href="#"><span class="text-danger">@Html.DisplayFor(modelItem => item.Status)</span></a>
-                            }
-                            else if (item.Status.Equals(Post.APPROVED))
-                            {
-                                <span class="text-success">@Html.DisplayFor(modelItem => item.Status)</span>
-                            }
-                            else
-                            {
-                                <span class="text-info">@Html.DisplayFor(modelItem => item.Status)</span>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Agency.FirstName) @Html.DisplayFor(modelItem => item.Agency.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TripTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TripDestination)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TripDetails)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PostDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TripDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Likes)
+                    </td>
+                    <td>
+                        @if (item.Status.Equals(Post.REFUSED))
+                        {
+                            <a class="js-refused" data-post-refuse-message="@item.RefuseMessage" href="#"><span class="text-danger">@Html.DisplayFor(modelItem => item.Status)</span></a>
+                        }
+                        else if (item.Status.Equals(Post.APPROVED))
+                        {
+                            <span class="text-success">@Html.DisplayFor(modelItem => item.Status)</span>
+                        }
+                        else
+                        {
+                            <span class="text-info">@Html.DisplayFor(modelItem => item.Status)</span>
 
-                            }
+                        }
 
-                        </td>
-                        <td>
-                            <button data-post-id="@item.Id" class="btn btn-outline-danger js-delete">Delete</button>
-                        </td>
-                    </tr>
+                    </td>
+                    <td>
+                        <button data-post-id="@item.Id" class="btn btn-outline-danger js-delete">Delete</button>
+                    </td>
+                </tr>
                 </tbody>
             }
         </table>
@@ -112,6 +112,7 @@
         </div>
     }
 </section>
+
 <!-- JQuery to handle delete post-->
 @section scripts
 {
