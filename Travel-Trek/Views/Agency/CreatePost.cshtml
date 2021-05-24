@@ -5,12 +5,16 @@
     Layout = "~/Views/Shared/FactoryLayout.cshtml";
 }
 
+
 <h2>Create new Trip Post</h2>
 
-@using (Html.BeginForm("PublishPost", "Agency", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Ajax.BeginForm("PublishPost","Agency", null, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "InformUser", UpdateTargetId = "posts_id", InsertionMode = InsertionMode.Replace }, new
+{
+    enctype = "multipart/form-data",
+    id = "formData"
+}))
 {
     @Html.AntiForgeryToken()
-
     <div class="form-horizontal">
         <div class="row">
             <div class="Header_subtitle col-12">
@@ -68,24 +72,65 @@
                     <input type="file" class="custom-file-input" id="customFile" name="userPhoto">
                     <label class="custom-file-label" for="customFile">Choose file</label>
                 </div>-->
-            @Html.ValidationMessageFor(model => model.TripImage, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.TripImage, "", new { @class = "text-danger" })
 
             </div>
         </div>
-        
+
         @Html.AntiForgeryToken()
         <div class="row">
             <div class="form-group col-lg-6 col-md-6 col-sm-12">
                 <div>
-                    <input type="submit" value="Publish Trip Post" class="btn btn-primary" />
+                    <input type="submit" id="publish-post" value="Publish Trip Post" class="btn btn-primary" />
                 </div>
             </div>
         </div>
-
-
     </div>
 }
 
+<div id="posts_id"></div>
+
+<!--</form> -->
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        /* This method will be called after success of the ajax request */
+        function InformUser(data) {
+
+            console.log(data);
+            
+            if (data.success) {
+                console.log("Success!");
+
+                var dialog = bootbox.dialog({
+                    title: 'Publish Trip Post 🐱‍🏍',
+                    message: '<p><i class="fa fa-spin fa-spinner"></i> Processing 👀...</p>',
+                    backdrop: true,
+                    buttons: {
+                        Ok: {
+                            label: "Ok",
+                            className: 'btn-success'
+                        }
+                    }
+                });
+
+                dialog.init(function () {
+                    setTimeout(function () {
+                            //* Target the dialog body and put the success msg
+                        dialog.find('.bootbox-body').html(data.message);
+                        dialog.closeButton = true;
+                            //* Target the form and empty it
+                            document.getElementById("formData").reset();
+                        },
+                        1000);
+                });
+
+            } else {
+                bootbox.alert(data.message);
+            }
+            
+        };
+    </script>
 }

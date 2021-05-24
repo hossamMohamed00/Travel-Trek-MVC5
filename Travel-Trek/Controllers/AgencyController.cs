@@ -101,7 +101,7 @@ namespace Travel_Trek.Controllers
         [HttpPost]
         [Authorize(Roles = "Agency")]
 
-        public ActionResult PublishPost(Post post, HttpPostedFileBase TripImage)
+        public JsonResult PublishPost(Post post, HttpPostedFileBase TripImage)
         {
             if (ModelState.IsValid)
             {
@@ -115,14 +115,16 @@ namespace Travel_Trek.Controllers
 
                 //* Save image data
                 post.TripImage = ImagePath;
-                post.AgencyId = agency.Id; // Need update later
+
+                post.AgencyId = agency.Id;
 
                 Db.Posts.Add(post);
                 Db.SaveChanges();
 
-                return RedirectToAction("Index", "Agency");
+                return Json(new { success = true, message = "Trip Post request sent successfully, our admins will review the post ASAP 🐱‍🏍💕" }, JsonRequestBehavior.AllowGet);
             }
-            return RedirectToAction("Index", "Agency");
+            return Json(new { success = false, message = "Cannot publish this Trip Post right now 😒😭" }, JsonRequestBehavior.AllowGet);
+
         }
 
         [Authorize(Roles = "Agency")]

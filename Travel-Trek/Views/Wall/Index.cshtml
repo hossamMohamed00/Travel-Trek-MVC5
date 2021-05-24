@@ -8,7 +8,7 @@
     @if (Model.Posts.Any())
     {
 
-        <div class="row">
+        <div class="row" id="posts">
             @foreach (var post in Model.Posts)
             {
                 <div class="col">
@@ -71,16 +71,22 @@
     <script>
         /* Like Post Logic*/
         $(document).ready(function() {
-            $("#likeBtn").on("click", function () {
+            $("#posts").on("click", ".js-like",function () {
                 console.log("CLicked");
+
                 // Get reference for the button
                 var button = $(this);
 
                 // Get post id
                 var postId = button.attr("data-post-id");
 
-                //* Get numebr of likes div
-                var numOfLikes = document.getElementById("num-of-likes");
+                //* Get number of likes div
+                var cardBody = button.parents(".card-body");
+                console.log(cardBody);
+
+                var numOfLikes = cardBody.children("num-of-likes");
+
+                //var numOfLikes = cardBody.childs("#num-of-likes");
 
                 $.ajax({
                     url: '@Url.Action("LikePost", "Wall")',
