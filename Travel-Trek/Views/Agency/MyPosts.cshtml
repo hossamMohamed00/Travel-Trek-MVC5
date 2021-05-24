@@ -13,28 +13,29 @@
             {
 
                 <div class="col" >
+                    <h4 class="trip-title">@post.TripTitle</h4>
                     <div class="card"  style="width: 18rem; margin-bottom: 12px">
                         <img class="card-img-top" src="@post.TripImage" alt="@post.TripTitle">
                         <div class="card-body">
-                            <h5 class="card-title">@post.Agency.FirstName @post.Agency.LastName </h5>
-                            <p class="card-text"> @post.TripDetails</p>
-                            <p class="card-text"> @post.TripDestination</p>
-                            <p class="card-text"> @post.TripDate</p>
+                            <h5 class="card-title">From: @post.Agency.FirstName @post.Agency.LastName </h5>
+                            <p class="card-text">Details: @post.TripDetails</p>
+                            <p class="card-text">Destination: @post.TripDestination</p>
+                            <p class="card-text">Trip Date: @post.TripDate.ToLongDateString()</p>
 
                             <!-- Delete , Update-->
-                            <a href="#" class="btn btn-primary float-lg-left">Update</a>
+                            <a href="#" class="btn btn-primary float-lg-left" data-post-id="@post.Id">Update</a>
                             <button data-post-id="@post.Id" class="btn btn-danger float-lg-right" id="js-delete">Delete</button>
 
 
-                            <!-- likes -->
-                            <div class="badge bg-success " style="width: 6rem; color: white; margin-left: 1px">
+                            <!-- likes badge-->
+                            <div class="badge bg-success likes-badge" >
                                 @post.Likes likes.
                             </div>
                         </div>
 
-                        <!-- Trip Status-->
+                        <!-- Card footer-->
                         <div class="card-footer">
-                            <small class="text-muted">@post.PostDate.ToLongDateString()</small>
+                            <text class="text-muted">Posted at @post.PostDate.ToLongDateString()</text>
                             <div class="text-muted">
                                 @{
                                     if (@post.Status.Equals("Approved"))

@@ -218,3 +218,10 @@ footer {
         margin: 0;
     }
 }
+
+.likes-badge {
+    width: 65px;
+    color: white;
+    margin-left: 15px;
+    padding: 13px;
+}
