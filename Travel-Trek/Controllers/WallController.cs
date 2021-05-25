@@ -10,25 +10,25 @@ namespace Travel_Trek.Controllers
 {
     public class WallController : Controller
     {
-        readonly ApplicationDbContext Db;
+        private readonly ApplicationDbContext _dbContext;
 
         /* Constructor */
         public WallController()
         {
-            Db = new ApplicationDbContext();
+            _dbContext = new ApplicationDbContext();
         }
 
         /* Override Dispose method */
         protected override void Dispose(bool disposing)
         {
-            Db.Dispose();
+            _dbContext.Dispose();
         }
 
         // GET: Wall
         // [Authorize(Roles = "Traveler")]
         public ActionResult Index()
         {
-            var posts = Db.Posts.Include("Agency").Where(p => p.Status.Equals(Post.APPROVED)).ToList();
+            var posts = _dbContext.Posts.Include("Agency").Where(p => p.Status.Equals(Post.APPROVED)).ToList();
 
             var viewModel = new WallViewModel
             {
@@ -42,10 +42,10 @@ namespace Travel_Trek.Controllers
 
         // Get: Wall/posts/saved
         [Route("Wall/posts/saved")]
-        [Authorize(Roles = "Traveler")]
+        [Authorize(Roles = RoleNamesAndIds.Traveler)]
         public ActionResult SavedPosts()
         {
-            var posts = Db.Posts.Include("Agency").Where(p => p.Status.Equals(Post.APPROVED)).ToList();
+            var posts = _dbContext.Posts.Include("Agency").Where(p => p.Status.Equals(Post.APPROVED)).ToList();
 
             var viewModel = new WallViewModel
             {
@@ -58,7 +58,7 @@ namespace Travel_Trek.Controllers
 
 
         [Route("Wall/user/profile")]
-        [Authorize(Roles = "Traveler")]
+        [Authorize(Roles = RoleNamesAndIds.Traveler)]
         public ActionResult Profile()
         {
             var viewModel = GetWallViewModel();
@@ -67,7 +67,7 @@ namespace Travel_Trek.Controllers
         }
 
         [Route("Wall/user/profile/edit")]
-        [Authorize(Roles = "Traveler")]
+        [Authorize(Roles = RoleNamesAndIds.Traveler)]
         public ActionResult Edit()
         {
             var viewModel = GetWallViewModel();
@@ -77,7 +77,7 @@ namespace Travel_Trek.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Traveler")]
+        [Authorize(Roles = RoleNamesAndIds.Traveler)]
         public ActionResult Save(WallViewModel viewModel, HttpPostedFileBase userPhoto)
         {
             // Check if the model in valid state or not
@@ -92,7 +92,7 @@ namespace Travel_Trek.Controllers
             var person = viewModel.User;
 
             //* Get traveler from the database
-            var travelerInDb = Db.Users.Include("UserRole").Single(m => m.Id == person.Id);
+            var travelerInDb = _dbContext.Users.Include("UserRole").Single(m => m.Id == person.Id);
 
             //* Edit traveler data and save it
             travelerInDb.FirstName = person.FirstName;
@@ -111,18 +111,18 @@ namespace Travel_Trek.Controllers
             }
 
             //* Save the changes in the database
-            Db.SaveChanges();
+            _dbContext.SaveChanges();
 
             return RedirectToAction("Profile", "Wall");
         }
 
 
         [HttpPost]
-        [Authorize(Roles = "Traveler")]
+        [Authorize(Roles = RoleNamesAndIds.Traveler)]
         public ActionResult LikePost(int Id)
         {
             //Get post from db
-            var post = Db.Posts.Single(p => p.Id == Id);
+            var post = _dbContext.Posts.Single(p => p.Id == Id);
 
             if (post == null)
                 return Json(new { success = false, message = "Cannot find this post!" }, JsonRequestBehavior.AllowGet);
@@ -131,7 +131,7 @@ namespace Travel_Trek.Controllers
             post.Likes += 1;
 
             // Save changes
-            Db.SaveChanges();
+            _dbContext.SaveChanges();
 
             //* Send json to the user
             return Json(new { success = true, likes = post.Likes }, JsonRequestBehavior.AllowGet);
@@ -144,7 +144,7 @@ namespace Travel_Trek.Controllers
             // Get Logged in agency
             var loggedInTravler = AccountController.GetUserFromEmail(User.Identity.Name);
 
-            var travler = Db.Users.Include("UserRole").SingleOrDefault(u => u.Id == loggedInTravler.Id);
+            var travler = _dbContext.Users.Include("UserRole").SingleOrDefault(u => u.Id == loggedInTravler.Id);
 
             var viewModel = new WallViewModel
             {

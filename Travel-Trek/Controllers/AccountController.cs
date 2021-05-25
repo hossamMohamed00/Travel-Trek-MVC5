@@ -12,18 +12,18 @@ namespace Travel_Trek.Controllers
 {
     public class AccountController : Controller
     {
-        ApplicationDbContext Db;
+        private readonly ApplicationDbContext _dbContext;
 
         /* Constructor */
         public AccountController()
         {
-            Db = new ApplicationDbContext();
+            _dbContext = new ApplicationDbContext();
         }
 
         /* Override Dispose method */
         protected override void Dispose(bool disposing)
         {
-            Db.Dispose();
+            _dbContext.Dispose();
         }
 
         /*---------------------------*/
@@ -65,33 +65,29 @@ namespace Travel_Trek.Controllers
             var loginData = viewModel.Login;
 
             //* Search for this user
-            var user = Db.Users.FirstOrDefault(u => u.Email.Equals(loginData.Email) && u.Password.Equals(loginData.Password));
+            var user = _dbContext.Users.FirstOrDefault(u => u.Email.Equals(loginData.Email) && u.Password.Equals(loginData.Password));
 
             //* Check if the user exists
             if (user != null)
             {
-                var Ticket = new FormsAuthenticationTicket(loginData.Email, true, 3000);
-                string Encrypt = FormsAuthentication.Encrypt(Ticket);
-
-                //* Create new cookie
-                var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, Encrypt);
-                cookie.Expires = DateTime.Now.AddHours(3000);
-                cookie.HttpOnly = true;
+                //* Get user cookie
+                var cookie = GetAUserCookie(loginData);
 
                 //* Add the cookie
                 Response.Cookies.Add(cookie);
 
-                if (user.UserRoleId == UserRole.AdminId)
+                //* Redirect the user to the valid path
+                if (user.UserRoleId == RoleNamesAndIds.AdminId)
                 {
                     return RedirectToAction("Index", "Dashboard");
                 }
 
-                if (user.UserRoleId == UserRole.AgencyId)
+                if (user.UserRoleId == RoleNamesAndIds.AgencyId)
                 {
                     return RedirectToAction("MyPosts", "Agency");
                 }
 
-                if (user.UserRoleId == UserRole.TravelerId)
+                if (user.UserRoleId == RoleNamesAndIds.TravelerId)
                 {
 
                     return RedirectToAction("Index", "Wall");
@@ -129,6 +125,25 @@ namespace Travel_Trek.Controllers
             }
 
             return user;
+        }
+
+        /**
+         * Prepare and get a cookie for the user
+         */
+        public static HttpCookie GetAUserCookie(Login loginData)
+        {
+            var ticket = new FormsAuthenticationTicket(loginData.Email, true, 3000);
+            string encrypt = FormsAuthentication.Encrypt(ticket);
+
+            //* Create new cookie
+            var cookie =
+                new HttpCookie(FormsAuthentication.FormsCookieName, encrypt)
+                {
+                    Expires = DateTime.Now.AddHours(3000),
+                    HttpOnly = true
+                };
+
+            return cookie;
         }
     }
 

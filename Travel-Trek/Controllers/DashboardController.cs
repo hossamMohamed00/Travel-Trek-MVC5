@@ -11,33 +11,36 @@ using Travel_Trek.ViewModels;
 
 namespace Travel_Trek.Controllers
 {
+    [Authorize(Roles = RoleNamesAndIds.Admin)]
     public class DashboardController : Controller
     {
-        ApplicationDbContext Db;
+        private readonly ApplicationDbContext _dbContext;
 
         /* Constructor */
         public DashboardController()
         {
-            Db = new ApplicationDbContext();
+            /* Initalize the db contextObject */
+            _dbContext = new ApplicationDbContext();
         }
 
         /* Override Dispose method */
         protected override void Dispose(bool disposing)
         {
-            Db.Dispose();
+            _dbContext.Dispose();
         }
 
-        /* Dashboard Actions */
+        /*---------------------------------------------------*/
+
+        /* Dashboard (Admin) Actions */
 
         // GET: Dashboard
-        [Authorize(Roles = "Admin")]
+        [Route("Dashboard/")]
         public ActionResult Index()
         {
             return View();
         }
 
         // GET: Dashboard/Users
-        [Authorize(Roles = "Admin")]
         [Route("Dashboard/users")]
         public ActionResult AllUsers()
         {
@@ -47,7 +50,6 @@ namespace Travel_Trek.Controllers
         }
 
         [Route("Dashboard/users/new")]
-        [Authorize(Roles = "Admin")]
         public ActionResult CreateUser()
         {
             var viewModel = GetAddUserViewModel();
@@ -59,7 +61,6 @@ namespace Travel_Trek.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
         [Route("Dashboard/users/new/save")]
-        [Authorize(Roles = "Admin")]
         public ActionResult CreateNewUser(AddUserViewModel viewModel, HttpPostedFileBase userPhoto)
         {
             //* Check if the model state is valid
@@ -83,22 +84,21 @@ namespace Travel_Trek.Controllers
             }
 
             //Save the user
-            Db.Users.Add(user);
-            Db.SaveChanges();
+            _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
 
             return RedirectToAction("AllUsers", "Dashboard");
         }
 
         [HttpPost]
         [Route("Dashboard/users/delete")]
-        [Authorize(Roles = "Admin")]
         public ActionResult DeleteUser(int? id)
         {
             if (id == null)
                 return Json(new { success = true, message = "Cannot delete this user right now! 😭" }, JsonRequestBehavior.AllowGet);
 
             //* Get the user from the db
-            var user = Db.Users.Single(c => c.Id == id);
+            var user = _dbContext.Users.Single(c => c.Id == id);
 
             //* Remove user image from the device
             if (!String.IsNullOrEmpty(user.Photo))
@@ -107,17 +107,16 @@ namespace Travel_Trek.Controllers
             }
 
             //* Remove the user from the db
-            Db.Users.Remove(user);
+            _dbContext.Users.Remove(user);
 
             //* Save the changes to the db
-            Db.SaveChanges();
+            _dbContext.SaveChanges();
 
             return Json(new { success = true, message = "User deleted successfully" }, JsonRequestBehavior.AllowGet);
         }
 
         // Get: User/Profile
         [Route("Dashboard/admin/profile")]
-        [Authorize(Roles = "Admin")]
         public ActionResult Profile()
         {
             var viewModel = GetWallViewModel();
@@ -126,7 +125,6 @@ namespace Travel_Trek.Controllers
         }
 
         [Route("Dashboard/admin/profile/edit")]
-        [Authorize(Roles = "Admin")]
         public ActionResult Edit()
         {
             var viewModel = GetWallViewModel();
@@ -137,7 +135,6 @@ namespace Travel_Trek.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Dashboard/admin/profile/save")]
-        [Authorize(Roles = "Admin")]
         public ActionResult Save(WallViewModel ViewModel, HttpPostedFileBase userPhoto)
         {
             // Check if the model in valid state or not
@@ -151,7 +148,7 @@ namespace Travel_Trek.Controllers
             var person = ViewModel.User;
 
             //* Get admin from the database
-            var adminInDb = Db.Users.Include("UserRole").Single(u => u.Id == person.Id);
+            var adminInDb = _dbContext.Users.Include("UserRole").Single(u => u.Id == person.Id);
 
             //* Edit admin data and save it
             adminInDb.FirstName = person.FirstName;
@@ -179,33 +176,32 @@ namespace Travel_Trek.Controllers
             }
 
             //* Save the changes in the database
-            Db.SaveChanges();
+            _dbContext.SaveChanges();
 
             return RedirectToAction("Profile");
         }
 
         // Get: Dashboard/Posts/Pending
         [Route("Dashboard/posts/pending")]
-        [Authorize(Roles = "Admin")]
         public ActionResult PendingPosts()
         {
-            var PendingPosts = GetAllPosts().Where(y => y.Status == Post.PENDING);
+            /* Get the pending posts only */
+            var pendingPosts = _dbContext.Posts.Include("Agency").Where(y => y.Status == Post.PENDING);
 
-            return View(PendingPosts);
+            return View(pendingPosts);
         }
 
         // Get: Dashboard/Posts
         [Route("Dashboard/posts")]
-        [Authorize(Roles = "Admin")]
         public ActionResult AllPosts()
         {
+            /* Get all posts data */
             var allPosts = GetAllPosts();
 
             return View(allPosts);
         }
 
         [Route("Dashboard/posts/delete")]
-        [Authorize(Roles = "Admin")]
         public ActionResult DeletePost(int? id)
         {
             //* Check if the id not provided
@@ -213,7 +209,7 @@ namespace Travel_Trek.Controllers
                 return Json(new { success = false, message = "Cannot delete this post right now! 😭" }, JsonRequestBehavior.AllowGet);
 
             //* Delete the post
-            var isDeleted = Utilities.DeletePostFromDb(id, Db);
+            var isDeleted = Utilities.DeletePostFromDb(id, _dbContext);
 
             //* Inform the user 
             return (isDeleted)
@@ -224,14 +220,14 @@ namespace Travel_Trek.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Route("Dashboard/posts/approve")]
         public JsonResult ApprovePost(int id)
         {
-            var post = Db.Posts.Single(p => p.Id == id);
+            var post = _dbContext.Posts.Single(p => p.Id == id);
             post.Status = Post.APPROVED;
             try
             {
-                Db.SaveChanges();
+                _dbContext.SaveChanges();
             }
             catch (DbEntityValidationException e)
             {
@@ -243,31 +239,30 @@ namespace Travel_Trek.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Route("Dashboard/posts/refuse")]
         public JsonResult RefusePost(int id, string refuseMessage)
         {
-            var post = Db.Posts.Single(p => p.Id == id);
+            var post = _dbContext.Posts.Single(p => p.Id == id);
             post.Status = Post.REFUSED;
             post.RefuseMessage = refuseMessage;
-            Db.SaveChanges();
+            _dbContext.SaveChanges();
 
             return Json(new { success = true, message = "Refuse the trip post done successfully!" }, JsonRequestBehavior.AllowGet);
         }
-
 
         /* Helper Methods */
 
         // Return all users (agencies and travelers)
         public IEnumerable<Person> GetAllUsers()
         {
-            var users = Db.Users.Include("UserRole").ToList();
+            var users = _dbContext.Users.Include("UserRole").ToList();
             return users;
         }
 
         // Return all users (agencies and travelers)
         public IEnumerable<Post> GetAllPosts()
         {
-            var posts = Db.Posts.Include("Agency").ToList();
+            var posts = _dbContext.Posts.Include("Agency").OrderBy(p => p.PostDate).ToList();
             return posts;
         }
 
@@ -286,10 +281,10 @@ namespace Travel_Trek.Controllers
 
         public AddUserViewModel GetAddUserViewModel()
         {
-            var userRoles = Db.UserRoles.ToList();
+            var userRoles = _dbContext.UserRoles.ToList();
 
             //* Get the admin role to exclude it
-            var adminRole = userRoles.Find(r => r.Name == UserRole.Admin);
+            var adminRole = userRoles.Find(r => r.Name == RoleNamesAndIds.Admin);
 
             // Exclude the admin role
             userRoles.Remove(adminRole);

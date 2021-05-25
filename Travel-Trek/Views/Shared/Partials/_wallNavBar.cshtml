@@ -12,7 +12,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-        @if (User.Identity.IsAuthenticated && !User.IsInRole(UserRole.Admin) && !User.IsInRole(UserRole.Agency) && showFilterPosts)
+        @if (User.Identity.IsAuthenticated && !User.IsInRole(RoleNamesAndIds.Admin) && !User.IsInRole(RoleNamesAndIds.Agency) && showFilterPosts)
         {
             <form class="form-inline my-2 my-lg-0">
                 <label for="filter">Filter</label>
@@ -34,7 +34,7 @@
             }
             else
             {
-                if (User.IsInRole(UserRole.Admin) || User.IsInRole(UserRole.Agency))
+                if (User.IsInRole(RoleNamesAndIds.Admin) || User.IsInRole(RoleNamesAndIds.Agency))
                 {
                     // Display none
                 }

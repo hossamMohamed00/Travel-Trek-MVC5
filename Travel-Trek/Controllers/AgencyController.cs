@@ -8,24 +8,24 @@ using Travel_Trek.ViewModels;
 
 namespace Travel_Trek.Controllers
 {
+    [Authorize(Roles = RoleNamesAndIds.Agency)]
     public class AgencyController : Controller
     {
-        ApplicationDbContext Db;
+        private readonly ApplicationDbContext _dbContext;
 
         /* Constructor */
         public AgencyController()
         {
-            Db = new ApplicationDbContext();
+            _dbContext = new ApplicationDbContext();
         }
 
         /* Override Dispose method */
         protected override void Dispose(bool disposing)
         {
-            Db.Dispose();
+            _dbContext.Dispose();
         }
 
         // GET: Agency
-        [Authorize(Roles = "Agency")]
         public ActionResult Index()
         {
             return View();
@@ -33,7 +33,6 @@ namespace Travel_Trek.Controllers
 
         // Get: Agency/Profile
         [Route("Agency/Profile")]
-        [Authorize(Roles = "Agency")]
         public ActionResult Profile()
         {
             var viewModel = GetWallViewModel();
@@ -42,7 +41,6 @@ namespace Travel_Trek.Controllers
         }
 
         [Route("Agency/Profile/Edit")]
-        [Authorize(Roles = "Agency")]
         public ActionResult Edit()
         {
             var viewModel = GetWallViewModel();
@@ -52,7 +50,6 @@ namespace Travel_Trek.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Agency")]
         public ActionResult Save(WallViewModel viewModel, HttpPostedFileBase userPhoto)
         {
             // Check if the model in valid state or not
@@ -67,7 +64,7 @@ namespace Travel_Trek.Controllers
             var person = viewModel.User;
 
             //* Get agency from the database
-            var agencyInDb = Db.Users.Include("UserRole").Single(m => m.Id == person.Id);
+            var agencyInDb = _dbContext.Users.Include("UserRole").Single(m => m.Id == person.Id);
 
             //* Edit agency data and save it
             agencyInDb.FirstName = person.FirstName;
@@ -86,21 +83,18 @@ namespace Travel_Trek.Controllers
             }
 
             //* Save the changes in the database
-            Db.SaveChanges();
+            _dbContext.SaveChanges();
 
             return RedirectToAction("Profile", "Agency");
         }
 
         [Route("Agency/Posts/Create")]
-        [Authorize(Roles = "Agency")]
         public ActionResult CreatePost()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize(Roles = "Agency")]
-
         public JsonResult PublishPost(Post post, HttpPostedFileBase TripImage)
         {
             if (ModelState.IsValid)
@@ -118,8 +112,8 @@ namespace Travel_Trek.Controllers
 
                 post.AgencyId = agency.Id;
 
-                Db.Posts.Add(post);
-                Db.SaveChanges();
+                _dbContext.Posts.Add(post);
+                _dbContext.SaveChanges();
 
                 return Json(new { success = true, message = "Trip Post request sent successfully, our admins will review the post ASAP 🐱‍🏍💕" }, JsonRequestBehavior.AllowGet);
             }
@@ -127,7 +121,6 @@ namespace Travel_Trek.Controllers
 
         }
 
-        [Authorize(Roles = "Agency")]
         [Route("Agency/Posts")]
         [Authorize(Roles = "Agency")]
         public ActionResult MyPosts()
@@ -136,7 +129,7 @@ namespace Travel_Trek.Controllers
             var agency = AccountController.GetUserFromEmail(User.Identity.Name);
 
             // Get posts for this agency
-            var posts = Db.Posts.Include("Agency").Where(p => p.AgencyId == agency.Id).ToList();
+            var posts = _dbContext.Posts.Include("Agency").Where(p => p.AgencyId == agency.Id).ToList();
 
             return View(posts);
         }
@@ -150,7 +143,7 @@ namespace Travel_Trek.Controllers
                 return Json(new { success = false, message = "Cannot delete this post right now! 😭" }, JsonRequestBehavior.AllowGet);
 
             //* Delete the post
-            var isDeleted = Utilities.DeletePostFromDb(id, Db);
+            var isDeleted = Utilities.DeletePostFromDb(id, _dbContext);
 
             //* Inform the user 
             return (isDeleted)
