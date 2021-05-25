@@ -13,7 +13,6 @@ namespace Travel_Trek.Helpers
          */
         public static string GetPostImagePath(HttpPostedFileBase TripImage, DateTime PostDate)
         {
-            string path = "";
             string fileName = TripImage.FileName;
             if (fileName.Length > 0)
             {
@@ -24,7 +23,7 @@ namespace Travel_Trek.Helpers
 
                 var fileNameWithSuffix = imageNameWithExtension[0] + suffix + '.' + imageNameWithExtension[1];
 
-                path = "/Content/images/posts/" + fileNameWithSuffix;
+                string path = "/Content/images/posts/" + fileNameWithSuffix;
 
                 return path;
             }

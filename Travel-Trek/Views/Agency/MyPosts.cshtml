@@ -12,30 +12,30 @@
             @foreach (var post in Model)
             {
 
-                <div class="col" >
+                <div class="col">
                     <h4 class="trip-title">@post.TripTitle</h4>
-                    <div class="card"  style="width: 18rem; margin-bottom: 12px">
+                    <div class="card" style="width: 18rem; margin-bottom: 12px">
                         <img class="card-img-top" src="@post.TripImage" alt="@post.TripTitle">
                         <div class="card-body">
                             <h5 class="card-title">From: @post.Agency.FirstName @post.Agency.LastName </h5>
                             <p class="card-text">Details: @post.TripDetails</p>
                             <p class="card-text">Destination: @post.TripDestination</p>
-                            <p class="card-text">Trip Date: @post.TripDate.ToLongDateString()</p>
+                            <p class="card-text">Date: @post.TripDate.ToLongDateString()</p>
 
                             <!-- Delete , Update-->
-                            <a href="#" class="btn btn-primary float-lg-left" data-post-id="@post.Id">Update</a>
+                            <a href="@Url.Action("UpdatePost", new {id = post.Id})" class="btn btn-primary float-lg-left">Update</a>
                             <button data-post-id="@post.Id" class="btn btn-danger float-lg-right" id="js-delete">Delete</button>
 
 
                             <!-- likes badge-->
-                            <div class="badge bg-success likes-badge" >
+                            <div class="badge bg-success likes-badge">
                                 @post.Likes likes.
                             </div>
                         </div>
 
                         <!-- Card footer-->
                         <div class="card-footer">
-                            <text class="text-muted">Posted at @post.PostDate.ToLongDateString()</text>
+                            <text class="text-muted">Posted at @post.PostDate.ToLongDateString() @post.PostDate.ToShortTimeString()</text>
                             <div class="text-muted">
                                 @{
                                     if (@post.Status.Equals("Approved"))
@@ -74,78 +74,6 @@
 <!--Javascript here-->
 @section scripts
 {
-    <script>
-        $(document).ready(function() {
-            //* Handle delete post
-            $("#posts").on("click", '#js-delete',
-                function() {
-                    // Get reference for the button
-                    var button = $(this);
-
-                    bootbox.confirm({
-                        message: "Are you sure you want to delete this post ? 🙄",
-                        buttons: {
-                            cancel: {
-                                label: 'Cancel',
-                                className: 'btn-danger'
-                            },
-                            confirm: {
-                                label: 'Confirm',
-                                className: 'btn-success'
-                            }
-                        },
-                        callback: function(result) {
-
-                            if (result) {
-                                console.log("Deleting Post...✌");
-                                // Send the ajax request
-                                $.ajax({
-                                    url: '@Url.Action("DeletePost", "Agency")',
-                                    dataType: "json",
-                                    type: "POST",
-                                    data: {
-                                        id: button.attr("data-post-id")
-                                    },
-                                    success: function(data) {
-                                        if (data.success) {
-
-                                            var dialog = bootbox.dialog({
-                                                title: 'Deleting Post 🐱‍🏍',
-                                                message: '<p><i class="fa fa-spin fa-spinner"></i> Processing 👀...</p>'
-                                            });
-
-                                            dialog.init(function() {
-                                                setTimeout(function () {
-                                                        //* Get the card and remove 
-                                                        button.parents(".card").remove();
-
-                                                        //* add the message to the dialog
-                                                        dialog.find('.bootbox-body').html(data.message + " 🦾");
-                                                        dialog.closeButton = true;
-                                                        dialog.backdrop = true;
-                                                    },
-                                                    1000);
-                                            });
-                                        } else {
-                                            bootbox.alert('Cannot delete this post right now 😭😭!');
-                                        }
-                                    },
-                                    error: function(xhr) {
-                                        console.log(xhr);
-                                        bootbox.alert('Cannot delete this post right now 😭😭!');
-                                    }
-                                });
-                            }
-                        }
-                    });
-                });
-        })
-    </script>
-
-    <script>
-        function likePost(post) {
-            post.classList.toggle("likedBtn");
-        }
-    </script>
-
+    <!--Handle Delete Post Operation-->
+    <script src="~/Scripts/Custom/AgencyDeletePost.js"></script>
 }

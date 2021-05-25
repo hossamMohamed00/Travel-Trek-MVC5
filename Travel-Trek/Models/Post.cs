@@ -36,7 +36,6 @@ namespace Travel_Trek.Models
         [Display(Name = "Destination")]
         public string TripDestination { get; set; }
 
-        [Required]
         [Display(Name = "Image")]
         public string TripImage { get; set; }
 

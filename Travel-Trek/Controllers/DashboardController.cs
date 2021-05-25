@@ -91,7 +91,7 @@ namespace Travel_Trek.Controllers
         }
 
         [HttpPost]
-        [Route("Dashboard/users/delete")]
+        [Route("Dashboard/users/delete")]// Reference in AdminDeleteUser.js
         public ActionResult DeleteUser(int? id)
         {
             if (id == null)
@@ -201,7 +201,7 @@ namespace Travel_Trek.Controllers
             return View(allPosts);
         }
 
-        [Route("Dashboard/posts/delete")]
+        [Route("Dashboard/posts/delete")] // Reference in AdminDeletePost.js
         public ActionResult DeletePost(int? id)
         {
             //* Check if the id not provided
@@ -220,7 +220,7 @@ namespace Travel_Trek.Controllers
         }
 
         [HttpPost]
-        [Route("Dashboard/posts/approve")]
+        [Route("Dashboard/posts/approve")] // Reference in ChangePostStatus.js
         public JsonResult ApprovePost(int id)
         {
             var post = _dbContext.Posts.Single(p => p.Id == id);
@@ -239,7 +239,7 @@ namespace Travel_Trek.Controllers
         }
 
         [HttpPost]
-        [Route("Dashboard/posts/refuse")]
+        [Route("Dashboard/posts/refuse")]// Reference in ChangePostStatus.js
         public JsonResult RefusePost(int id, string refuseMessage)
         {
             var post = _dbContext.Posts.Single(p => p.Id == id);

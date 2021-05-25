@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Travel_Trek.Db_Context;
@@ -91,27 +92,44 @@ namespace Travel_Trek.Controllers
         [Route("Agency/Posts/Create")]
         public ActionResult CreatePost()
         {
-            return View();
+            var viewModel = new PostFormViewModel
+            {
+                Post = new Post(),
+                Action = "PublishPost",
+                Header = "Create New Trip Post 😉🛶",
+                Operation = "Create",
+                Title = "Publish New Trip Post"
+            };
+
+            return View("PostForm", viewModel);
         }
 
         [HttpPost]
-        public JsonResult PublishPost(Post post, HttpPostedFileBase TripImage)
+        [ValidateAntiForgeryToken]
+        public JsonResult PublishPost(PostFormViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
+                //* Get the post
+                var post = viewModel.Post;
+
+                //* Get the image from the viewModel
+                var tripImage = viewModel.TripImage;
+
                 // Get the agency which wants to add this post
                 var agency = AccountController.GetUserFromEmail(User.Identity.Name);
 
-                var ImagePath = Utilities.GetPostImagePath(TripImage, post.PostDate);
+                var ImagePath = Utilities.GetPostImagePath(tripImage, post.PostDate);
 
                 // Save the image on the device 
-                TripImage.SaveAs(Server.MapPath(ImagePath));
+                tripImage.SaveAs(Server.MapPath(ImagePath));
 
                 //* Save image data
                 post.TripImage = ImagePath;
 
                 post.AgencyId = agency.Id;
 
+                //* Add the post to the db and save the changes
                 _dbContext.Posts.Add(post);
                 _dbContext.SaveChanges();
 
@@ -121,8 +139,68 @@ namespace Travel_Trek.Controllers
 
         }
 
+        [Route("Agency/Posts/update")]
+        public ActionResult UpdatePost(int id)
+        {
+            var viewModel = GetUpdatePostFormViewModel(id);
+
+            return View("PostForm", viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdatePostData(PostFormViewModel ViewModel)
+        {
+            // Check if the model in valid state or not
+            if (!ModelState.IsValid)
+            {
+                // var viewModel = GetUpdatePostFormViewModel(ViewModel.Post.Id);
+
+                return Json(new { success = false, message = "Something went wrong. Please try again 🔃" });
+            }
+
+            //* Get the Post data from the ViewModel
+            var post = ViewModel.Post;
+
+            //* Get the image from the viewModel
+            var tripImage = ViewModel.TripImage;
+
+            //* Get post from the database
+            var postInDb = _dbContext.Posts.Single(p => p.Id == post.Id);
+
+            //* Edit post data and save it
+            postInDb.TripTitle = post.TripTitle;
+            postInDb.TripDestination = post.TripDestination;
+            postInDb.TripDetails = post.TripDetails;
+            postInDb.TripDate = post.TripDate;
+            postInDb.Status = Post.PENDING; // Change the status back to be pending
+
+            //* Check if there is a photo for the trip
+            if (tripImage != null)
+            {
+                //* Delete the previous image of the post if he already has one
+                if (!String.IsNullOrEmpty(postInDb.TripImage))
+                {
+                    Utilities.DeleteImageFromServer(postInDb.TripImage);
+                }
+
+                //* Get the path of the new photo
+                var ImagePath = Utilities.GetPostImagePath(tripImage, postInDb.PostDate);
+
+                // Save the image on the device 
+                tripImage.SaveAs(Server.MapPath(ImagePath));
+
+                //* Set the path to the post's photo field
+                postInDb.TripImage = ImagePath;
+            }
+
+            //* Save the changes in the database
+            _dbContext.SaveChanges();
+
+            return Json(new { success = true, message = "Trip Post Update Successfully ✔🕺🏻, Our admins will review the post ASAP 🐱‍🏍🔃" }, JsonRequestBehavior.AllowGet);
+        }
+
         [Route("Agency/Posts")]
-        [Authorize(Roles = "Agency")]
         public ActionResult MyPosts()
         {
             // Get Logged in agency
@@ -134,8 +212,7 @@ namespace Travel_Trek.Controllers
             return View(posts);
         }
 
-        [Authorize(Roles = "Agency")]
-        [Route("Agency/Posts/delete")]
+        [Route("Agency/Posts/delete")] // Reference in AgencyDeletePost.js
         public ActionResult DeletePost(int? id)
         {
             //* Check if the id not provided
@@ -154,7 +231,6 @@ namespace Travel_Trek.Controllers
         }
 
 
-        [Authorize(Roles = "Agency")]
         [Route("Agency/FAQ")]
         public ActionResult FAQ()
         {
@@ -174,5 +250,22 @@ namespace Travel_Trek.Controllers
 
             return viewModel;
         }
+
+        public PostFormViewModel GetUpdatePostFormViewModel(int id)
+        {
+            // Get Logged in agency
+            var agency = AccountController.GetUserFromEmail(User.Identity.Name);
+            var viewModel = new PostFormViewModel
+            {
+                Post = _dbContext.Posts.Include("Agency").Single(p => p.Id == id && p.AgencyId == agency.Id),
+                Action = "UpdatePostData",
+                Header = "Update Trip Post 📑🧐",
+                Operation = "Update",
+                Title = "Update Trip Post 📑🧐"
+            };
+
+            return viewModel;
+        }
+
     }
 }
