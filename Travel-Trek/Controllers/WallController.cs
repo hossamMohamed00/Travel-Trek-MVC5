@@ -129,11 +129,6 @@ namespace Travel_Trek.Controllers
             //* Add the post to the saved posts for this user
             _dbContext.SavedPosts.Add(new SavedPosts { PostId = postId, UserId = travelerId });
 
-            if (false)
-            {
-                return Json(new { success = false, message = "Cannot save this post, please try again later on 😪🔃" }, JsonRequestBehavior.AllowGet);
-            }
-
             // Save changes
             _dbContext.SaveChanges();
 
@@ -169,23 +164,54 @@ namespace Travel_Trek.Controllers
 
         [HttpPost]
         [Authorize(Roles = RoleNamesAndIds.Traveler)]
-        public ActionResult LikePost(int id)
+        [Route("Wall/posts/like")] // Referenced in PostOperations.js
+        public ActionResult LikePost(int postId)
         {
-            //Get post from db
-            var post = _dbContext.Posts.Single(p => p.Id == id);
+            // Get Logged in agency
+            var travelerId = AccountController.GetUserFromEmail(User.Identity.Name).Id;
 
-            if (post == null)
-                return Json(new { success = false, message = "Cannot find this post!" }, JsonRequestBehavior.AllowGet);
+            // Get the post from the db
+            var post = _dbContext.Posts.Single(p => p.Id == postId);
 
-            // Increment post likes
+            //* Check first if the post is already liked or not
+            var isLiked = IsAlreadyLiked(travelerId, postId);
+            if (isLiked)
+            {
+                /* Dislike the post here */
+
+                //* Get this liked post
+                var likedPost = _dbContext.LikedPosts.SingleOrDefault(p => p.UserId == travelerId && p.PostId == postId);
+
+                if (likedPost == null)
+                {
+                    return Json(new { success = false, message = "Cannot like this post, please try again later on 😪🔃" }, JsonRequestBehavior.AllowGet);
+                }
+
+                //* remove the post from the liked posts for this user
+                _dbContext.LikedPosts.Remove(likedPost);
+
+                //* Decrease post likes
+                post.Likes -= 1;
+
+                // Save changes
+                _dbContext.SaveChanges();
+
+                return Json(new { success = true, likes = post.Likes, message = "Trip Post disliked Successfully! 💔" }, JsonRequestBehavior.AllowGet);
+            }
+
+            // If the post doesn't liked by this user before, So like it....
+
+            //* Add the post to the liked posts for this user
+            _dbContext.LikedPosts.Add(new LikedPosts { PostId = postId, UserId = travelerId });
+
+            //* Increase post likes
             post.Likes += 1;
 
             // Save changes
             _dbContext.SaveChanges();
 
             //* Send json to the user
-            return Json(new { success = true, likes = post.Likes }, JsonRequestBehavior.AllowGet);
-
+            return Json(new { success = true, likes = post.Likes, message = "Trip Post Liked Successfully! ❤" }, JsonRequestBehavior.AllowGet);
         }
 
         /* Helper Methods */
@@ -235,5 +261,17 @@ namespace Travel_Trek.Controllers
             //* Return true if there are a post
             return savedPost != null ? true : false;
         }
+
+        public bool IsAlreadyLiked(int userId, int postId)
+        {
+            //* Get this liked post
+            var likedPost = _dbContext.LikedPosts.
+                SingleOrDefault(p => p.UserId == userId && p.PostId == postId);
+
+            //* Return true if there are a post
+            return likedPost != null ? true : false;
+        }
+
+
     }
 }

@@ -12,5 +12,7 @@ namespace Travel_Trek.Db_Context
         public DbSet<Post> Posts { get; set; }
 
         public DbSet<SavedPosts> SavedPosts { get; set; }
+
+        public DbSet<LikedPosts> LikedPosts { get; set; }
     }
 }

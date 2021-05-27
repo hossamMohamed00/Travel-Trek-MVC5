@@ -146,12 +146,17 @@
     <Compile Include="Migrations\202105270123409_PopulateTables.Designer.cs">
       <DependentUpon>202105270123409_PopulateTables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105271627422_addLikedPosts.cs" />
+    <Compile Include="Migrations\202105271627422_addLikedPosts.Designer.cs">
+      <DependentUpon>202105271627422_addLikedPosts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\LikedPosts.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Models\RoleNamesAndIds.cs" />
-    <Compile Include="Models\SavedPosts.cs" />
+    <Compile Include="Models\SavedPost.cs" />
     <Compile Include="Models\UserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs" />
@@ -405,6 +410,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105270123409_PopulateTables.resx">
       <DependentUpon>202105270123409_PopulateTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105271627422_addLikedPosts.resx">
+      <DependentUpon>202105271627422_addLikedPosts.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

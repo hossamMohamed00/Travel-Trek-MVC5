@@ -53,6 +53,7 @@ namespace Travel_Trek.Models
 
         public virtual ICollection<SavedPosts> SavedPosts { get; set; }
 
+        public virtual ICollection<LikedPosts> LikedPosts { get; set; }
 
         // Constructor
         public Post()

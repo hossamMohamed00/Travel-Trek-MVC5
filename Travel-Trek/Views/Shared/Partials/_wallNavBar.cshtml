@@ -2,7 +2,7 @@
 @using Travel_Trek.Models
 @{
     var viewName = Model.CurrentView;
-    var showFilterPosts = (viewName.Equals("Index") || viewName.Equals("SavedPosts")) ? true : false;
+    var showFilterPosts = (viewName.Equals("Index") || viewName.Equals("SavedPost")) ? true : false;
     var username = (User.Identity.IsAuthenticated) ? User.Identity.Name.Split('@')[0] : "Guest";
 }
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top Hh">
@@ -44,7 +44,7 @@
                         @Html.ActionLink("My Profile 👨🏻‍💼", "Profile", "Wall", null, new { @class = "nav-link" })
                     </li>
                     <li class="nav-item">
-                        @Html.ActionLink("SavedPosts 💾", "SavedPosts", "Wall", null, new { @class = "nav-link" })
+                        @Html.ActionLink("SavedPost 💾", "SavedPosts", "Wall", null, new { @class = "nav-link" })
                     </li>
                 }
                 <li class="nav-item">

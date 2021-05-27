@@ -44,7 +44,7 @@ namespace Travel_Trek.Migrations
                 .Index(t => t.UserRoleId);
 
             CreateTable(
-                "dbo.SavedPosts",
+                "dbo.SavedPost",
                 c => new
                 {
                     UserId = c.Int(nullable: false),
@@ -71,14 +71,14 @@ namespace Travel_Trek.Migrations
         {
             DropForeignKey("dbo.Posts", "AgencyId", "dbo.People");
             DropForeignKey("dbo.People", "UserRoleId", "dbo.UserRoles");
-            DropForeignKey("dbo.SavedPosts", "UserId", "dbo.People");
-            DropForeignKey("dbo.SavedPosts", "PostId", "dbo.Posts");
-            DropIndex("dbo.SavedPosts", new[] { "PostId" });
-            DropIndex("dbo.SavedPosts", new[] { "UserId" });
+            DropForeignKey("dbo.SavedPost", "UserId", "dbo.People");
+            DropForeignKey("dbo.SavedPost", "PostId", "dbo.Posts");
+            DropIndex("dbo.SavedPost", new[] { "PostId" });
+            DropIndex("dbo.SavedPost", new[] { "UserId" });
             DropIndex("dbo.People", new[] { "UserRoleId" });
             DropIndex("dbo.Posts", new[] { "AgencyId" });
             DropTable("dbo.UserRoles");
-            DropTable("dbo.SavedPosts");
+            DropTable("dbo.SavedPost");
             DropTable("dbo.People");
             DropTable("dbo.Posts");
         }

@@ -18,40 +18,37 @@
 
             //* if there is a user already logged in, so continue...
 
-            // toglle the class 
-            post.classList.toggle("likedBtn");
-
             // Get post id
-            var postId = button.attr("data-post-id");
+            var PostId = button.attr("data-post-id");
 
-            //* Get number of likes div
-            var cardBody = button.parents(".card-body");
-            console.log(cardBody);
-
-            var numOfLikes = cardBody.children("num-of-likes");
-
-            //var numOfLikes = cardBody.childs("#num-of-likes");
-
+            /* Send the ajax request to like the post */
             $.ajax({
-                url: '@Url.Action("LikePost", "Wall")',
+                url: '/Wall/posts/like',
                 dataType: "json",
                 type: "POST",
                 data: {
-                    id: postId
+                    postId: PostId
                 },
                 success: function (data) {
                     if (data.success) {
-                        console.log("Liked post!");
+                        console.log(data.message);
 
-                        //* Increase the number of likes
-                        numOfLikes.innerHTML = data.likes + " likes."
+                        // toggle liked the class 
+                        button[0].classList.toggle("likedBtn");
+
+                        //* Get number of likes div and change its value
+                        var cardBody = button.parents(".card-body")[0];
+                        var numOfLikedElement = cardBody.children.namedItem("num-of-likes");
+                        numOfLikedElement.innerHTML = data.likes + " likes"; // get the post likes number from the data object (sent from the controller)
+                        console.log(numOfLikedElement);
+
                     } else {
-                        bootbox.alert('Cannot like this post right now 😭😭!');
+                        bootbox.alert(data.message);
                     }
                 },
                 error: function (xhr) {
                     console.log(xhr);
-                    bootbox.alert('Cannot like this post right now 😭😭!');
+                    bootbox.alert("Cannot like this post right now 😭😭!");
                 }
             })
         });
