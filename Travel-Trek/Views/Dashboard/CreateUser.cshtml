@@ -74,7 +74,7 @@
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <div class="form-group">
                     @Html.LabelFor(m => m.Person.UserRoleId)
-                    @Html.DropDownListFor(m => m.Person.UserRoleId, new SelectList(Model.UserRoles, "Id", "Name"), "Select user role", new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.Person.UserRoleId, new SelectList(Model.UserRoles, "id", "Name"), "Select user role", new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Person.UserRoleId)
                 </div>
             </div>

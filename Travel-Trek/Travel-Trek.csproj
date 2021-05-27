@@ -138,27 +138,20 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Utilities.cs" />
-    <Compile Include="Migrations\202105210008538_InitialMigration.cs" />
-    <Compile Include="Migrations\202105210008538_InitialMigration.Designer.cs">
-      <DependentUpon>202105210008538_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\202105270116443_Initial.cs" />
+    <Compile Include="Migrations\202105270116443_Initial.Designer.cs">
+      <DependentUpon>202105270116443_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202105210020225_populdatePerson.cs" />
-    <Compile Include="Migrations\202105210020225_populdatePerson.Designer.cs">
-      <DependentUpon>202105210020225_populdatePerson.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105250110461_updatePasswordField.cs" />
-    <Compile Include="Migrations\202105250110461_updatePasswordField.Designer.cs">
-      <DependentUpon>202105250110461_updatePasswordField.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202105251748589_updatePostTable.cs" />
-    <Compile Include="Migrations\202105251748589_updatePostTable.Designer.cs">
-      <DependentUpon>202105251748589_updatePostTable.cs</DependentUpon>
+    <Compile Include="Migrations\202105270123409_PopulateTables.cs" />
+    <Compile Include="Migrations\202105270123409_PopulateTables.Designer.cs">
+      <DependentUpon>202105270123409_PopulateTables.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Models\RoleNamesAndIds.cs" />
+    <Compile Include="Models\SavedPosts.cs" />
     <Compile Include="Models\UserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs" />
@@ -227,6 +220,8 @@
     <Content Include="Scripts\Custom\ChangePostStatus.js" />
     <Content Include="Scripts\Custom\main.js" />
     <Content Include="Scripts\Custom\PostForm.js" />
+    <Content Include="Scripts\Custom\PostOperations.js" />
+    <Content Include="Scripts\Custom\RemoveSavedPost.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -405,17 +400,11 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202105210008538_InitialMigration.resx">
-      <DependentUpon>202105210008538_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202105270116443_Initial.resx">
+      <DependentUpon>202105270116443_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105210020225_populdatePerson.resx">
-      <DependentUpon>202105210020225_populdatePerson.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105250110461_updatePasswordField.resx">
-      <DependentUpon>202105250110461_updatePasswordField.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105251748589_updatePostTable.resx">
-      <DependentUpon>202105251748589_updatePostTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202105270123409_PopulateTables.resx">
+      <DependentUpon>202105270123409_PopulateTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -65,7 +66,7 @@ namespace Travel_Trek.Controllers
             var person = viewModel.User;
 
             //* Get agency from the database
-            var agencyInDb = _dbContext.Users.Include("UserRole").Single(m => m.Id == person.Id);
+            var agencyInDb = _dbContext.Users.Include(u => u.UserRole).Single(m => m.Id == person.Id);
 
             //* Edit agency data and save it
             agencyInDb.FirstName = person.FirstName;
@@ -207,7 +208,7 @@ namespace Travel_Trek.Controllers
             var agency = AccountController.GetUserFromEmail(User.Identity.Name);
 
             // Get posts for this agency
-            var posts = _dbContext.Posts.Include("Agency").Where(p => p.AgencyId == agency.Id).ToList();
+            var posts = _dbContext.Posts.Include(p => p.Agency).Where(p => p.AgencyId == agency.Id).ToList();
 
             return View(posts);
         }
@@ -257,7 +258,7 @@ namespace Travel_Trek.Controllers
             var agency = AccountController.GetUserFromEmail(User.Identity.Name);
             var viewModel = new PostFormViewModel
             {
-                Post = _dbContext.Posts.Include("Agency").Single(p => p.Id == id && p.AgencyId == agency.Id),
+                Post = _dbContext.Posts.Include(p => p.Agency).Single(p => p.Id == id && p.AgencyId == agency.Id),
                 Action = "UpdatePostData",
                 Header = "Update Trip Post 📑🧐",
                 Operation = "Update",

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -120,7 +121,7 @@ namespace Travel_Trek.Controllers
             Person user;
             using (ApplicationDbContext dbContext = new ApplicationDbContext())
             {
-                user = dbContext.Users.Include("UserRole").FirstOrDefault(u => u.Email == email);
+                user = dbContext.Users.Include(u => u.UserRole).FirstOrDefault(u => u.Email == email);
 
             }
 

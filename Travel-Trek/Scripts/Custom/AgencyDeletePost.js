@@ -48,7 +48,7 @@
                                     dialog.init(function () {
                                         setTimeout(function () {
                                             //* Get the card and remove 
-                                            button.parents(".card").remove();
+                                            button.parents(".js-card").remove();
 
                                             //* add the message to the dialog
                                             dialog.find('.bootbox-body').html(data.message + " 🦾");

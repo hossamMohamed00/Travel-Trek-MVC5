@@ -6,7 +6,11 @@ namespace Travel_Trek.ViewModels
     public class WallViewModel
     {
         public List<Post> Posts { get; set; }
+
+        public List<SavedPosts> SavedPosts { get; set; } // For saved posts page
+
         public Person User { get; set; }
+
         public Login Login { get; set; }
 
         public string Layout

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 namespace Travel_Trek.Models
 {
     public class Person
@@ -38,11 +39,12 @@ namespace Travel_Trek.Models
         [Required]
         public int UserRoleId { get; set; }
 
-
+        public virtual ICollection<SavedPosts> SavedPosts { get; set; }
 
         // Constructor
         public Person()
         {
+            //* Set the default role to traveller
             UserRoleId = RoleNamesAndIds.TravelerId;
         }
     }

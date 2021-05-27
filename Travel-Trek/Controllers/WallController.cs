@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Travel_Trek.Db_Context;
@@ -28,7 +29,7 @@ namespace Travel_Trek.Controllers
         // [Authorize(Roles = "Traveler")]
         public ActionResult Index()
         {
-            var posts = _dbContext.Posts.Include("Agency").Where(p => p.Status.Equals(Post.APPROVED)).ToList();
+            var posts = _dbContext.Posts.Include(p => p.Agency).Where(p => p.Status.Equals(Post.APPROVED)).ToList();
 
             var viewModel = new WallViewModel
             {
@@ -39,23 +40,6 @@ namespace Travel_Trek.Controllers
 
             return View(viewModel);
         }
-
-        // Get: Wall/posts/saved
-        [Route("Wall/posts/saved")]
-        [Authorize(Roles = RoleNamesAndIds.Traveler)]
-        public ActionResult SavedPosts()
-        {
-            var posts = _dbContext.Posts.Include("Agency").Where(p => p.Status.Equals(Post.APPROVED)).ToList();
-
-            var viewModel = new WallViewModel
-            {
-                Posts = posts,
-                CurrentView = "Index"
-            };
-
-            return View(viewModel);
-        }
-
 
         [Route("Wall/user/profile")]
         [Authorize(Roles = RoleNamesAndIds.Traveler)]
@@ -92,7 +76,7 @@ namespace Travel_Trek.Controllers
             var person = viewModel.User;
 
             //* Get traveler from the database
-            var travelerInDb = _dbContext.Users.Include("UserRole").Single(m => m.Id == person.Id);
+            var travelerInDb = _dbContext.Users.Include(u => u.UserRole).Single(m => m.Id == person.Id);
 
             //* Edit traveler data and save it
             travelerInDb.FirstName = person.FirstName;
@@ -116,13 +100,79 @@ namespace Travel_Trek.Controllers
             return RedirectToAction("Profile", "Wall");
         }
 
+        // Get: Wall/posts/saved
+        [Route("Wall/posts/saved")]
+        [Authorize(Roles = RoleNamesAndIds.Traveler)]
+        public ActionResult SavedPosts()
+        {
+            var viewModel = GetWallViewModelForSavedPosts();
+
+            return View(viewModel);
+        }
 
         [HttpPost]
         [Authorize(Roles = RoleNamesAndIds.Traveler)]
-        public ActionResult LikePost(int Id)
+        [Route("Wall/posts/save")] // Referenced in PostOperations.js
+        public ActionResult SavePost(int postId)
+        {
+            // Get Logged in agency
+            var travelerId = AccountController.GetUserFromEmail(User.Identity.Name).Id;
+
+            //* Check first if the post is already saved or not
+            var isSaved = IsAlreadySaved(travelerId, postId);
+
+            if (isSaved)
+            {
+                return Json(new { success = false, message = "This Trip Post already saved in your saved posts, Go to Saved Posts tab to see it 💾😁" }, JsonRequestBehavior.AllowGet);
+            }
+
+            //* Add the post to the saved posts for this user
+            _dbContext.SavedPosts.Add(new SavedPosts { PostId = postId, UserId = travelerId });
+
+            if (false)
+            {
+                return Json(new { success = false, message = "Cannot save this post, please try again later on 😪🔃" }, JsonRequestBehavior.AllowGet);
+            }
+
+            // Save changes
+            _dbContext.SaveChanges();
+
+            //* Send json to the user
+            return Json(new { success = true, message = "Trip Post Saved Successfully!🤗💾 , Navigate to Saved Posts tab to see it ✌" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = RoleNamesAndIds.Traveler)]
+        [Route("Wall/posts/removeSaved")] // Referenced in RemoveSavedPost.js
+        public ActionResult UnSavePost(int postId)
+        {
+            // Get Logged in agency
+            var travelerId = AccountController.GetUserFromEmail(User.Identity.Name).Id;
+
+            //* Get this saved post
+            var savedPost = _dbContext.SavedPosts.SingleOrDefault(p => p.UserId == travelerId && p.PostId == postId);
+
+            if (savedPost == null)
+            {
+                return Json(new { success = false, message = "Cannot save this post, please try again later on 😪🔃" }, JsonRequestBehavior.AllowGet);
+            }
+
+            //* remove the post from the saved posts for this user
+            _dbContext.SavedPosts.Remove(savedPost);
+
+            // Save changes
+            _dbContext.SaveChanges();
+
+            //* Send json to the user
+            return Json(new { success = true, message = "Trip Post removed from your saved posts 🤷‍♂️😐" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = RoleNamesAndIds.Traveler)]
+        public ActionResult LikePost(int id)
         {
             //Get post from db
-            var post = _dbContext.Posts.Single(p => p.Id == Id);
+            var post = _dbContext.Posts.Single(p => p.Id == id);
 
             if (post == null)
                 return Json(new { success = false, message = "Cannot find this post!" }, JsonRequestBehavior.AllowGet);
@@ -144,7 +194,7 @@ namespace Travel_Trek.Controllers
             // Get Logged in agency
             var loggedInTravler = AccountController.GetUserFromEmail(User.Identity.Name);
 
-            var travler = _dbContext.Users.Include("UserRole").SingleOrDefault(u => u.Id == loggedInTravler.Id);
+            var travler = _dbContext.Users.Include(u => u.UserRole).SingleOrDefault(u => u.Id == loggedInTravler.Id);
 
             var viewModel = new WallViewModel
             {
@@ -153,6 +203,37 @@ namespace Travel_Trek.Controllers
             };
 
             return viewModel;
+        }
+
+        public WallViewModel GetWallViewModelForSavedPosts()
+        {
+            // Get Logged in agency
+            var loggedInTraveler = AccountController.GetUserFromEmail(User.Identity.Name);
+
+            //* Get the user saved posts
+            var savedPosts = _dbContext
+                .Users
+                .Where(u => u.Id == loggedInTraveler.Id)
+                .SelectMany(p => p.SavedPosts)
+                .Include(p => p.Post.Agency)
+                .ToList();
+
+            var viewModel = new WallViewModel
+            {
+                SavedPosts = savedPosts,
+                CurrentView = "SavedPosts"
+            };
+            return viewModel;
+        }
+
+        public bool IsAlreadySaved(int userId, int postId)
+        {
+            //* Get this saved post
+            var savedPost = _dbContext.SavedPosts.
+                SingleOrDefault(p => p.UserId == userId && p.PostId == postId);
+
+            //* Return true if there are a post
+            return savedPost != null ? true : false;
         }
     }
 }

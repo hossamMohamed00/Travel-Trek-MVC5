@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Travel_Trek.Models
@@ -50,9 +51,13 @@ namespace Travel_Trek.Models
         [DataType(DataType.Text)]
         public string RefuseMessage { get; set; }
 
+        public virtual ICollection<SavedPosts> SavedPosts { get; set; }
+
+
         // Constructor
         public Post()
         {
+            //* Set the default values
             PostDate = DateTime.Now;
             Status = PENDING;
         }

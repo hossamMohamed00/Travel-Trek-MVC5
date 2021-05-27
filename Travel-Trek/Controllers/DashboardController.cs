@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
@@ -148,7 +149,7 @@ namespace Travel_Trek.Controllers
             var person = ViewModel.User;
 
             //* Get admin from the database
-            var adminInDb = _dbContext.Users.Include("UserRole").Single(u => u.Id == person.Id);
+            var adminInDb = _dbContext.Users.Include(u => u.UserRole).Single(u => u.Id == person.Id);
 
             //* Edit admin data and save it
             adminInDb.FirstName = person.FirstName;
@@ -186,7 +187,7 @@ namespace Travel_Trek.Controllers
         public ActionResult PendingPosts()
         {
             /* Get the pending posts only */
-            var pendingPosts = _dbContext.Posts.Include("Agency").Where(y => y.Status == Post.PENDING);
+            var pendingPosts = _dbContext.Posts.Include(p => p.Agency).Where(y => y.Status == Post.PENDING);
 
             return View(pendingPosts);
         }
@@ -255,14 +256,14 @@ namespace Travel_Trek.Controllers
         // Return all users (agencies and travelers)
         public IEnumerable<Person> GetAllUsers()
         {
-            var users = _dbContext.Users.Include("UserRole").ToList();
+            var users = _dbContext.Users.Include(u => u.UserRole).ToList();
             return users;
         }
 
         // Return all users (agencies and travelers)
         public IEnumerable<Post> GetAllPosts()
         {
-            var posts = _dbContext.Posts.Include("Agency").OrderBy(p => p.PostDate).ToList();
+            var posts = _dbContext.Posts.Include(p => p.Agency).OrderBy(p => p.PostDate).ToList();
             return posts;
         }
 
@@ -297,6 +298,5 @@ namespace Travel_Trek.Controllers
 
             return viewModel;
         }
-
     }
 }
