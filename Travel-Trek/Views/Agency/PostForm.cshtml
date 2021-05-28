@@ -26,7 +26,7 @@
 
         <div class="row">
             <div class="form-group col-lg-6 col-md-6 col-sm-12">
-                @Html.LabelFor(model => model.Post.TripTitle)
+                @Html.LabelFor(model => model.Post.TripTitle, null, new { @class = "font-weight-bold" })
                 <div>
                     @Html.EditorFor(model => model.Post.TripTitle, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Post.TripTitle, "", new { @class = "text-danger" })
@@ -34,7 +34,7 @@
             </div>
 
             <div class="form-group col-lg-6 col-md-6 col-sm-12">
-                @Html.LabelFor(model => model.Post.TripDestination)
+                @Html.LabelFor(model => model.Post.TripDestination, null, new { @class = "font-weight-bold" })
                 <div>
                     @Html.EditorFor(model => model.Post.TripDestination, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Post.TripDestination, "", new { @class = "text-danger" })
@@ -45,7 +45,7 @@
 
         <div class="row">
             <div class="form-group col-lg-6 col-md-6 col-sm-12">
-                @Html.LabelFor(model => model.Post.TripDate)
+                @Html.LabelFor(model => model.Post.TripDate, null, new { @class = "font-weight-bold" })
                 <div>
                     @Html.EditorFor(model => model.Post.TripDate, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Post.TripDate, "", new { @class = "text-danger" })
@@ -53,16 +53,16 @@
             </div>
 
             <div class="form-group col-lg-6 col-md-6 col-sm-12">
-                @Html.LabelFor(model => model.Post.TripDetails)
+                @Html.LabelFor(model => model.Post.TripDetails, null, new { @class = "font-weight-bold" })
                 <div>
-                    @Html.TextAreaFor(model => model.Post.TripDetails, new { htmlAttributes = new { @class = "form-control", row = "3" } })
+                    @Html.TextAreaFor(model => model.Post.TripDetails, new { @class = "form-control", cols = "100" })
                     @Html.ValidationMessageFor(model => model.Post.TripDetails, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-lg-6 col-md-6 col-sm-12">
-                @Html.LabelFor(model => model.TripImage)
+                @Html.LabelFor(model => model.TripImage, null, new { @class = "font-weight-bold" })
                 <br />
 
                 <div class="custom-file">
