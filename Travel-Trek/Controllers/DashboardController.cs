@@ -107,6 +107,14 @@ namespace Travel_Trek.Controllers
                 Utilities.DeleteImageFromServer(user.Photo);
             }
 
+            //* Remove the liked and saved post by this user
+            var savedPosts = _dbContext.SavedPosts.Where(p => p.UserId == id);
+            _dbContext.SavedPosts.RemoveRange(savedPosts);
+
+            var postLikes = _dbContext.LikedPosts.Where(p => p.UserId == id);
+            _dbContext.LikedPosts.RemoveRange(postLikes);
+
+
             //* Remove the user from the db
             _dbContext.Users.Remove(user);
 
