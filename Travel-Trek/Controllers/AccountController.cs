@@ -32,30 +32,39 @@ namespace Travel_Trek.Controllers
         // Post: Account/register
         [HttpPost]
         [Route("Account/register")]
-        public ActionResult Register(Person user, HttpPostedFileBase userPhoto)
+        public JsonResult Register(Person user, HttpPostedFileBase userPhoto)
         {
             if (ModelState.IsValid)
             {
-                using (ApplicationDbContext Db = new ApplicationDbContext())
+                //* Check if the given email is a unique or not
+                var ExistsUser = _dbContext.Users.SingleOrDefault(u => u.Email == user.Email);
+
+                var isTakenBefore = ExistsUser != null;
+
+                //* If true, so the email already exists
+                if (isTakenBefore)
                 {
-                    if (userPhoto != null)
-                    {
-                        var ImagePath = Utilities.GetPersonImagePath(userPhoto);
-
-                        // Save the image on the device 
-                        userPhoto.SaveAs(Server.MapPath(ImagePath));
-
-                        user.Photo = ImagePath;
-                    }
-
-                    Db.Users.Add(user);
-                    Db.SaveChanges();
-                    ModelState.Clear();
+                    return Json(new { success = false, message = "Email already taken, choose another one 🤷‍♂️" }, JsonRequestBehavior.AllowGet);
                 }
 
-                return RedirectToAction("Index", "Wall");
+                if (userPhoto != null)
+                {
+                    var imagePath = Utilities.GetPersonImagePath(userPhoto);
+
+                    // Save the image on the device 
+                    userPhoto.SaveAs(Server.MapPath(imagePath));
+
+                    user.Photo = imagePath;
+                }
+
+                _dbContext.Users.Add(user);
+                _dbContext.SaveChanges();
+                ModelState.Clear();
+
+
+                return Json(new { success = true, message = "Welcome " + user.FirstName + " in our amazing website, We are very happy to have you ❤😃. Go ahead and login now 🕺🏻🗝" }, JsonRequestBehavior.AllowGet);
             }
-            return RedirectToAction("Index", "Wall");
+            return Json(new { success = false, message = "Cannot registered you right now 😥" }, JsonRequestBehavior.AllowGet);
         }
 
         // Post: Account/login
@@ -78,30 +87,31 @@ namespace Travel_Trek.Controllers
                 Response.Cookies.Add(cookie);
 
                 //* Redirect the user to the valid path
+                string Url = "/";
                 if (user.UserRoleId == RoleNamesAndIds.AdminId)
                 {
-                    return RedirectToAction("Index", "Dashboard");
+                    Url = "/Dashboard/";
                 }
 
                 if (user.UserRoleId == RoleNamesAndIds.AgencyId)
                 {
-                    return RedirectToAction("MyPosts", "Agency");
+                    Url = "/Agency/";
                 }
 
                 if (user.UserRoleId == RoleNamesAndIds.TravelerId)
                 {
-
-                    return RedirectToAction("Index", "Wall");
+                    Url = "/";
                 }
+
+                return Json(new { success = true, url = Url }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                ViewBag.ErrorMessage = "Invalid email or password!";
-                return RedirectToAction("Index", "Wall");
+                //*The given user is not found
+                return Json(new { success = false, message = "Invalid Email or password. 😒💔" }, JsonRequestBehavior.AllowGet);
             }
 
-
-            return RedirectToAction("Index", "Wall");
+            return Json(new { success = false, message = "An error occurred. 😐" }, JsonRequestBehavior.AllowGet);
         }
 
 

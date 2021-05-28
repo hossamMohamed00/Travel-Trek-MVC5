@@ -7,9 +7,13 @@
                 <h2 style="text-align: center">Sign <span class="text-primary">Up</span></h2>
             </div>
         </div>
-        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
 
+        @using (Ajax.BeginForm("Register", "Account", null, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "RegisterUser" }, new
+        {
+            enctype = "multipart/form-data",
+            id = "formData"
+        }))
+        {
             <div class="row">
                 <div class="form-group col-lg-6 col-md-6  col-sm-12">
                     @Html.LabelFor(model => model.User.FirstName)
@@ -59,9 +63,13 @@
                     <div class="custom-file " style="width: auto;">
                         <input type="file" name="userPhoto" class="custom-file-input" id="customFile">
                         <label class="custom-file-label" for="customFile">Choose user image</label>
-                        @Html.ValidationMessageFor(model => model.User.Photo, "", new {@class = "text-danger"})
+                        @Html.ValidationMessageFor(model => model.User.Photo, "", new { @class = "text-danger" })
                     </div>
                 </div>
+            </div>
+
+            <div class="form-text">
+                <p>Already have an account 🤔? <a href="#" class="link" onclick="showLogin()">Login now</a></p>
             </div>
 
             @Html.AntiForgeryToken()

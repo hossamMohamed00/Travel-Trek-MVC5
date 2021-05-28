@@ -150,6 +150,10 @@
     <Compile Include="Migrations\202105271627422_addLikedPosts.Designer.cs">
       <DependentUpon>202105271627422_addLikedPosts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105280206582_MakeEmailUnique.cs" />
+    <Compile Include="Migrations\202105280206582_MakeEmailUnique.Designer.cs">
+      <DependentUpon>202105280206582_MakeEmailUnique.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\LikedPosts.cs" />
     <Compile Include="Models\Login.cs" />
@@ -223,9 +227,9 @@
     <Content Include="Scripts\Custom\AdminDeleteUser.js" />
     <Content Include="Scripts\Custom\AgencyDeletePost.js" />
     <Content Include="Scripts\Custom\ChangePostStatus.js" />
-    <Content Include="Scripts\Custom\main.js" />
     <Content Include="Scripts\Custom\PostForm.js" />
     <Content Include="Scripts\Custom\PostOperations.js" />
+    <Content Include="Scripts\Custom\AccountManagement.js" />
     <Content Include="Scripts\Custom\RemoveSavedPost.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
@@ -413,6 +417,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105271627422_addLikedPosts.resx">
       <DependentUpon>202105271627422_addLikedPosts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105280206582_MakeEmailUnique.resx">
+      <DependentUpon>202105280206582_MakeEmailUnique.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -27,12 +27,6 @@ namespace Travel_Trek.Controllers
             _dbContext.Dispose();
         }
 
-        // GET: Agency
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         // Get: Agency/Profile
         [Route("Agency/Profile")]
         public ActionResult Profile()
@@ -201,7 +195,7 @@ namespace Travel_Trek.Controllers
             return Json(new { success = true, message = "Trip Post Update Successfully ✔🕺🏻, Our admins will review the post ASAP 🐱‍🏍🔃" }, JsonRequestBehavior.AllowGet);
         }
 
-        [Route("Agency/Posts")]
+        [Route("Agency/")]
         public ActionResult MyPosts()
         {
             // Get Logged in agency
