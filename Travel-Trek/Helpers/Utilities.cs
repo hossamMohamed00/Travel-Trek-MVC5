@@ -83,6 +83,13 @@ namespace Travel_Trek.Helpers
             if (post == null)
                 return false;
 
+            //* Remove the post from saved and likes posts tables
+            var savedPosts = db.SavedPosts.Where(p => p.PostId == id);
+            db.SavedPosts.RemoveRange(savedPosts);
+
+            var postLikes = db.LikedPosts.Where(p => p.PostId == id);
+            db.LikedPosts.RemoveRange(postLikes);
+
             //* Remove post image from the device
             if (!string.IsNullOrEmpty(post.TripImage))
             {
