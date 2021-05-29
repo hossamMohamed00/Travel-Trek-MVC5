@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -71,6 +70,18 @@ namespace Travel_Trek.Controllers
             //* Check if the agency provide a photo
             if (userPhoto != null)
             {
+                //* Validate the extension
+                var isValid = Utilities.ValidateImageExtension(userPhoto);
+
+                if (!isValid)
+                    return Json(new
+                    {
+                        success = false,
+                        message = "You must upload a post image with one of the allowed image extensions [PNG / JPG / JPEG] 😡"
+                    },
+                        JsonRequestBehavior.AllowGet);
+
+                //* if the image is valid, ....
                 var ImagePath = Utilities.GetPersonImagePath(userPhoto);
 
                 // Save the image on the device 
@@ -111,8 +122,18 @@ namespace Travel_Trek.Controllers
                 //* Get the image from the viewModel
                 var tripImage = viewModel.TripImage;
 
-                // Get the agency which wants to add this post
-                var agency = AccountController.GetUserFromEmail(User.Identity.Name);
+                //* Validate the extension
+                var isValid = Utilities.ValidateImageExtension(tripImage);
+
+                if (!isValid)
+                    return Json(new
+                    {
+                        success = false,
+                        message = "You must upload a post image with one of the allowed image extensions [PNG / JPG / JPEG] 😡"
+                    },
+                        JsonRequestBehavior.AllowGet);
+
+                //* if the image is valid, ....
 
                 var ImagePath = Utilities.GetPostImagePath(tripImage, post.PostDate);
 
@@ -122,6 +143,10 @@ namespace Travel_Trek.Controllers
                 //* Save image data
                 post.TripImage = ImagePath;
 
+                // Get the agency which wants to add this post
+                var agency = AccountController.GetUserFromEmail(User.Identity.Name);
+
+                //* Set the agency which created the post
                 post.AgencyId = agency.Id;
 
                 //* Add the post to the db and save the changes
@@ -131,7 +156,6 @@ namespace Travel_Trek.Controllers
                 return Json(new { success = true, message = "Trip Post request sent successfully, our admins will review the post ASAP 🐱‍🏍💕" }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { success = false, message = "Cannot publish this Trip Post right now 😒😭" }, JsonRequestBehavior.AllowGet);
-
         }
 
         [Route("Agency/Posts/update")]
@@ -173,8 +197,21 @@ namespace Travel_Trek.Controllers
             //* Check if there is a photo for the trip
             if (tripImage != null)
             {
+                //* Validate the extension
+                var isValid = Utilities.ValidateImageExtension(tripImage);
+
+                if (!isValid)
+                    return Json(new
+                    {
+                        success = false,
+                        message = "You must upload a post image with one of the allowed image extensions [PNG / JPG / JPEG] 😡"
+                    },
+                        JsonRequestBehavior.AllowGet);
+
+                //* if the image is valid, ....
+
                 //* Delete the previous image of the post if he already has one
-                if (!String.IsNullOrEmpty(postInDb.TripImage))
+                if (!string.IsNullOrEmpty(postInDb.TripImage))
                 {
                     Utilities.DeleteImageFromServer(postInDb.TripImage);
                 }

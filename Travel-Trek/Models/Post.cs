@@ -38,6 +38,8 @@ namespace Travel_Trek.Models
         public string TripDestination { get; set; }
 
         [Display(Name = "Image")]
+        [FileExtensions(Extensions = "jpg,jpeg,png")]
+        [DataType(DataType.ImageUrl)]
         public string TripImage { get; set; }
 
         [MaxLength(255)]

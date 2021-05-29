@@ -78,6 +78,18 @@ namespace Travel_Trek.Controllers
             //* Check if the admin provide a photo
             if (userPhoto != null)
             {
+                //* Validate the extension
+                var isValid = Utilities.ValidateImageExtension(userPhoto);
+
+                if (!isValid)
+                    return Json(new
+                    {
+                        success = false,
+                        message = "You must upload a post image with one of the allowed image extensions [PNG / JPG / JPEG] 😡"
+                    },
+                        JsonRequestBehavior.AllowGet);
+
+                //* if the image is valid, ....
                 var ImagePath = Utilities.GetPersonImagePath(userPhoto);
                 // Save the image on the device 
                 userPhoto.SaveAs(Server.MapPath(ImagePath));
@@ -168,6 +180,19 @@ namespace Travel_Trek.Controllers
             //* Check if the admin provide a photo
             if (userPhoto != null)
             {
+                //* Validate the extension
+                var isValid = Utilities.ValidateImageExtension(userPhoto);
+
+                if (!isValid)
+                    return Json(new
+                    {
+                        success = false,
+                        message = "You must upload a post image with one of the allowed image extensions [PNG / JPG / JPEG] 😡"
+                    },
+                        JsonRequestBehavior.AllowGet);
+
+                //* if the image is valid, ....
+
                 //* Delete the previous image of the admin if he already has one
                 if (!String.IsNullOrEmpty(adminInDb.Photo))
                 {

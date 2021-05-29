@@ -15,7 +15,7 @@ function InformUser(data) {
                     label: "Ok",
                     className: 'btn-success',
                     callback: function() {
-                        window.location.replace("/Agency/posts");
+                        window.location.replace("/Agency/");
                     }
                 }
             }

@@ -87,6 +87,19 @@ namespace Travel_Trek.Controllers
             //* Check if the traveler provide a photo
             if (userPhoto != null)
             {
+                //* Validate the extension
+                var isValid = Utilities.ValidateImageExtension(userPhoto);
+
+                if (!isValid)
+                    return Json(new
+                    {
+                        success = false,
+                        message = "You must upload a post image with one of the allowed image extensions [PNG / JPG / JPEG] 😡"
+                    },
+                        JsonRequestBehavior.AllowGet);
+
+                //* if the image is valid, ....
+
                 var ImagePath = Utilities.GetPersonImagePath(userPhoto);
 
                 // Save the image on the device 
@@ -271,7 +284,5 @@ namespace Travel_Trek.Controllers
             //* Return true if there are a post
             return likedPost != null ? true : false;
         }
-
-
     }
 }

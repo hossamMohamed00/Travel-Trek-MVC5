@@ -104,5 +104,19 @@ namespace Travel_Trek.Helpers
 
             return true;
         }
+
+        /**
+         * Validate the image extinsions
+         */
+        public static bool ValidateImageExtension(HttpPostedFileBase image)
+        {
+            string[] ALLOWED_EXTENSION = new string[3] { "png", "jpg", "jpeg" };
+
+            var extension = Path.GetExtension(image.FileName).Substring(1); // to get the extension without the (.)
+
+            var isExists = ALLOWED_EXTENSION.Contains(extension);
+
+            return isExists;
+        }
     }
 }
