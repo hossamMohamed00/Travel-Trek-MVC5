@@ -231,6 +231,7 @@
     <Content Include="Scripts\Custom\PostOperations.js" />
     <Content Include="Scripts\Custom\AccountManagement.js" />
     <Content Include="Scripts\Custom\RemoveSavedPost.js" />
+    <Content Include="Scripts\Custom\SearchForPost.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />

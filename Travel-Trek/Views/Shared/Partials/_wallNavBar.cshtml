@@ -15,8 +15,8 @@
         @if (User.Identity.IsAuthenticated && !User.IsInRole(RoleNamesAndIds.Admin) && !User.IsInRole(RoleNamesAndIds.Agency) && showFilterPosts)
         {
             <form class="form-inline my-2 my-lg-0">
-                <label for="filter">Filter</label>
-                <input class="form-control mr-sm-2" type="search" name="filter" placeholder="Search" aria-label="Search" id="filter">
+                <label for="Search">Filter</label>
+                <input class="form-control mr-sm-2" type="search" name="Search" placeholder="Search for trip posts 😋" aria-label="Search" id="Search">
             </form>
         }
 
