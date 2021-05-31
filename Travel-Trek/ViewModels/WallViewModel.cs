@@ -9,9 +9,11 @@ namespace Travel_Trek.ViewModels
 
         public List<SavedPosts> SavedPosts { get; set; } // For saved posts page
 
+        public List<UserQuestion> UserQuestions { get; set; } // For user questions page
+
         public Person User { get; set; }
 
-        public Login Login { get; set; }
+        public Login Login { get; set; } // for login modal
 
         public string Layout
         {

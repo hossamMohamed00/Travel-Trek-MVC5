@@ -101,6 +101,68 @@
                 }
             });
         });
+
+    /*Ask new question */
+    $("#posts").on("click",
+        ".js-ask",
+        function () {
+            var question
+            // Get reference for the button
+            var button = $(this);
+
+            //* First check if the user logged in or not
+            var isAuth = button.attr("data-isAuth"); // get the isAuth data attribute - I added it to buttons 
+
+            if (!IsUserLoggedIn(isAuth)) {
+                // Suggest to login first
+                bootbox.alert("Please login first to be able to ask a question for this trip post and do alot of amazing things 💃🏻🕺🏻");
+                return; // to stop the function
+            }
+
+            //* if there is a user already logged in, so continue...
+
+            //* Show bootbox to get the question
+            bootbox.prompt({
+                title: "Ask New Question 💡❓",
+                message: "Please type your question for this trip post 🤔",
+                inputType: "textarea",
+                callback: function (result) {
+                    if (result == null) return;
+                    question = result;
+                    // Get post id from the data attribute of the button
+                    var PostId = button.attr("data-post-id");
+
+                    $.ajax({
+                        url: "/Wall/posts/ask",
+                        dataType: "json",
+                        type: "POST",
+                        data: {
+                            postId: PostId,
+                            question: question
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                //* Show the returned message to the user
+                                bootbox.alert(data.message);
+                            } else {
+                                bootbox.alert(data.message);
+                            }
+
+                            //* Get save btn and change its value
+                            var cardBody = button.parents(".card-body");
+                            var askButton = cardBody[0].children.namedItem("ask");
+                            // Disable the btn here
+                            askButton.innerText = "Asked ✔";
+                            askButton.disabled = "disabled";
+                        },
+                        error: function (xhr) {
+                            console.log(xhr);
+                            bootbox.alert('Cannot ask a question right now 😐💔!');
+                        }
+                    });
+                }
+            });
+        });
 });
 
 /* This function for check if the user logged in or not */

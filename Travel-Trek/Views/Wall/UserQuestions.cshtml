@@ -1,29 +1,33 @@
 ﻿@using Travel_Trek.Models
-@model IEnumerable<Travel_Trek.Models.UserQuestion>
+@model Travel_Trek.ViewModels.WallViewModel
 @{
-    ViewBag.Title = "FAQ";
-    Layout = "~/Views/Shared/FactoryLayout.cshtml";
+    ViewBag.Title = "UserQuestions";
+    Layout = "~/Views/Shared/WallLayout.cshtml";
 }
 
-
-<!--  Start Question received page -->
 <section>
+    <h2>Questions & Answers ⚕</h2>
 
-    <h2>Question and Enquiries 🤔❓</h2>
-    <hr />
-    @if (Model.Any())
+    @if (Model.UserQuestions.Any())
     {
+        <!--Set the sub-header-->
+        <p class="Header_subtitle">
+            Here you can see all your questions on the trip posts and their answers (if exists) from the agencies. ✌🤓
+        </p>
+        <hr />
+
+        <!--Display all users questions -->
         int count = 1;
 
         <div id="questions">
-            @foreach (var question in Model)
+            @foreach (var question in Model.UserQuestions)
             {
                 <div class="row">
                     <div class="col">
                         <div class="card mb-3">
 
                             <div class="card-body">
-                                <h5 class="card-title"><span><a href="#">#@count</a></span> on post <span class="font-weight-bold">@question.Post.TripTitle</span> </h5>
+                                <h5 class="card-title"><span><a href="#">#@count</a></span> on post: <span class="font-weight-bold">@question.Post.TripTitle</span> </h5>
                                 <hr />
                                 <p><span class="text-secondary font-weight-bold">Question by:</span> <span class="text-primary font-weight-bold">@question.User.FirstName  @question.User.LastName</span></p>
 
@@ -34,8 +38,8 @@
                                 @{
                                     if (question.Status == UserQuestion.Open)
                                     {
-                                        <div class="form-inline float-right">
-                                            <textarea class="form-control js-reply-textarea" id="js-reply" placeholder="Leave a answer here..." rows="3" cols="400"></textarea>
+                                        <div style="display: grid; place-items: center">
+                                            <div class="font-weight-bold" >No answer yet for this question. 😐🤷‍♀️</div>
                                         </div>
                                     }
                                     else
@@ -64,7 +68,7 @@
                                 @{
                                     if (question.Status.Equals(UserQuestion.Open))
                                     {
-                                        <button class="btn btn-primary js-reply-btn" type="button" style="float: right;" data-post-id="@question.PostId" data-user-id="@question.UserId">Reply 🔁</button>
+                                        <button class="btn btn-info" type="button" style="float: right;" disabled="disabled">Still In Review 🔁</button>
                                     }
                                     else
                                     {
@@ -83,24 +87,14 @@
             }
         </div>
     }
-
     else
     {
-
+        <hr />
         <div class="is-empty">
-            <h3>No Questions for your trip posts yet 🧐</h3>
-            @Html.ActionLink("Go to Your Posts", "MyPosts", null, new { @class = "btn btn-primary" })
-
+            <h3>There are no Questions on Trip posts yet..! 🤷‍♀️👀</h3>
+            <p>Go to the wall to see all available Trip Posts right now ❤🐱‍🏍😃 </p>
+            @Html.ActionLink("Let's Go 🐱‍🏍", "Index", null, new { @class = "btn btn-primary" })
         </div>
     }
-
-
 </section>
-<!-- end Question received page -->
 
-@section scripts
-{
-    <!--Handle reply to the questions-->
-    <script src="~/Scripts/Custom/ReplyToQuestion.js"></script>
-    <script src="~/Scripts/Custom/ViewPostFromFAQ.js"></script>
-}

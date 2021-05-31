@@ -225,3 +225,10 @@ footer {
     margin-left: 15px;
     padding: 13px;
 }
+
+/* Center the div */
+.custom-center {
+    display: grid;
+    place-items: center;
+    place-content: center
+}

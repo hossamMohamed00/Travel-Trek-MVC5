@@ -13,7 +13,7 @@ namespace Travel_Trek.Models
         [Display(Name = "First Name")]
         [Required]
         public string FirstName { get; set; }
-            
+
         [MaxLength(255)]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
@@ -45,6 +45,8 @@ namespace Travel_Trek.Models
         public virtual ICollection<SavedPosts> SavedPosts { get; set; }
 
         public virtual ICollection<LikedPosts> LikedPosts { get; set; }
+
+        public virtual ICollection<UserQuestion> UserQuestions { get; set; }
 
         // Constructor
         public Person()

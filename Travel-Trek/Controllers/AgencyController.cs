@@ -266,7 +266,43 @@ namespace Travel_Trek.Controllers
         [Route("Agency/FAQ")]
         public ActionResult FAQ()
         {
-            return View();
+            // Get Logged in agency
+            var agency = AccountController.GetUserFromEmail(User.Identity.Name);
+
+            //* Get all the questions for this agency
+            var questions = _dbContext.UserQuestions.Include(q => q.Post.Agency).Include(q => q.User).Where(q => q.Post.AgencyId == agency.Id).ToList();
+
+            return View(questions);
+        }
+
+        [HttpPost]
+        [Route("Agency/FAQ/reply")]
+        public JsonResult ReplyToQuestion(int? postId, int? userId, string reply)
+        {
+            if (postId == null || userId == null || reply.Length == 0)
+            {
+                return Json(
+                    new { success = false, message = "Error while reply to this question, please try again 😐🔃" },
+                    JsonRequestBehavior.AllowGet);
+            }
+
+            //* Get the post to add the reply to it
+            var question = _dbContext.UserQuestions.Single(q => q.PostId == postId && q.UserId == userId);
+
+            //* Add the reply
+            question.Answer = reply;
+
+            //* Update the status of the question
+            question.Status = UserQuestion.Closed;
+
+            //* Save all the changes to the database
+            _dbContext.SaveChanges();
+
+            return Json(new
+            {
+                success = true,
+                message = "Great Job ❤,Your reply to this question sent successfully to the traveler 🐱‍🏍✔ "
+            }, JsonRequestBehavior.AllowGet);
         }
 
         /* Helper Methods */

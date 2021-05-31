@@ -5,9 +5,12 @@
     Layout = "~/Views/Shared/FactoryLayout.cshtml";
 }
 <section>
+    <h2>My Trip Posts 📑</h2>
+    <hr />
 
     @if (Model.Any())
     {
+
         <div class="row" id="posts">
             @foreach (var post in Model)
             {
@@ -29,7 +32,7 @@
 
 
                                 <!-- likes badge-->
-                                <div class="badge bg-success likes-badge">
+                                <div class="badge bg-success likes-badge" style="width: auto">
                                     @post.Likes likes.
                                 </div>
                             </div>

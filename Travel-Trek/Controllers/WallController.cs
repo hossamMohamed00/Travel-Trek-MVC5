@@ -123,6 +123,15 @@ namespace Travel_Trek.Controllers
             return View(viewModel);
         }
 
+        [Route("Wall/posts/questions")]
+        [Authorize(Roles = RoleNamesAndIds.Traveler)]
+        public ActionResult UserQuestions()
+        {
+            var viewModel = GetWallViewModelForUserQuestions();
+
+            return View(viewModel);
+        }
+
         [HttpPost]
         [Authorize(Roles = RoleNamesAndIds.Traveler)]
         [Route("Wall/posts/save")] // Referenced in PostOperations.js
@@ -227,6 +236,48 @@ namespace Travel_Trek.Controllers
             return Json(new { success = true, likes = post.Likes, message = "Trip Post Liked Successfully! ❤" }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        [Authorize(Roles = RoleNamesAndIds.Traveler)]
+        [Route("Wall/posts/ask")] // Referenced in PostOperations.js
+        public ActionResult AskQuestion(int postId, string question)
+        {
+            // Get Logged in agency
+            var travelerId = AccountController.GetUserFromEmail(User.Identity.Name).Id;
+
+            // Get the post from the db
+            var post = _dbContext.Posts.Single(p => p.Id == postId);
+
+            //* Check first if this user asked a question on this post before
+            var askedBefore = IsUserAlreadyAsked(travelerId, postId);
+            if (askedBefore)
+            {
+                /* Tell the user that he is already ask a question on this question and give him the reply*/
+
+                //* Get this liked post
+                var userQuestion = _dbContext.UserQuestions.SingleOrDefault(p => p.UserId == travelerId && p.PostId == postId);
+
+                if (userQuestion == null)
+                {
+                    return Json(new { success = false, message = "Cannot process this operation, please try again later on 😪🔃" }, JsonRequestBehavior.AllowGet);
+                }
+
+                var messageText = "You already have a question on this post was at " + userQuestion.Date.ToLongDateString() +
+                                  ". Go ahead to Your questions and see the reply ✌🤗.";
+                return Json(new { success = false, message = messageText }, JsonRequestBehavior.AllowGet);
+            }
+
+            // If the post doesn't haveany question by this user before, So save his question ....
+
+            //* Add the post to the User Questions 
+            _dbContext.UserQuestions.Add(new UserQuestion { PostId = postId, UserId = travelerId, Question = question, Status = UserQuestion.Open });
+
+            // Save changes
+            _dbContext.SaveChanges();
+
+            //* Send json to the user
+            return Json(new { success = true, message = "Yor question sent successfully to the agency, when they answers you, we will notify you ASAP ❤🐱‍🏍" }, JsonRequestBehavior.AllowGet);
+        }
+
         /* Helper Methods */
         public WallViewModel GetWallViewModel()
         {
@@ -265,6 +316,28 @@ namespace Travel_Trek.Controllers
             return viewModel;
         }
 
+        public WallViewModel GetWallViewModelForUserQuestions()
+        {
+            // Get Logged in agency
+            var loggedInTraveler = AccountController.GetUserFromEmail(User.Identity.Name);
+
+            //* Get the user saved posts
+            var userQuestions = _dbContext
+                .Users
+                .Where(u => u.Id == loggedInTraveler.Id)
+                .SelectMany(p => p.UserQuestions)
+                .Include(p => p.Post.Agency)
+                .Include(p => p.User)
+                .ToList();
+
+            var viewModel = new WallViewModel
+            {
+                UserQuestions = userQuestions,
+                CurrentView = "UserQuestions"
+            };
+            return viewModel;
+        }
+
         public bool IsAlreadySaved(int userId, int postId)
         {
             //* Get this saved post
@@ -283,6 +356,16 @@ namespace Travel_Trek.Controllers
 
             //* Return true if there are a post
             return likedPost != null ? true : false;
+        }
+
+        public bool IsUserAlreadyAsked(int userId, int postId)
+        {
+            //* Get this question if exists
+            var userQuestion = _dbContext.UserQuestions.
+                SingleOrDefault(p => p.UserId == userId && p.PostId == postId);
+
+            //* Return true if there are a post
+            return userQuestion != null ? true : false;
         }
     }
 }
