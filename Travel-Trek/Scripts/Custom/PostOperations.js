@@ -53,6 +53,60 @@
             })
         });
 
+    /* DisLike Post Logic*/
+    $("#posts").on("click",
+        ".js-dislike",
+        function () {
+            // Get reference for the button
+            var button = $(this);
+
+            //* First check if the user logged in or not
+            var isAuth = button.attr("data-isAuth"); // get the isAuth data attribute - I added it to button
+
+            //* First check if the user logged in or not
+            if (!IsUserLoggedIn(isAuth)) {
+                // Suggest to login first
+                bootbox.alert("Please login first to be able to like/dislike the trip post and do alot of amazing things 💃🏻🕺🏻");
+                return; // to stop the function
+            }
+
+            //* if there is a user already logged in, so continue...
+
+            // Get post id
+            var PostId = button.attr("data-post-id");
+
+            /* Send the ajax request to dislike the post */
+            $.ajax({
+                url: '/Wall/posts/dislike',
+                dataType: "json",
+                type: "POST",
+                data: {
+                    postId: PostId
+                },
+                success: function (data) {
+                    if (data.success) {
+                        console.log(data.message);
+
+                        // toggle liked the class 
+                        button[0].classList.toggle("likedBtn");
+
+                        //* Get number of dislikes div and change its value
+                        var cardBody = button.parents(".card-body")[0];
+                        var numOfDisLikedElement = cardBody.children.namedItem("num-of-dislikes");
+                        numOfDisLikedElement.innerHTML = data.dislikes + " dislikes"; // get the post dislikes number from the data object (sent from the controller)
+                        console.log(numOfDisLikedElement);
+
+                    } else {
+                        bootbox.alert(data.message);
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                    bootbox.alert("Cannot dislike this post right now 💔❌!");
+                }
+            })
+        });
+
     /* Save Post Logic*/
     $("#posts").on("click",
         ".js-save",

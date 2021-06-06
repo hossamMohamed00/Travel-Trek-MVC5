@@ -28,6 +28,9 @@
                         @Html.DisplayNameFor(model => model.TripDestination)
                     </th>
                     <th>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.TripDetails)
                     </th>
                     <th>
@@ -54,8 +57,11 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.TripTitle)
                         </td>
-                        <td class="text-dark">
+                        <td>
                             @Html.DisplayFor(modelItem => item.TripDestination)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)$
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.TripDetails)

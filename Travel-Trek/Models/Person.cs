@@ -46,6 +46,8 @@ namespace Travel_Trek.Models
 
         public virtual ICollection<LikedPosts> LikedPosts { get; set; }
 
+        public virtual ICollection<DisLikedPosts> DisLikedPosts { get; set; }
+
         public virtual ICollection<UserQuestion> UserQuestions { get; set; }
 
         // Constructor

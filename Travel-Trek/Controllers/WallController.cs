@@ -238,6 +238,58 @@ namespace Travel_Trek.Controllers
 
         [HttpPost]
         [Authorize(Roles = RoleNamesAndIds.Traveler)]
+        [Route("Wall/posts/dislike")] // Referenced in PostOperations.js
+        public ActionResult DisLikePost(int postId)
+        {
+            // Get Logged in agency
+            var travelerId = AccountController.GetUserFromEmail(User.Identity.Name).Id;
+
+            // Get the post from the db
+            var post = _dbContext.Posts.Single(p => p.Id == postId);
+
+            //* Check first if the post is already disliked or not
+            var isAlreadyDisLiked = IsAlreadyDisLiked(travelerId, postId);
+            if (isAlreadyDisLiked)
+            {
+                /* Remove Dislike here */
+
+                //* Get this disliked post
+                var disLikedPost = _dbContext.DisLikedPosts.SingleOrDefault(p => p.UserId == travelerId && p.PostId == postId);
+
+                if (disLikedPost == null)
+                {
+                    return Json(new { success = false, message = "Cannot dislike this post, please try again later on 😪🔃" }, JsonRequestBehavior.AllowGet);
+                }
+
+                //* remove the post from the disliked posts for this user
+                _dbContext.DisLikedPosts.Remove(disLikedPost);
+
+                //* Decrease post likes
+                post.DisLikes -= 1;
+
+                // Save changes
+                _dbContext.SaveChanges();
+
+                return Json(new { success = true, dislikes = post.DisLikes, message = "Remove dislike from this Trip Post done Successfully! 💔" }, JsonRequestBehavior.AllowGet);
+            }
+
+            // If the post doesn't disliked by this user before, So dislike it....
+
+            //* Add the post to the disliked posts for this user
+            _dbContext.DisLikedPosts.Add(new DisLikedPosts { PostId = postId, UserId = travelerId });
+
+            //* Increase post dislikes
+            post.DisLikes += 1;
+
+            // Save changes
+            _dbContext.SaveChanges();
+
+            //* Send json to the user
+            return Json(new { success = true, dislikes = post.DisLikes, message = "Trip Post disliked Successfully! 💔👎🏻" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = RoleNamesAndIds.Traveler)]
         [Route("Wall/posts/ask")] // Referenced in PostOperations.js
         public ActionResult AskQuestion(int postId, string question)
         {
@@ -356,6 +408,16 @@ namespace Travel_Trek.Controllers
 
             //* Return true if there are a post
             return likedPost != null ? true : false;
+        }
+
+        public bool IsAlreadyDisLiked(int userId, int postId)
+        {
+            //* Get this disliked post
+            var dislikedPost = _dbContext.DisLikedPosts.
+                SingleOrDefault(p => p.UserId == userId && p.PostId == postId);
+
+            //* Return true if there are a post
+            return dislikedPost != null ? true : false;
         }
 
         public bool IsUserAlreadyAsked(int userId, int postId)

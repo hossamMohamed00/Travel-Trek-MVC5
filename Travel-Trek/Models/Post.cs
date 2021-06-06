@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Travel_Trek.Models
@@ -37,6 +36,10 @@ namespace Travel_Trek.Models
         [Display(Name = "Destination")]
         public string TripDestination { get; set; }
 
+        [Required]
+        [Range(0, int.MaxValue)]
+        public double Price { get; set; }
+
         [Display(Name = "Image")]
         [FileExtensions(Extensions = "jpg,jpeg,png")]
         [DataType(DataType.ImageUrl)]
@@ -49,15 +52,11 @@ namespace Travel_Trek.Models
         [Range(0, int.MaxValue)]
         public int Likes { get; set; }
 
+        [Range(0, int.MaxValue)]
+        public int DisLikes { get; set; }
 
         [DataType(DataType.Text)]
         public string RefuseMessage { get; set; }
-
-        public virtual ICollection<SavedPosts> SavedPosts { get; set; }
-
-        public virtual ICollection<LikedPosts> LikedPosts { get; set; }
-
-        public virtual ICollection<UserQuestion> UserQuestions { get; set; }
 
         // Constructor
         public Post()
