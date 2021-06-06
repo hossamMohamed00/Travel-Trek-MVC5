@@ -21,20 +21,43 @@
                         <div class="card" style="width: 18rem; margin-bottom: 12px">
                             <img class="card-img-top" src="@post.TripImage" alt="@post.TripTitle">
                             <div class="card-body">
-                                <h5 class="card-title">From: @post.Agency.FirstName @post.Agency.LastName </h5>
-                                <p class="card-text">Details: @post.TripDetails</p>
-                                <p class="card-text">Destination: @post.TripDestination</p>
-                                <p class="card-text">Date: @post.TripDate.ToLongDateString()</p>
+                                <h5 class="card-title"><span class="customCardText">From:</span> @post.Agency.FirstName</h5>
+                                <p class="card-text"><span class="customCardText">Destination:</span> @post.TripDestination
+                                <p class="card-text"><span class="customCardText">Details:</span>@post.TripDetails
+                                <p class="card-text"><span class="customCardText">Date:</span> @post.TripDate.ToLongDateString()</p>
+                                <!--add price-->
+                                <h2 class="card-text" style="font-size: 25px;color: black;text-align: center;"><span class="customCardText">Price:</span> @post.Price$</h2>
 
                                 <!-- Delete , Update-->
-                                <a href="@Url.Action("UpdatePost", new {id = post.Id})" class="btn btn-primary float-lg-left">Update</a>
-                                <button data-post-id="@post.Id" class="btn btn-danger float-lg-right" id="js-delete">Delete</button>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a href="@Url.Action("UpdatePost", new {id = post.Id})" class="btn btn-primary float-lg-left">Update</a>
 
+                                    </div>
+                                    <div class="col-6">
+                                        <button data-post-id="@post.Id" class="btn btn-danger float-right" id="js-delete">Delete</button>
 
-                                <!-- likes badge-->
-                                <div class="badge bg-success likes-badge" style="width: auto">
-                                    @post.Likes likes.
+                                    </div>
                                 </div>
+                                <!-- likes badge and dislikes badge-->
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="badge bg-primary likes-badge" style="width: auto;margin:5px 0 0 ;">
+                                            @post.Likes likes.
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="badge bg-danger likes-badge float-right" style="width: auto;margin:5px 0 0 ;" id="num-of-dislikes">
+                                            @post.DisLikes dislikes
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                             
+
+
                             </div>
 
                             <!-- Card footer-->
