@@ -21,11 +21,6 @@
 
         <br />
 
-        <div style="margin-bottom: 10px">
-            @Html.ActionLink("Create New Post", "Create", null, new { @class = "btn btn-primary" })
-        </div>
-
-
         <table id="posts" class="table table-striped table-hover table-bordered">
             <thead class="thead-dark">
                 <tr>
@@ -118,8 +113,7 @@
     {
         <div class="is-empty">
             <h3>No Posts Available..! 😪😪</h3>
-            @Html.ActionLink("Create New Post", "CreatePost", null, new { @class = "btn btn-primary" })
-
+            @Html.ActionLink("Go Posts Requests 👀", "PendingPosts", null, new { @class = "btn btn-primary" })
         </div>
     }
 </section>
