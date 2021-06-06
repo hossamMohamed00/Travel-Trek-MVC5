@@ -5,79 +5,80 @@
     Layout = "~/Views/Shared/FactoryLayout.cshtml";
 }
 <section>
+    <h2>My Trip Posts 📑</h2>
+    <hr />
 
     @if (Model.Any())
     {
-        <div class="row">
-        @for (int i = 0; i < 20; i++)
-        {
-            var post = Model.First();
 
-                <div class="col-4">
-                    <div class="card" style="width: 18rem; margin-bottom: 12px">
-                        <img class="card-img-top" src="@post.TripImage" alt="@post.TripTitle">
-                        <div class="card-body">
-                            <h5 class="card-title">@post.Agency.FirstName @post.Agency.LastName </h5>
-                            <p class="card-text"> @post.TripDetails</p>
-                            <p class="card-text"> @post.TripDestination</p>
-                            <p class="card-text"> @post.TripDate</p>
+        <div class="row" id="posts">
+            @foreach (var post in Model)
+            {
 
-                            <!-- Delete , Update-->
-                            <a href="#" class="btn btn-primary float-lg-left">Update</a>
-                            <a href="@Url.Action("DeletePost")" class="btn btn-danger float-lg-right">Delete</a>
+                <div class="col">
+                    <div class="js-card">
+                        <h4 class="trip-title">@post.TripTitle</h4>
+                        <div class="card" style="width: 18rem; margin-bottom: 12px">
+                            <img class="card-img-top" src="@post.TripImage" alt="@post.TripTitle">
+                            <div class="card-body">
+                                <h5 class="card-title">From: @post.Agency.FirstName @post.Agency.LastName </h5>
+                                <p class="card-text">Details: @post.TripDetails</p>
+                                <p class="card-text">Destination: @post.TripDestination</p>
+                                <p class="card-text">Date: @post.TripDate.ToLongDateString()</p>
 
-                            <!-- likes -->
-                            <div class="badge bg-success " style="width: 6rem; color: white; margin-left: 1px">
-                               @post.Likes likes.
+                                <!-- Delete , Update-->
+                                <a href="@Url.Action("UpdatePost", new {id = post.Id})" class="btn btn-primary float-lg-left">Update</a>
+                                <button data-post-id="@post.Id" class="btn btn-danger float-lg-right" id="js-delete">Delete</button>
+
+
+                                <!-- likes badge-->
+                                <div class="badge bg-success likes-badge" style="width: auto">
+                                    @post.Likes likes.
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- time update trip -->
-                        <div class="card-footer">
-                            <small class="text-muted">@post.PostDate.ToLongDateString()</small>
-                            <div class="text-muted">
-                                @{
-                                    if (@post.Status.Equals("Approved"))
-                                    {
-                                        <small class="text-success">Now In Wall ❤😊</small>
-                                    }
-                                    else if (@post.Status.Equals("Refused"))
-                                    {
-                                        <small class="text-danger">Refused as @post.RefuseMessage</small>
+                            <!-- Card footer-->
+                            <div class="card-footer">
+                                <text class="text-muted">Posted at @post.PostDate.ToLongDateString() @post.PostDate.ToShortTimeString()</text>
+                                <div class="text-muted">
+                                    @{
+                                        if (@post.Status.Equals("Approved"))
+                                        {
+                                            <small class="text-success">Now In Wall ❤😊</small>
+                                        }
+                                        else if (@post.Status.Equals("Refused"))
+                                        {
+                                            <small class="text-danger">Refused as @post.RefuseMessage 🤷‍♀️</small>
 
+                                        }
+                                        else
+                                        {
+                                            <small class="text-info">Now in review. ⌚⏳</small>
+                                        }
                                     }
-                                    else
-                                    {
-                                        <small class="text-info">Now in review.</small>
-                                    }
-                                }
+                                </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
-         }
+            }
         </div>
     }
     else
     {
-        <div class="is-empty" style="float: right; margin-right:400px;">
-            <h3>No factory history..! 🤗👀</h3>
-            <p> Can Make History By Publishing Posts  </p>
-            @Html.ActionLink("Go To create New post", "CreatePost", null, new { @class = "btn btn-primary" })
-
+        <div class="is-empty">
+            <h3>No Posts history..! 🤗👀</h3>
+            <p>But You Can Publish your first Trip Post right now ❤🐱‍🏍😃 </p>
+            @Html.ActionLink("Let's Publish a Trip Post", "CreatePost", null, new { @class = "btn btn-primary" })
         </div>
-
-            }
-
-    </section>
-
-<!-- end factory history page -->
-
-
-<script type="text/javascript">
-    function likePost(post) {
-        post.classList.toggle("likedBtn");
-
     }
-</script>
+
+</section>
+
+<!--Javascript here-->
+@section scripts
+{
+    <!--Handle Delete Post Operation-->
+    <script src="~/Scripts/Custom/AgencyDeletePost.js"></script>
+}

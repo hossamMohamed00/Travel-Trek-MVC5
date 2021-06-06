@@ -6,18 +6,24 @@ namespace Travel_Trek.ViewModels
     public class WallViewModel
     {
         public List<Post> Posts { get; set; }
+
+        public List<SavedPosts> SavedPosts { get; set; } // For saved posts page
+
+        public List<UserQuestion> UserQuestions { get; set; } // For user questions page
+
         public Person User { get; set; }
-        public Login Login { get; set; }
+
+        public Login Login { get; set; } // for login modal
 
         public string Layout
         {
             get
             {
-                if (User.UserRoleId == UserRole.AdminId)
+                if (User.UserRoleId == RoleNamesAndIds.AdminId)
                 {
                     return "DashboardLayout.cshtml";
                 }
-                else if (User.UserRoleId == UserRole.AgencyId)
+                else if (User.UserRoleId == RoleNamesAndIds.AgencyId)
                 {
                     return "FactoryLayout.cshtml";
                 }
@@ -32,11 +38,11 @@ namespace Travel_Trek.ViewModels
         {
             get
             {
-                if (User.UserRoleId == UserRole.AdminId)
+                if (User.UserRoleId == RoleNamesAndIds.AdminId)
                 {
                     return "Admin";
                 }
-                else if (User.UserRoleId == UserRole.AgencyId)
+                else if (User.UserRoleId == RoleNamesAndIds.AgencyId)
                 {
                     return "Agency";
                 }
@@ -51,11 +57,11 @@ namespace Travel_Trek.ViewModels
         {
             get
             {
-                if (User.UserRoleId == UserRole.AdminId)
+                if (User.UserRoleId == RoleNamesAndIds.AdminId)
                 {
                     return "Dashboard";
                 }
-                else if (User.UserRoleId == UserRole.AgencyId)
+                else if (User.UserRoleId == RoleNamesAndIds.AgencyId)
                 {
                     return "Agency";
                 }

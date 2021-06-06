@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,18 +13,18 @@ namespace Travel_Trek.Controllers
 {
     public class AccountController : Controller
     {
-        ApplicationDbContext Db;
+        private readonly ApplicationDbContext _dbContext;
 
         /* Constructor */
         public AccountController()
         {
-            Db = new ApplicationDbContext();
+            _dbContext = new ApplicationDbContext();
         }
 
         /* Override Dispose method */
         protected override void Dispose(bool disposing)
         {
-            Db.Dispose();
+            _dbContext.Dispose();
         }
 
         /*---------------------------*/
@@ -31,30 +32,52 @@ namespace Travel_Trek.Controllers
         // Post: Account/register
         [HttpPost]
         [Route("Account/register")]
-        public ActionResult Register(Person user, HttpPostedFileBase userPhoto)
+        public JsonResult Register(Person user, HttpPostedFileBase userPhoto)
         {
             if (ModelState.IsValid)
             {
-                using (ApplicationDbContext Db = new ApplicationDbContext())
+                //* Check if the given email is a unique or not
+                var ExistsUser = _dbContext.Users.SingleOrDefault(u => u.Email == user.Email);
+
+                var isTakenBefore = ExistsUser != null;
+
+                //* If true, so the email already exists
+                if (isTakenBefore)
                 {
-                    if (userPhoto != null)
-                    {
-                        var ImagePath = Utilities.GetPersonImagePath(userPhoto);
-
-                        // Save the image on the device 
-                        userPhoto.SaveAs(Server.MapPath(ImagePath));
-
-                        user.Photo = ImagePath;
-                    }
-
-                    Db.Users.Add(user);
-                    Db.SaveChanges();
-                    ModelState.Clear();
+                    return Json(new { success = false, message = "Email already taken, choose another one 🤷‍♂️" }, JsonRequestBehavior.AllowGet);
                 }
 
-                return RedirectToAction("Index", "Wall");
+                if (userPhoto != null)
+                {
+                    //* Validate the extension
+                    var isValid = Utilities.ValidateImageExtension(userPhoto);
+
+                    if (!isValid)
+                        return Json(new
+                            {
+                                success = false,
+                                message = "You must upload a post image with one of the allowed image extensions [PNG / JPG / JPEG] 😡"
+                            },
+                            JsonRequestBehavior.AllowGet);
+
+                    //* if the image is valid, ....
+
+                    var imagePath = Utilities.GetPersonImagePath(userPhoto);
+
+                    // Save the image on the device 
+                    userPhoto.SaveAs(Server.MapPath(imagePath));
+
+                    user.Photo = imagePath;
+                }
+
+                _dbContext.Users.Add(user);
+                _dbContext.SaveChanges();
+                ModelState.Clear();
+
+
+                return Json(new { success = true, message = "Welcome " + user.FirstName + " in our amazing website, We are very happy to have you ❤😃. Go ahead and login now 🕺🏻🗝" }, JsonRequestBehavior.AllowGet);
             }
-            return RedirectToAction("Index", "Wall");
+            return Json(new { success = false, message = "Cannot registered you right now 😥" }, JsonRequestBehavior.AllowGet);
         }
 
         // Post: Account/login
@@ -65,46 +88,43 @@ namespace Travel_Trek.Controllers
             var loginData = viewModel.Login;
 
             //* Search for this user
-            var user = Db.Users.FirstOrDefault(u => u.Email.Equals(loginData.Email) && u.Password.Equals(loginData.Password));
+            var user = _dbContext.Users.FirstOrDefault(u => u.Email.Equals(loginData.Email) && u.Password.Equals(loginData.Password));
 
             //* Check if the user exists
             if (user != null)
             {
-                var Ticket = new FormsAuthenticationTicket(loginData.Email, true, 3000);
-                string Encrypt = FormsAuthentication.Encrypt(Ticket);
-
-                //* Create new cookie
-                var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, Encrypt);
-                cookie.Expires = DateTime.Now.AddHours(3000);
-                cookie.HttpOnly = true;
+                //* Get user cookie
+                var cookie = GetAUserCookie(loginData);
 
                 //* Add the cookie
                 Response.Cookies.Add(cookie);
 
-                if (user.UserRoleId == UserRole.AdminId)
+                //* Redirect the user to the valid path
+                string Url = "/";
+                if (user.UserRoleId == RoleNamesAndIds.AdminId)
                 {
-                    return RedirectToAction("Index", "Dashboard");
+                    Url = "/Dashboard/";
                 }
 
-                if (user.UserRoleId == UserRole.AgencyId)
+                if (user.UserRoleId == RoleNamesAndIds.AgencyId)
                 {
-                    return RedirectToAction("MyPosts", "Agency");
+                    Url = "/Agency/";
                 }
 
-                if (user.UserRoleId == UserRole.TravelerId)
+                if (user.UserRoleId == RoleNamesAndIds.TravelerId)
                 {
-
-                    return RedirectToAction("Index", "Wall");
+                    Url = "/";
                 }
+
+                return Json(new { success = true, url = Url }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                ViewBag.ErrorMessage = "Invalid email or password!";
-                return RedirectToAction("Index", "Wall");
+                //*The given user is not found
+                return Json(new { success = false, message = "Invalid Email or password. 😒💔" }, JsonRequestBehavior.AllowGet);
             }
 
-
-            return RedirectToAction("Index", "Wall");
+            return Json(new { success = false, message = "An error occurred. 😐" }, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -124,11 +144,30 @@ namespace Travel_Trek.Controllers
             Person user;
             using (ApplicationDbContext dbContext = new ApplicationDbContext())
             {
-                user = dbContext.Users.Include("UserRole").FirstOrDefault(u => u.Email == email);
+                user = dbContext.Users.Include(u => u.UserRole).FirstOrDefault(u => u.Email == email);
 
             }
 
             return user;
+        }
+
+        /**
+         * Prepare and get a cookie for the user
+         */
+        public static HttpCookie GetAUserCookie(Login loginData)
+        {
+            var ticket = new FormsAuthenticationTicket(loginData.Email, true, 3000);
+            string encrypt = FormsAuthentication.Encrypt(ticket);
+
+            //* Create new cookie
+            var cookie =
+                new HttpCookie(FormsAuthentication.FormsCookieName, encrypt)
+                {
+                    Expires = DateTime.Now.AddHours(3000),
+                    HttpOnly = true
+                };
+
+            return cookie;
         }
     }
 

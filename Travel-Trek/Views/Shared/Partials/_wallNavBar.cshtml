@@ -1,8 +1,8 @@
-@model Travel_Trek.ViewModels.WallViewModel
+﻿@model Travel_Trek.ViewModels.WallViewModel
 @using Travel_Trek.Models
 @{
     var viewName = Model.CurrentView;
-    var showFilterPosts = (viewName.Equals("Index") || viewName.Equals("SavedPosts")) ? true : false;
+    var showFilterPosts = (viewName.Equals("Index") || viewName.Equals("SavedPost")) ? true : false;
     var username = (User.Identity.IsAuthenticated) ? User.Identity.Name.Split('@')[0] : "Guest";
 }
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top Hh">
@@ -12,46 +12,48 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-        @if (User.Identity.IsAuthenticated && !User.IsInRole(UserRole.Admin) && !User.IsInRole(UserRole.Agency) && showFilterPosts)
+        @if (User.Identity.IsAuthenticated && !User.IsInRole(RoleNamesAndIds.Admin) && !User.IsInRole(RoleNamesAndIds.Agency) && showFilterPosts)
         {
             <form class="form-inline my-2 my-lg-0">
-                <label for="filter">Filter</label>
-                <input class="form-control mr-sm-2" type="search" name="filter" placeholder="Search" aria-label="Search" id="filter">
+                <label for="Search">Filter</label>
+                <input class="form-control mr-sm-2" style="width: 215px" type="search" name="Search" placeholder="Search for trip posts 😋" aria-label="Search" id="Search">
             </form>
         }
 
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-link" style="color: bisque"> Hi, @username</li>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-link" style="color: bisque"> Hi, @username 🙋🏻‍♂️</li>
 
-            @if (!User.Identity.IsAuthenticated)
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <li class="nav-item">
+                <a href="#" onclick="showRegister()" class="nav-link" id="js-register">Register</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" onclick="showLogin()" class="nav-link" id="js-login">Login</a>
+            </li>
+        }
+        else
+        {
+            if (User.IsInRole(RoleNamesAndIds.Admin) || User.IsInRole(RoleNamesAndIds.Agency))
             {
-                <li class="nav-item">
-                    <a href="#" onclick="showRegister()" class="nav-link" id="js-register">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" onclick="showLogin()" class="nav-link" id="js-login">Login</a>
-                </li>
+                // Display none
             }
             else
             {
-                if (User.IsInRole(UserRole.Admin) || User.IsInRole(UserRole.Agency))
-                {
-                    // Display none
-                }
-                else
-                {
-                    <li class="nav-item">
-                        @Html.ActionLink("My Profile", "Profile", "Wall", null, new { @class = "nav-link" })
-                    </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("SavedPost", "SavedPosts", "Wall", null, new { @class = "nav-link" })
-                    </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("Logout", "Account")" class="nav-link" id="js-logout">Logout</a>
-                    </li>
-                }
-
+                <li class="nav-item">
+                    @Html.ActionLink("My Profile 👨🏻‍💼", "Profile", "Wall", null, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink("SavedPost 💾", "SavedPosts", "Wall", null, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink("Questions ⁉", "UserQuestions", "Wall", null, new { @class = "nav-link" })
+                </li>
             }
-        </ul>
+            <li class="nav-item">
+                <a href="@Url.Action("Logout", "Account")" class="nav-link" id="js-logout">Logout 👋🏻</a>
+            </li>
+        }
+    </ul>
     </div>
 </nav>

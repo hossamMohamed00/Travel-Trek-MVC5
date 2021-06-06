@@ -23,7 +23,7 @@
             @Html.ValidationSummary(true, "Please fix the the following errors!", new { @class = "text-danger" })
             <div class="row">
                 <div class="form-group col-lg-6 col-md-6  col-sm-12">
-                    @Html.LabelFor(model => model.User.FirstName)
+                    @Html.LabelFor(model => model.User.FirstName, new { @class = "font-weight-bold" })
                     <div>
                         @Html.EditorFor(model => model.User.FirstName, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.User.FirstName, null, new { @class = "text-danger" })
@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="form-group col-lg-6 col-md-6  col-sm-12">
-                    @Html.LabelFor(model => model.User.LastName)
+                    @Html.LabelFor(model => model.User.LastName, new { @class = "font-weight-bold" })
                     <div>
                         @Html.EditorFor(model => model.User.LastName, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.User.LastName, "", new { @class = "text-danger" })
@@ -41,14 +41,14 @@
 
             <div class="row">
                 <div class="form-group col-lg-6 col-md-6  col-sm-12">
-                    @Html.LabelFor(model => model.User.Email)
+                    @Html.LabelFor(model => model.User.Email, new { @class = "font-weight-bold" })
                     <div>
                         @Html.EditorFor(model => model.User.Email, new { htmlAttributes = new { @class = "form-control", id = "emailText", disabled = "disabled" } })
                         @Html.ValidationMessageFor(model => model.User.Email, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group col-lg-6 col-md-6  col-sm-12">
-                    @Html.LabelFor(model => model.User.Password)
+                    @Html.LabelFor(model => model.User.Password, new { @class = "font-weight-bold" })
                     <div>
                         @Html.EditorFor(model => model.User.Password, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.User.Password, "", new { @class = "text-danger" })
@@ -57,7 +57,7 @@
             </div>
             <div class="row">
                 <div class="form-group col-lg-6 col-md-6  col-sm-12">
-                    @Html.LabelFor(model => model.User.PhoneNumber)
+                    @Html.LabelFor(model => model.User.PhoneNumber, new { @class = "font-weight-bold" })
                     <div>
                         @Html.EditorFor(model => model.User.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.User.PhoneNumber, "", new { @class = "text-danger" })
@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="form-group col-lg-6 col-md-6  col-sm-12">
-                    @Html.LabelFor(model => model.User.Photo)
+                    @Html.LabelFor(model => model.User.Photo, new { @class = "font-weight-bold" })
                     <br />
                     <div class="custom-file " style="width:auto;">
                         <div class="custom-file">

@@ -12,6 +12,7 @@
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+   
 </head>
 <body style="padding: 0">
     <div class="d-flex" id="wrapper">
@@ -32,8 +33,9 @@
     </footer>
 </div>
 
-@Scripts.Render("~/bundles/lib")
+    @Scripts.Render("~/bundles/lib")
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
     @RenderSection("scripts", required: false)
 </body>
 </html>

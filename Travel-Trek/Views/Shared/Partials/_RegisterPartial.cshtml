@@ -7,12 +7,16 @@
                 <h2 style="text-align: center">Sign <span class="text-primary">Up</span></h2>
             </div>
         </div>
-        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
 
+        @using (Ajax.BeginForm("Register", "Account", null, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "RegisterUser" }, new
+        {
+            enctype = "multipart/form-data",
+            id = "formData"
+        }))
+        {
             <div class="row">
                 <div class="form-group col-lg-6 col-md-6  col-sm-12">
-                    @Html.LabelFor(model => model.User.FirstName)
+                    @Html.LabelFor(model => model.User.FirstName, null, new {@class = "font-weight-bold"})
                     <div>
                         @Html.EditorFor(model => model.User.FirstName, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.User.FirstName, null, new { @class = "text-danger" })
@@ -20,7 +24,7 @@
                 </div>
 
                 <div class="form-group col-lg-6 col-md-6  col-sm-12">
-                    @Html.LabelFor(model => model.User.LastName)
+                    @Html.LabelFor(model => model.User.LastName, null, new { @class = "font-weight-bold" })
                     <div>
                         @Html.EditorFor(model => model.User.LastName, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.User.LastName, "", new { @class = "text-danger" })
@@ -30,14 +34,14 @@
 
             <div class="row">
                 <div class="form-group col-lg-6 col-md-6  col-sm-12">
-                    @Html.LabelFor(model => model.User.Email)
+                    @Html.LabelFor(model => model.User.Email, null, new { @class = "font-weight-bold" })
                     <div>
                         @Html.EditorFor(model => model.User.Email, new { htmlAttributes = new { @class = "form-control", required = "required" } })
                         @Html.ValidationMessageFor(model => model.User.Email, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group col-lg-6 col-md-6  col-sm-12">
-                    @Html.LabelFor(model => model.User.Password)
+                    @Html.LabelFor(model => model.User.Password, null, new { @class = "font-weight-bold" })
                     <div>
                         @Html.EditorFor(model => model.User.Password, new { htmlAttributes = new { @class = "form-control", required = "required" } })
                         @Html.ValidationMessageFor(model => model.User.Password, "", new { @class = "text-danger" })
@@ -46,7 +50,7 @@
             </div>
             <div class="row">
                 <div class="form-group col-lg-6 col-md-6  col-sm-12">
-                    @Html.LabelFor(model => model.User.PhoneNumber)
+                    @Html.LabelFor(model => model.User.PhoneNumber, null, new { @class = "font-weight-bold" })
                     <div>
                         @Html.EditorFor(model => model.User.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.User.PhoneNumber, "", new { @class = "text-danger" })
@@ -54,20 +58,24 @@
                 </div>
 
                 <div class="form-group col-lg-6 col-md-6  col-sm-12">
-                    @Html.LabelFor(model => model.User.Photo)
+                    @Html.LabelFor(model => model.User.Photo, null, new { @class = "font-weight-bold" })
                     <br />
                     <div class="custom-file " style="width: auto;">
                         <input type="file" name="userPhoto" class="custom-file-input" id="customFile">
                         <label class="custom-file-label" for="customFile">Choose user image</label>
-                        @Html.ValidationMessageFor(model => model.User.Photo, "", new {@class = "text-danger"})
+                        @Html.ValidationMessageFor(model => model.User.Photo, "", new { @class = "text-danger" })
                     </div>
                 </div>
+            </div>
+
+            <div class="form-text">
+                <p>Already have an account 🤔? <a href="#" class="link" onclick="showLogin()">Login now</a></p>
             </div>
 
             @Html.AntiForgeryToken()
             <div class="row" style="text-align: center">
                 <div class="form-group col-12">
-                    <input id="submit" type="submit" name="submit" value="Sign Up" class="btn btn-primary">
+                    <input id="register" type="submit" name="submit" value="Sign Up" class="btn btn-primary">
                 </div>
             </div>
         }

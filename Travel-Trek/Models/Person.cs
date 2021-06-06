@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Travel_Trek.Models
 {
     public class Person
@@ -16,9 +19,12 @@ namespace Travel_Trek.Models
         public string LastName { get; set; }
 
         [MaxLength(255)]
+        [EmailAddress]
+        [Index(IsUnique = true)]
         public string Email { get; set; }
 
-        [MaxLength(255)]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
         [Required]
         public string Password { get; set; }
 
@@ -36,12 +42,17 @@ namespace Travel_Trek.Models
         [Required]
         public int UserRoleId { get; set; }
 
-         
+        public virtual ICollection<SavedPosts> SavedPosts { get; set; }
+
+        public virtual ICollection<LikedPosts> LikedPosts { get; set; }
+
+        public virtual ICollection<UserQuestion> UserQuestions { get; set; }
 
         // Constructor
         public Person()
         {
-            UserRoleId = UserRole.TravelerId;
+            //* Set the default role to traveller
+            UserRoleId = RoleNamesAndIds.TravelerId;
         }
     }
 }

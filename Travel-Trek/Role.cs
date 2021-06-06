@@ -18,7 +18,7 @@ namespace Travel_Trek
             using (ApplicationDbContext Db = new ApplicationDbContext())
             {
                 // Get the user role name from the db 
-                var userRoleName = Db.Users.Include("UserRole").FirstOrDefault(u => u.Email == username)?.UserRole.Name;
+                var userRoleName = Db.Users.Include(u => u.UserRole).FirstOrDefault(u => u.Email == username)?.UserRole.Name;
 
                 string[] userRole = { userRoleName };
 
