@@ -75,6 +75,17 @@ namespace Travel_Trek.Controllers
             //* Get the User data from the ViewModel
             var user = viewModel.Person;
 
+            //* Check if the given email is a unique or not
+            var ExistsUser = _dbContext.Users.SingleOrDefault(u => u.Email == user.Email);
+
+            var isTakenBefore = ExistsUser != null;
+
+            //* If true, so the email already exists
+            if (isTakenBefore)
+            {
+                return Json(new { success = false, message = "Email already taken, choose another one 😋" }, JsonRequestBehavior.AllowGet);
+            }
+
             //* Check if the admin provide a photo
             if (userPhoto != null)
             {
@@ -100,7 +111,12 @@ namespace Travel_Trek.Controllers
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
 
-            return RedirectToAction("AllUsers", "Dashboard");
+            return Json(new
+            {
+                success = true,
+                message = "New user added successfully, Go to all users page to see it now 🙈🤗"
+            },
+            JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

@@ -16,7 +16,7 @@
     @Html.Partial("Partials/_dashboardNavBar")
     <div class="container body-content">
         @RenderBody()
-        
+
         <footer class="">
             <hr />
             <p>&copy; @DateTime.Now.Year - Travel Trek</p>
@@ -24,6 +24,7 @@
     </div>
 
     @Scripts.Render("~/bundles/lib")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
     @RenderSection("scripts", required: false)
 </body>
 </html>

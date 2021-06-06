@@ -271,7 +271,7 @@ namespace Travel_Trek.Controllers
             var agency = AccountController.GetUserFromEmail(User.Identity.Name);
 
             //* Get all the questions for this agency
-            var questions = _dbContext.UserQuestions.Include(q => q.Post.Agency).Include(q => q.User).Where(q => q.Post.AgencyId == agency.Id).ToList();
+            var questions = _dbContext.UserQuestions.Include(q => q.Post.Agency).Include(q => q.User).Where(q => q.Post.AgencyId == agency.Id).OrderByDescending(q => q.Date).ToList();
 
             return View(questions);
         }

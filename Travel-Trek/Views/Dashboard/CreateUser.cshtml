@@ -6,10 +6,14 @@
 
 <h2>Create New User</h2>
 <hr />
-@using (Html.BeginForm("CreateNewUser", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Ajax.BeginForm("CreateNewUser", "Dashboard", null, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "InformUser" }, new
+{
+    enctype = "multipart/form-data",
+    id = "formData"
+}))
 {
     <div class="form-horizontal">
-        
+
         <div class="row">
             <p class="col-12 Header_subtitle">Please fill the following form to create new user. 🤷‍♂️✌</p>
 
@@ -84,7 +88,7 @@
         <div class="row">
             <div class="form-group col-lg-6 col-md-6 col-sm-12">
                 <div>
-                    <input type="submit" value="Create User" class="btn btn-primary"/>
+                    <input type="submit" value="Create User" class="btn btn-primary" />
                 </div>
             </div>
         </div>
@@ -94,4 +98,43 @@
 @section scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        /* This method will be called after success of the ajax request */
+        function InformUser(data) {
+
+            console.log(data);
+            
+            if (data.success) {
+                console.log("Success!");
+
+                var dialog = bootbox.dialog({
+                    title: "Create User🐱‍🏍",
+                    message: '<p><i class="fa fa-spin fa-spinner"></i> Processing 👀...</p>',
+                    backdrop: true,
+                    buttons: {
+                        Ok: {
+                            label: "Ok",
+                            className: 'btn-success'
+                        }
+                    }
+                });
+
+                dialog.init(function () {
+                    setTimeout(function () {
+                        //* Target the dialog body and put the success msg
+                        dialog.find('.bootbox-body').html(data.message);
+                        dialog.closeButton = true;
+                        //* Target the form and empty it
+                        document.getElementById("formData").reset();
+                    },
+                        1000);
+                });
+
+            } else {
+                bootbox.alert(data.message);
+            }
+        };
+
+    </script>
 }
