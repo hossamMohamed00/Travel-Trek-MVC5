@@ -68,6 +68,16 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.User.UserRoleId, new { @class = "font-weight-bold" })
+                        @Html.DropDownListFor(m => m.User.UserRoleId, new SelectList(Model.UserRoles, "id", "Name"), "Select user role", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.User.UserRoleId)
+                    </div>
+                </div>
+            </div>
+
             <div class="form-text">
                 <p>Already have an account 🤔? <a href="#" class="link" onclick="showLogin()">Login now</a></p>
             </div>

@@ -53,7 +53,7 @@ namespace Travel_Trek.Controllers
         [Route("Dashboard/users/new")]
         public ActionResult CreateUser()
         {
-            var viewModel = GetAddUserViewModel();
+            var viewModel = new AddUserViewModel();
 
             return View(viewModel);
         }
@@ -67,7 +67,7 @@ namespace Travel_Trek.Controllers
             //* Check if the model state is valid
             if (!ModelState.IsValid)
             {
-                var addUserViewModel = GetAddUserViewModel();
+                var addUserViewModel = new AddUserViewModel();
 
                 return View("CreateUser", addUserViewModel);
             }
@@ -308,25 +308,6 @@ namespace Travel_Trek.Controllers
             var viewModel = new WallViewModel
             {
                 User = loggedInAdmin
-            };
-
-            return viewModel;
-        }
-
-        public AddUserViewModel GetAddUserViewModel()
-        {
-            var userRoles = _dbContext.UserRoles.ToList();
-
-            //* Get the admin role to exclude it
-            var adminRole = userRoles.Find(r => r.Name == RoleNamesAndIds.Admin);
-
-            // Exclude the admin role
-            userRoles.Remove(adminRole);
-
-            // Initialize the viewModel
-            var viewModel = new AddUserViewModel
-            {
-                UserRoles = userRoles
             };
 
             return viewModel;
