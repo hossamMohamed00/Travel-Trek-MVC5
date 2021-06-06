@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Travel_Trek.Models
@@ -49,15 +48,11 @@ namespace Travel_Trek.Models
         [Range(0, int.MaxValue)]
         public int Likes { get; set; }
 
+        [Range(0, int.MaxValue)]
+        public int DisLikes { get; set; }
 
         [DataType(DataType.Text)]
         public string RefuseMessage { get; set; }
-
-        public virtual ICollection<SavedPosts> SavedPosts { get; set; }
-
-        public virtual ICollection<LikedPosts> LikedPosts { get; set; }
-
-        public virtual ICollection<UserQuestion> UserQuestions { get; set; }
 
         // Constructor
         public Post()

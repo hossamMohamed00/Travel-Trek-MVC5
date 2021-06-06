@@ -170,7 +170,12 @@
     <Compile Include="Migrations\202105292303554_addStatusPropertyToQuesitons.Designer.cs">
       <DependentUpon>202105292303554_addStatusPropertyToQuesitons.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202106061645043_addDisLikesFeature.cs" />
+    <Compile Include="Migrations\202106061645043_addDisLikesFeature.Designer.cs">
+      <DependentUpon>202106061645043_addDisLikesFeature.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\DisLikedPosts.cs" />
     <Compile Include="Models\LikedPosts.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Person.cs" />
@@ -453,6 +458,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105292303554_addStatusPropertyToQuesitons.resx">
       <DependentUpon>202105292303554_addStatusPropertyToQuesitons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106061645043_addDisLikesFeature.resx">
+      <DependentUpon>202106061645043_addDisLikesFeature.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
