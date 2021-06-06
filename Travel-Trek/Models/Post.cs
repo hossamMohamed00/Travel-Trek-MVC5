@@ -36,6 +36,10 @@ namespace Travel_Trek.Models
         [Display(Name = "Destination")]
         public string TripDestination { get; set; }
 
+        [Required]
+        [Range(0, int.MaxValue)]
+        public double Price { get; set; }
+
         [Display(Name = "Image")]
         [FileExtensions(Extensions = "jpg,jpeg,png")]
         [DataType(DataType.ImageUrl)]

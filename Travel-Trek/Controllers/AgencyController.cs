@@ -190,6 +190,7 @@ namespace Travel_Trek.Controllers
             //* Edit post data and save it
             postInDb.TripTitle = post.TripTitle;
             postInDb.TripDestination = post.TripDestination;
+            postInDb.Price = post.Price;
             postInDb.TripDetails = post.TripDetails;
             postInDb.TripDate = post.TripDate;
             postInDb.Status = Post.PENDING; // Change the status back to be pending

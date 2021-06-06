@@ -232,3 +232,8 @@ footer {
     place-items: center;
     place-content: center
 }
+
+.customCardText {
+    color: #bd2130;
+    font-weight: bold;
+}

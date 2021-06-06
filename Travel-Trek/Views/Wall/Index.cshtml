@@ -24,13 +24,14 @@
                         <div class="card" style="width: 20rem; margin-bottom: 10px">
                             <img class="card-img-top" src="@post.TripImage" alt="@post.TripTitle">
                             <div class="card-body">
-                                <h5 class="card-title">From: @post.Agency.FirstName</h5>
-                                <p class="card-text">Destination: @post.TripDestination
-                                <p class="card-text">Details: @post.TripDetails
-                                <p class="card-text">Date: @post.TripDate.ToLongDateString()</p>
+                                <h5 class="card-title"><span class="customCardText">From:</span> @post.Agency.FirstName</h5>
+                                <p class="card-text"><span class="customCardText">Destination:</span> @post.TripDestination
+                                <p class="card-text"><span class="customCardText">Details:</span>@post.TripDetails
+                                <p class="card-text"><span class="customCardText">Date:</span> @post.TripDate.ToLongDateString()</p>
+                                <!--add price-->
+                                <h2 class="card-text" style="font-size: 25px;color: black;text-align: center;"><span class="customCardText">Price:</span> @post.Price$</h2>
 
                                 <!--Buttons-->
-
                                 <button id="likeBtn" class="btn btn-primary js-like" data-post-id="@post.Id" data-isAuth="@isAuthenticated">
                                     <i class="fas fa-thumbs-up"></i>
                                 </button>
@@ -39,12 +40,12 @@
                                     @post.Likes likes
                                 </div>
 
-                                <button id="dislikeBtn" class="btn btn-danger float-right js-dislike" style="margin-left: 10px;" data-post-id="@post.Id" data-isAuth="@isAuthenticated">
+                                <button id="dislikeBtn" class="btn btn-danger js-dislike" style="margin-left: 10px;" data-post-id="@post.Id" data-isAuth="@isAuthenticated">
                                     <i class="fas fa-thumbs-down"></i>
                                 </button>
 
                                 <div class="badge bg-danger likes-badge float-right" style="width: auto;margin:0;" id="num-of-dislikes">
-                                    @post.DisLikes Dislikes
+                                    @post.DisLikes dislikes
                                 </div>
 
                                 <br />
