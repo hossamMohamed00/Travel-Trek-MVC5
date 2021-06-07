@@ -11,8 +11,11 @@
 
     <h2>@Model.Title Information 👨🏻</h2>
     <hr />
-
-    @using (Html.BeginForm("Save", @Model.Controller, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Ajax.BeginForm("Save", @Model.Controller, null, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "InformUser" }, new
+    {
+        enctype = "multipart/form-data",
+        id = "formData"
+    }))
     {
         <div class="form-horizontal">
 
@@ -114,5 +117,40 @@
                 console.log("Clicked");
                 document.getElementById("change").disabled = false;
             });*/
+    </script>
+    
+    <script>
+        /* This method will be called after success of the ajax request */
+        function InformUser(data) {
+            if (data.success) {
+                console.log("Success!");
+
+                var dialog = bootbox.dialog({
+                    title: "Edit Profile🐱‍🏍",
+                    message: '<p><i class="fa fa-spin fa-spinner"></i> Processing ⏳...</p>',
+                    backdrop: true,
+                    buttons: {
+                        Ok: {
+                            label: "Ok",
+                            className: 'btn-success'
+                        }
+                    }
+                });
+
+                dialog.init(function () {
+                    setTimeout(function () {
+                            //* Target the dialog body and put the success msg
+                            dialog.find('.bootbox-body').html(data.message);
+                            dialog.closeButton = true;
+                        },
+                        1000);
+                });
+
+            } else {
+                bootbox.alert(data.message);
+            }
+
+        };
+
     </script>
 }

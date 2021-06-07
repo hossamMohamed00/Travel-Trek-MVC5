@@ -110,7 +110,12 @@ namespace Travel_Trek.Controllers
             //* Save the changes in the database
             _dbContext.SaveChanges();
 
-            return RedirectToAction("Profile", "Wall");
+            return Json(new
+            {
+                success = true,
+                message = "Update data successfully 🐱‍🏍✌"
+            },
+                JsonRequestBehavior.AllowGet);
         }
 
         // Get: Wall/posts/saved

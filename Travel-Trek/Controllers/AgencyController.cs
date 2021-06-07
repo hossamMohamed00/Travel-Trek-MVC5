@@ -92,7 +92,12 @@ namespace Travel_Trek.Controllers
             //* Save the changes in the database
             _dbContext.SaveChanges();
 
-            return RedirectToAction("Profile", "Agency");
+            return Json(new
+            {
+                success = true,
+                message = "Update data successfully 🐱‍🏍✌"
+            },
+                JsonRequestBehavior.AllowGet);
         }
 
         [Route("Agency/Posts/Create")]
