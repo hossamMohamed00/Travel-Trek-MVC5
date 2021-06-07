@@ -4,7 +4,7 @@
     ViewBag.Title = "Profile";
     var layout = Model.Layout;
     Layout = "~/Views/Shared/" + layout;
-
+    var password = Model.User.Password;
 }
 
 <section>
@@ -50,9 +50,11 @@
                 <div class="form-group col-lg-6 col-md-6  col-sm-12">
                     @Html.LabelFor(model => model.User.Password, new { @class = "font-weight-bold" })
                     <div>
-                        @Html.EditorFor(model => model.User.Password, new { htmlAttributes = new { @class = "form-control" } })
+                        <!--Html.EditorFor(model => model.User.Password, new { htmlAttributes = new { class = "form-control", id = "change", disabled = "disabled", value = password } })-->
+                        @Html.EditorFor(model => model.User.Password, new { htmlAttributes = new { @class = "form-control" ,value = password } })
                         @Html.ValidationMessageFor(model => model.User.Password, "", new { @class = "text-danger" })
                     </div>
+                    <!-- <a href="#" class="btn btn-primary changeBtn" style="margin-top: 5px;">Change password</a> -->
                 </div>
             </div>
             <div class="row">
@@ -94,20 +96,23 @@
 </section>
 
 
-<script type="text/javascript">
-    // set the value of the email and disable the input field
-    
-
-    // Add the following code if you want the name of the file appear on select
-    $(".custom-file-input").on("change", function () {
-        var fileName = $(this).val().split("\\").pop();
-        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-    });
-
-</script>
-
 @section scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
-
+    <script type="text/javascript">
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+    
+    <script>
+        // Toggle the password 
+        /*$(".changeBtn").on("click",
+            function () {
+                console.log("Clicked");
+                document.getElementById("change").disabled = false;
+            });*/
+    </script>
 }
